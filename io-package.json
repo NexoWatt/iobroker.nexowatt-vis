@@ -88,13 +88,6 @@
       "theme": "nexowatt-dark",
       "enableAnimations": true,
       "showGridVoltage": false
-    },
-    "branding": {
-      "logoUrl": ""
-    },
-    "alias": {
-      "create": true,
-      "root": "alias"
     }
   },
   "instanceObjects": []

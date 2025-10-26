@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NexoWatt EMS UI</title>
   <link rel="stylesheet" href="/static/styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 <body>
   <header class="topbar">
     <button id="menuBtn" aria-label="Menu">☰</button>
-    <div class="brand"><img id="logo" alt="NexoWatt Logo" /><h1>NexoWatt EMS</h1></div>
+    <h1>NexoWatt EMS</h1>
     <nav class="tabs">
       <button class="tab active" data-tab="live">LIVE</button>
       <button class="tab" data-tab="history" disabled>HISTORY</button>
@@ -25,48 +24,7 @@
         <div class="legend-color"></div>
         <span>Energy monitor</span>
       </div>
-      
-<div class="energy-flow">
-  <svg viewBox="0 0 600 260" class="flow-svg" preserveAspectRatio="xMidYMid meet">
-    <!-- Nodes -->
-    <g class="node" id="node-pv">
-      <rect x="30" y="20" width="120" height="60" rx="12" class="node-rect"/>
-      <text x="90" y="55" class="node-label">PV</text>
-    </g>
-    <g class="node" id="node-grid">
-      <rect x="30" y="180" width="120" height="60" rx="12" class="node-rect"/>
-      <text x="90" y="215" class="node-label">Grid</text>
-    </g>
-    <g class="node" id="node-bat">
-      <rect x="450" y="20" width="120" height="60" rx="12" class="node-rect"/>
-      <text x="510" y="55" class="node-label">Battery</text>
-    </g>
-    <g class="node" id="node-load">
-      <rect x="450" y="180" width="120" height="60" rx="12" class="node-rect"/>
-      <text x="510" y="215" class="node-label">Load</text>
-    </g>
-
-    <!-- Flows with markers -->
-    <defs>
-      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z"></path>
-      </marker>
-    </defs>
-
-    <!-- PV -> Load -->
-    <path id="flow-pv-load" class="flow pv" d="M150,50 C250,50 350,210 450,210"></path>
-    <!-- PV -> Battery -->
-    <path id="flow-pv-bat" class="flow pv" d="M150,50 C250,50 350,50 450,50"></path>
-    <!-- PV -> Grid (sell) -->
-    <path id="flow-pv-grid" class="flow pv" d="M150,50 C160,120 120,170 150,210"></path>
-    <!-- Grid -> Load (buy) -->
-    <path id="flow-grid-load" class="flow grid" d="M150,210 C250,210 350,210 450,210"></path>
-    <!-- Battery -> Load (discharge) -->
-    <path id="flow-bat-load" class="flow bat" d="M510,80 C530,120 530,170 510,200"></path>
-  </svg>
-</div>
-<div class="ring-wrap">
-
+      <div class="ring-wrap">
         <svg class="ring" viewBox="0 0 100 100">
           <circle class="bg" cx="50" cy="50" r="42" />
           <circle class="seg pv"    cx="50" cy="50" r="42" stroke-dasharray="0 264" />

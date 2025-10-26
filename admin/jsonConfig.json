@@ -2,222 +2,162 @@
   "type": "tabs",
   "items": [
     {
-      "type": "tab",
+      "type": "panel",
       "title": "Allgemein",
-      "items": [
-        {
-          "type": "panel",
-          "title": "Allgemein",
-          "items": {
-            "port": {
-              "type": "number",
-              "label": "HTTP Port",
-              "min": 1,
-              "max": 65535
+      "items": {
+        "port": {
+          "type": "number",
+          "label": "HTTP Port",
+          "min": 1,
+          "max": 65535
+        },
+        "bind": {
+          "type": "text",
+          "label": "Bind-Adresse"
+        },
+        "units.power": {
+          "type": "select",
+          "label": "Leistungseinheit",
+          "options": [
+            {
+              "label": "W",
+              "value": "W"
             },
-            "bind": {
-              "type": "text",
-              "label": "Bind-Adresse"
-            },
-            "units.power": {
-              "type": "select",
-              "label": "Leistungseinheit",
-              "options": [
-                {
-                  "label": "W",
-                  "value": "W"
-                },
-                {
-                  "label": "kW",
-                  "value": "kW"
-                }
-              ]
+            {
+              "label": "kW",
+              "value": "kW"
             }
-          }
+          ]
         }
-      ]
+      }
     },
     {
-      "type": "tab",
-      "title": "Branding",
-      "items": [
-        {
-          "type": "panel",
-          "title": "Branding",
-          "items": {
-            "branding.logoUrl": {
-              "type": "text",
-              "label": "Logo URL/Pfad (PNG/SVG)"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "tab",
-      "title": "Alias",
-      "items": [
-        {
-          "type": "panel",
-          "title": "Alias",
-          "items": {
-            "alias.create": {
-              "type": "checkbox",
-              "label": "Alias States automatisch anlegen"
-            },
-            "alias.root": {
-              "type": "text",
-              "label": "Alias-Root (z. B. alias)"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "tab",
+      "type": "panel",
       "title": "Datenpunkte",
-      "items": [
-        {
-          "type": "panel",
-          "title": "Datenpunkte",
-          "items": {
-            "datapoints.autarky": {
-              "type": "id",
-              "label": "Autarkie (%)"
-            },
-            "datapoints.selfConsumption": {
-              "type": "id",
-              "label": "Eigenverbrauch (%)"
-            },
-            "datapoints.pvPower": {
-              "type": "id",
-              "label": "PV-Leistung"
-            },
-            "datapoints.productionTotal": {
-              "type": "id",
-              "label": "Produktion Gesamt (Leistung)"
-            },
-            "datapoints.consumptionTotal": {
-              "type": "id",
-              "label": "Verbrauch Gesamt (Leistung)"
-            },
-            "datapoints.gridBuyPower": {
-              "type": "id",
-              "label": "Netzbezug (Leistung)"
-            },
-            "datapoints.gridSellPower": {
-              "type": "id",
-              "label": "Einspeisung (Leistung)"
-            },
-            "datapoints.storageChargePower": {
-              "type": "id",
-              "label": "Batterie Ladeleistung"
-            },
-            "datapoints.storageDischargePower": {
-              "type": "id",
-              "label": "Batterie Entladeleistung"
-            },
-            "datapoints.storageSoc": {
-              "type": "id",
-              "label": "Batterie SoC (%)"
-            },
-            "datapoints.consumptionEvcs": {
-              "type": "id",
-              "label": "Ladestation Verbrauch (Leistung)"
-            },
-            "datapoints.consumptionOther": {
-              "type": "id",
-              "label": "Sonstiger Verbrauch (Leistung)"
-            },
-            "datapoints.evcsStatus": {
-              "type": "id",
-              "label": "EVCS Status"
-            },
-            "datapoints.evcsLastChargeKwh": {
-              "type": "id",
-              "label": "EVCS letzte Ladung (kWh)"
-            },
-            "datapoints.gridFrequency": {
-              "type": "id",
-              "label": "Netzfrequenz (Hz)"
-            },
-            "datapoints.gridVoltage": {
-              "type": "id",
-              "label": "Netzspannung (V)"
-            }
-          }
+      "items": {
+        "datapoints.autarky": {
+          "type": "id",
+          "label": "Autarkie (%)"
+        },
+        "datapoints.selfConsumption": {
+          "type": "id",
+          "label": "Eigenverbrauch (%)"
+        },
+        "datapoints.pvPower": {
+          "type": "id",
+          "label": "PV-Leistung"
+        },
+        "datapoints.productionTotal": {
+          "type": "id",
+          "label": "Produktion Gesamt (Leistung)"
+        },
+        "datapoints.consumptionTotal": {
+          "type": "id",
+          "label": "Verbrauch Gesamt (Leistung)"
+        },
+        "datapoints.gridBuyPower": {
+          "type": "id",
+          "label": "Netzbezug (Leistung)"
+        },
+        "datapoints.gridSellPower": {
+          "type": "id",
+          "label": "Einspeisung (Leistung)"
+        },
+        "datapoints.storageChargePower": {
+          "type": "id",
+          "label": "Batterie Ladeleistung"
+        },
+        "datapoints.storageDischargePower": {
+          "type": "id",
+          "label": "Batterie Entladeleistung"
+        },
+        "datapoints.storageSoc": {
+          "type": "id",
+          "label": "Batterie SoC (%)"
+        },
+        "datapoints.consumptionEvcs": {
+          "type": "id",
+          "label": "Ladestation Verbrauch (Leistung)"
+        },
+        "datapoints.consumptionOther": {
+          "type": "id",
+          "label": "Sonstiger Verbrauch (Leistung)"
+        },
+        "datapoints.evcsStatus": {
+          "type": "id",
+          "label": "EVCS Status"
+        },
+        "datapoints.evcsLastChargeKwh": {
+          "type": "id",
+          "label": "EVCS letzte Ladung (kWh)"
+        },
+        "datapoints.gridFrequency": {
+          "type": "id",
+          "label": "Netzfrequenz (Hz)"
+        },
+        "datapoints.gridVoltage": {
+          "type": "id",
+          "label": "Netzspannung (V)"
         }
-      ]
+      }
     },
     {
-      "type": "tab",
+      "type": "panel",
       "title": "SmartHome (vorbereitet)",
-      "items": [
-        {
-          "type": "panel",
-          "title": "SmartHome (vorbereitet)",
-          "items": {
-            "smartHome.enabled": {
-              "type": "checkbox",
-              "label": "SmartHome-Bereich aktivieren (Beta)"
-            },
-            "smartHome.datapoints.heatPumpOn": {
-              "type": "id",
-              "label": "Wärmepumpe EIN/AUS (bool)"
-            },
-            "smartHome.datapoints.roomTemp": {
-              "type": "id",
-              "label": "Raumtemperatur (°C)"
-            },
-            "smartHome.datapoints.wallboxLock": {
-              "type": "id",
-              "label": "Wallbox verriegeln (bool)"
-            },
-            "smartHome.datapoints.gridLimit": {
-              "type": "id",
-              "label": "Netzbezugslimit (W)"
-            },
-            "smartHome.datapoints.pvCurtailment": {
-              "type": "id",
-              "label": "PV-Abregelung (%)"
-            }
-          }
+      "items": {
+        "smartHome.enabled": {
+          "type": "checkbox",
+          "label": "SmartHome-Bereich aktivieren (Beta)"
+        },
+        "smartHome.datapoints.heatPumpOn": {
+          "type": "id",
+          "label": "Wärmepumpe EIN/AUS (bool)"
+        },
+        "smartHome.datapoints.roomTemp": {
+          "type": "id",
+          "label": "Raumtemperatur (°C)"
+        },
+        "smartHome.datapoints.wallboxLock": {
+          "type": "id",
+          "label": "Wallbox verriegeln (bool)"
+        },
+        "smartHome.datapoints.gridLimit": {
+          "type": "id",
+          "label": "Netzbezugslimit (W)"
+        },
+        "smartHome.datapoints.pvCurtailment": {
+          "type": "id",
+          "label": "PV-Abregelung (%)"
         }
-      ]
+      }
     },
     {
-      "type": "tab",
+      "type": "panel",
       "title": "Erweitert / Zukunft",
-      "items": [
-        {
-          "type": "panel",
-          "title": "Erweitert / Zukunft",
-          "items": {
-            "futureOptions.theme": {
-              "type": "select",
-              "label": "Theme",
-              "options": [
-                {
-                  "label": "NexoWatt Dark",
-                  "value": "nexowatt-dark"
-                },
-                {
-                  "label": "NexoWatt Light (später)",
-                  "value": "nexowatt-light"
-                }
-              ]
+      "items": {
+        "futureOptions.theme": {
+          "type": "select",
+          "label": "Theme",
+          "options": [
+            {
+              "label": "NexoWatt Dark",
+              "value": "nexowatt-dark"
             },
-            "futureOptions.enableAnimations": {
-              "type": "checkbox",
-              "label": "Animationen aktivieren"
-            },
-            "futureOptions.showGridVoltage": {
-              "type": "checkbox",
-              "label": "Netzspannung anzeigen (experimentell)"
+            {
+              "label": "NexoWatt Light (später)",
+              "value": "nexowatt-light"
             }
-          }
+          ]
+        },
+        "futureOptions.enableAnimations": {
+          "type": "checkbox",
+          "label": "Animationen aktivieren"
+        },
+        "futureOptions.showGridVoltage": {
+          "type": "checkbox",
+          "label": "Netzspannung anzeigen (experimentell)"
         }
-      ]
+      }
     }
   ]
 }
