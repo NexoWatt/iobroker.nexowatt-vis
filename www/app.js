@@ -1,4 +1,33 @@
 
+// --- Precise donut placement (anchor angles like OpenEMS) ---
+function arcLenFromDeg(r, deg){ return 2 * Math.PI * r * (deg/360); }
+function setArcAtAngle(selector, r, angleDeg, arcDeg){
+  const C = 2 * Math.PI * r;
+  const Ldeg = Math.max(0, Math.min(359.9, arcDeg));
+  const dash = arcLenFromDeg(r, Ldeg);
+  const offset = arcLenFromDeg(r, angleDeg) - dash/2; // center arc
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + (C - dash).toFixed(1));
+  el.setAttribute('stroke-dashoffset', offset.toFixed(1));
+}
+function placeIconAtAngle(sel, angleDeg){
+  const wrap = document.querySelector('.card.energy-donut .donut-wrap');
+  const el = document.querySelector(sel);
+  const svg = document.querySelector('.card.energy-donut .donut');
+  if (!wrap || !el || !svg) return;
+  const size = wrap.getBoundingClientRect().width;
+  const R = size/2; 
+  const nudge = Math.max(8, size/28);
+  const a = (angleDeg - 90) * Math.PI / 180;
+  const cx = size/2 + (R + nudge) * Math.cos(a);
+  const cy = size/2 + (R + nudge) * Math.sin(a);
+  el.style.left = cx + 'px';
+  el.style.top  = cy + 'px';
+  el.style.position='absolute';
+  el.style.transform = 'translate(-50%, -50%)';
+}
+
 // Draw an arc inside a quadrant slot with small gaps between quadrants
 function setArcInSlot(selector, r, slotIndex, slotFillPct){
   const C = 2 * Math.PI * r;
@@ -257,34 +286,42 @@ render = function(){
     const pv = +(d('pvPower') ?? 0);
     const load = +(d('consumptionTotal') ?? 0);
     const buy = +(d('gridBuyPower') ?? 0);
-    const sell = +(d('gridSellPower') ?? 0);
     const chg = +(d('storageChargePower') ?? 0);
     const dchg = +(d('storageDischargePower') ?? 0);
     const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
+    const A = { pv: 330, load: 30, bat: 180, grid: 210 };
+    const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
+
+    setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
+    setArcAtAngle('.donut .arc.load', 42, A.load, pctDeg(load, MAX.load));
+    setArcAtAngle('.donut .arc.bat',  42, A.bat,  pctDeg(chg + dchg, MAX.bat));
+    setArcAtAngle('.donut .arc.grid', 42, A.grid, pctDeg(buy,  MAX.grid));
+
     const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
     setText('pvLbl', formatPower(pv));
-    setText('gridLbl', formatPower(buy));        // Fokus Bezug
+    setText('gridLbl', formatPower(buy));
     setText('loadLbl', formatPower(load));
     setText('centerLbl', formatPower(0));
 
-    if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
+    if (soc !== undefined && !isNaN(Number(soc))) {
+      setText('socLbl', Number(soc).toFixed(0)+' %');
+      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
+    }
     if (cap && soc !== undefined) {
       const socPct = Number(soc)/100;
       const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
       const tEmpty= dchg>0 ? ((cap*socPct)*1000)/dchg : null;
       setText('tFull', 'Voll '+(tFull?formatHours(tFull):'--'));
       setText('tEmpty','Leer '+(tEmpty?formatHours(tEmpty):'--'));
-      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
     }
 
-    const total = Math.max(1, pv + buy + load + (chg + dchg));
-    const s = (v)=> Math.min(100, Math.max(0, (v/total)*100*4)); // percent of own slot (x4)
-    setArcInSlot('.donut .arc.pv',   42, 0, s(pv));   // slot 0 = top
-    setArcInSlot('.donut .arc.load', 42, 1, s(load)); // slot 1 = right
-    setArcInSlot('.donut .arc.bat',  42, 2, s(chg + dchg)); // slot 2 = bottom
-    setArcInSlot('.donut .arc.grid', 42, 3, s(buy));  // slot 3 = left
+    placeIconAtAngle('.energy-donut .icon-block.pv',   A.pv);
+    placeIconAtAngle('.energy-donut .icon-block.grid', A.grid);
+    placeIconAtAngle('.energy-donut .icon-block.load', A.load);
   } catch(e){ console.warn('donut update', e); }
 
   /* DONUT-HOOK */
@@ -349,34 +386,42 @@ render = function(){
     const pv = +(d('pvPower') ?? 0);
     const load = +(d('consumptionTotal') ?? 0);
     const buy = +(d('gridBuyPower') ?? 0);
-    const sell = +(d('gridSellPower') ?? 0);
     const chg = +(d('storageChargePower') ?? 0);
     const dchg = +(d('storageDischargePower') ?? 0);
     const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
+    const A = { pv: 330, load: 30, bat: 180, grid: 210 };
+    const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
+
+    setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
+    setArcAtAngle('.donut .arc.load', 42, A.load, pctDeg(load, MAX.load));
+    setArcAtAngle('.donut .arc.bat',  42, A.bat,  pctDeg(chg + dchg, MAX.bat));
+    setArcAtAngle('.donut .arc.grid', 42, A.grid, pctDeg(buy,  MAX.grid));
+
     const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
     setText('pvLbl', formatPower(pv));
-    setText('gridLbl', formatPower(buy));        // Fokus Bezug
+    setText('gridLbl', formatPower(buy));
     setText('loadLbl', formatPower(load));
     setText('centerLbl', formatPower(0));
 
-    if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
+    if (soc !== undefined && !isNaN(Number(soc))) {
+      setText('socLbl', Number(soc).toFixed(0)+' %');
+      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
+    }
     if (cap && soc !== undefined) {
       const socPct = Number(soc)/100;
       const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
       const tEmpty= dchg>0 ? ((cap*socPct)*1000)/dchg : null;
       setText('tFull', 'Voll '+(tFull?formatHours(tFull):'--'));
       setText('tEmpty','Leer '+(tEmpty?formatHours(tEmpty):'--'));
-      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
     }
 
-    const total = Math.max(1, pv + buy + load + (chg + dchg));
-    const s = (v)=> Math.min(100, Math.max(0, (v/total)*100*4)); // percent of own slot (x4)
-    setArcInSlot('.donut .arc.pv',   42, 0, s(pv));   // slot 0 = top
-    setArcInSlot('.donut .arc.load', 42, 1, s(load)); // slot 1 = right
-    setArcInSlot('.donut .arc.bat',  42, 2, s(chg + dchg)); // slot 2 = bottom
-    setArcInSlot('.donut .arc.grid', 42, 3, s(buy));  // slot 3 = left
+    placeIconAtAngle('.energy-donut .icon-block.pv',   A.pv);
+    placeIconAtAngle('.energy-donut .icon-block.grid', A.grid);
+    placeIconAtAngle('.energy-donut .icon-block.load', A.load);
   } catch(e){ console.warn('donut update', e); }
 
   /* DONUT-HOOK */

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -66,6 +66,10 @@
       "0.0.16": {
         "de": "Header: NexoWatt-Logo links eingefügt. Donut visuell verfeinert (Farben/Strich).",
         "en": "Header brand logo added left. Donut refined (colors/strokes)."
+      },
+      "0.0.17": {
+        "de": "Donut an Vorlage ausgerichtet (Anker-Winkel), Icons am Ring, neues Logo oben links.",
+        "en": "Donut aligned to reference (anchor angles), icons hug ring, new brand logo top-left."
       }
     },
     "title": "NexoWatt EMS UI",
