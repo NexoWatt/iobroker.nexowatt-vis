@@ -37,67 +37,167 @@
       "items": {
         "datapoints.autarky": {
           "type": "id",
-          "label": "Autarkie (%)"
+          "label": "Autarkie (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.autarky",
+          "help": "Autarkie in %",
+          "newLine": true
         },
         "datapoints.selfConsumption": {
           "type": "id",
-          "label": "Eigenverbrauch (%)"
+          "label": "Eigenverbrauch (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.selfConsumption",
+          "help": "Eigenverbrauch in %",
+          "newLine": true
         },
         "datapoints.pvPower": {
           "type": "id",
-          "label": "PV-Leistung"
+          "label": "PV-Leistung",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. fronius.0.powerflow.P_PV",
+          "help": "PV Leistung in W",
+          "newLine": true
         },
         "datapoints.productionTotal": {
           "type": "id",
-          "label": "Produktion Gesamt (Leistung)"
+          "label": "Produktion Gesamt (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. fronius.0.energy.total",
+          "help": "Gesamtproduktion kWh",
+          "newLine": true
         },
         "datapoints.consumptionTotal": {
           "type": "id",
-          "label": "Verbrauch Gesamt (Leistung)"
+          "label": "Verbrauch Gesamt (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. smartmeter.0.energy.total",
+          "help": "Gesamtverbrauch kWh",
+          "newLine": true
         },
         "datapoints.gridBuyPower": {
           "type": "id",
-          "label": "Netzbezug (Leistung)"
+          "label": "Netzbezug (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. smartmeter.0.power.import",
+          "help": "Netzbezug W",
+          "newLine": true
         },
         "datapoints.gridSellPower": {
           "type": "id",
-          "label": "Einspeisung (Leistung)"
+          "label": "Einspeisung (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. smartmeter.0.power.export",
+          "help": "Einspeisung W",
+          "newLine": true
         },
         "datapoints.storageChargePower": {
           "type": "id",
-          "label": "Batterie Ladeleistung"
+          "label": "Batterie Ladeleistung",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.storageDischargePower": {
           "type": "id",
-          "label": "Batterie Entladeleistung"
+          "label": "Batterie Entladeleistung",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.storageSoc": {
           "type": "id",
-          "label": "Batterie SoC (%)"
+          "label": "Batterie SoC (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.consumptionEvcs": {
           "type": "id",
-          "label": "Ladestation Verbrauch (Leistung)"
+          "label": "Ladestation Verbrauch (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.consumptionOther": {
           "type": "id",
-          "label": "Sonstiger Verbrauch (Leistung)"
+          "label": "Sonstiger Verbrauch (Leistung)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.evcsStatus": {
           "type": "id",
-          "label": "EVCS Status"
+          "label": "EVCS Status",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. evcc.0.wallbox.status",
+          "help": "Wallbox Status",
+          "newLine": true
         },
         "datapoints.evcsLastChargeKwh": {
           "type": "id",
-          "label": "EVCS letzte Ladung (kWh)"
+          "label": "EVCS letzte Ladung (kWh)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true
         },
         "datapoints.gridFrequency": {
           "type": "id",
-          "label": "Netzfrequenz (Hz)"
+          "label": "Netzfrequenz (Hz)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. smartmeter.0.grid.frequency",
+          "help": "Netzfrequenz Hz",
+          "newLine": true
         },
         "datapoints.gridVoltage": {
           "type": "id",
-          "label": "Netzspannung (V)"
+          "label": "Netzspannung (V)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. smartmeter.0.grid.voltage",
+          "help": "Netzspannung V",
+          "newLine": true
         }
       },
       "label": "Datenpunkte",
@@ -112,23 +212,58 @@
         },
         "smartHome.datapoints.heatPumpOn": {
           "type": "id",
-          "label": "Wärmepumpe EIN/AUS (bool)"
+          "label": "Wärmepumpe EIN/AUS (bool)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
+          "help": "SmartHome-Datenpunkt",
+          "newLine": true
         },
         "smartHome.datapoints.roomTemp": {
           "type": "id",
-          "label": "Raumtemperatur (°C)"
+          "label": "Raumtemperatur (°C)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
+          "help": "SmartHome-Datenpunkt",
+          "newLine": true
         },
         "smartHome.datapoints.wallboxLock": {
           "type": "id",
-          "label": "Wallbox verriegeln (bool)"
+          "label": "Wallbox verriegeln (bool)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
+          "help": "SmartHome-Datenpunkt",
+          "newLine": true
         },
         "smartHome.datapoints.gridLimit": {
           "type": "id",
-          "label": "Netzbezugslimit (W)"
+          "label": "Netzbezugslimit (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
+          "help": "SmartHome-Datenpunkt",
+          "newLine": true
         },
         "smartHome.datapoints.pvCurtailment": {
           "type": "id",
-          "label": "PV-Abregelung (%)"
+          "label": "PV-Abregelung (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
+          "help": "SmartHome-Datenpunkt",
+          "newLine": true
         }
       },
       "label": "SmartHome (vorbereitet)",
