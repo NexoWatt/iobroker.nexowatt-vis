@@ -56,7 +56,13 @@
     "pvName": "PV",
     "gridName": "Netz",
     "houseName": "Haus",
-    "batteryName": "Speicher"
+    "batteryName": "Speicher",
+    "aliasPvId": "",
+    "aliasGridId": "",
+    "aliasHouseId": "",
+    "aliasBatteryId": "",
+    "aliasSocId": "",
+    "setAliasProperty": true
   },
   "objects": [],
   "instanceObjects": [

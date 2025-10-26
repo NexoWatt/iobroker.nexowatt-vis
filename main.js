@@ -8,47 +8,65 @@ class NexowattVis extends utils.Adapter {
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
-        this.mapping = {};
+        this.mapping = {};   // rawId -> alias state id
+    }
+
+    async ensureState(id, name, role) {
+        await this.extendObjectAsync(id, {
+            type: 'state',
+            common: { name, type: 'number', role, read: true, write: false, def: 0 },
+            native: {}
+        });
+    }
+
+    async setAliasPropertyIfWanted(stateId, targetId) {
+        if (!this.config.setAliasProperty) return;
+        const obj = await this.getObjectAsync(stateId);
+        if (obj && obj.common) {
+            obj.common.alias = { id: targetId };
+            await this.setObjectAsync(stateId, obj);
+        }
     }
 
     async onReady() {
         try {
             await this.setStateAsync('info.connection', true, true);
 
-            await this.extendObjectAsync('flow', { type: 'channel', common: { name: 'Energy flow' }, native: {} });
+            // channels
+            await this.extendObjectAsync('alias', { type: 'channel', common: { name: 'Alias datapoints' }, native: {} });
 
-            const defs = [
-                ['flow.pvPower',      'number', 'value.power',   'PV power (W)'],
-                ['flow.gridPower',    'number', 'value.power',   'Grid power (W), import > 0, export < 0'],
-                ['flow.housePower',   'number', 'value.power',   'House power (W)'],
-                ['flow.batteryPower', 'number', 'value.power',   'Battery power (W), discharge > 0, charge < 0'],
-                ['battery.soc',       'number', 'value.battery', 'Battery SoC (%)']
+            // states under alias.* (stable)
+            await this.ensureState('alias.pvPower',      'PV power (W)', 'value.power');
+            await this.ensureState('alias.gridPower',    'Grid power (W), import > 0, export < 0', 'value.power');
+            await this.ensureState('alias.housePower',   'House power (W)', 'value.power');
+            await this.ensureState('alias.batteryPower', 'Battery power (W), discharge > 0, charge < 0', 'value.power');
+            await this.ensureState('alias.soc',          'Battery SoC (%)', 'value.battery');
+
+            // subscribe to user-provided source ids and mirror -> alias.*
+            const cfg = this.config;
+            const map = [
+                [cfg.aliasPvId,      'alias.pvPower'],
+                [cfg.aliasGridId,    'alias.gridPower'],
+                [cfg.aliasHouseId,   'alias.housePower'],
+                [cfg.aliasBatteryId, 'alias.batteryPower'],
+                [cfg.aliasSocId,     'alias.soc']
             ];
 
-            for (const [id, type, role, name] of defs) {
-                await this.extendObjectAsync(id, {
-                    type: 'state', common: { name, type, role, read: true, write: false, def: 0 }, native: {}
-                });
-            }
-
-            const cfg = this.config;
             this.mapping = {};
-            if (cfg.pvPowerId)      this.mapping[cfg.pvPowerId]      = 'flow.pvPower';
-            if (cfg.gridPowerId)    this.mapping[cfg.gridPowerId]    = 'flow.gridPower';
-            if (cfg.housePowerId)   this.mapping[cfg.housePowerId]   = 'flow.housePower';
-            if (cfg.batteryPowerId) this.mapping[cfg.batteryPowerId] = 'flow.batteryPower';
-            if (cfg.batterySocId)   this.mapping[cfg.batterySocId]   = 'battery.soc';
-
-            const rawIds = Object.keys(this.mapping);
-            for (const rawId of rawIds) {
-                this.subscribeForeignStates(rawId);
-                const st = await this.getForeignStateAsync(rawId);
-                if (st && st.val !== undefined) {
-                    await this.setStateAsync(this.mapping[rawId], st.val, true);
+            for (const [sourceId, aliasId] of map) {
+                if (sourceId) {
+                    this.mapping[sourceId] = aliasId;
+                    this.subscribeForeignStates(sourceId);
+                    const st = await this.getForeignStateAsync(sourceId);
+                    if (st && st.val !== undefined) {
+                        await this.setStateAsync(aliasId, st.val, true);
+                    }
+                    await this.setAliasPropertyIfWanted(aliasId, sourceId);
                 }
             }
 
-            this.log.info(`Subscribed to ${rawIds.length} raw datapoints.`);
+            this.log.info(`Alias mapping enabled for ${Object.keys(this.mapping).length} datapoints.`);
+
         } catch (e) {
             this.log.error('onReady error: ' + e.message);
         }

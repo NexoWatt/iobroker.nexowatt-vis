@@ -12,44 +12,50 @@
     },
     {
       "type": "header",
-      "text": "NexoWatt \u2013 Datenpunkt-Zuordnung"
+      "text": "NexoWatt \u2013 Alias Datenpunkte & Beschriftungen"
+    },
+    {
+      "type": "text",
+      "text": "Der Adapter legt feste Alias-Datenpunkte unter 'nexowatt-vis.X.alias.*' an. Hier kannst du sie mit bestehenden Roh-Datenpunkten verkn\u00fcpfen. Optional wird zus\u00e4tzlich die Objekt-Eigenschaft 'common.alias' gesetzt."
     },
     {
       "type": "divider"
     },
     {
-      "type": "text",
-      "text": "W\u00e4hle die Roh-Datenpunkte deiner Installation aus. Der Adapter spiegelt sie in eigene States unter 'nexowatt-vis.X.*'. Diese States nutzt die VIS und der Energiefluss-Monitor."
+      "type": "checkbox",
+      "attr": "setAliasProperty",
+      "title": "Alias-Eigenschaft am Objekt setzen (common.alias.id)",
+      "default": true
     },
     {
       "type": "tabs",
       "items": [
         {
-          "title": "Zuordnung",
+          "title": "Alias-Verkn\u00fcpfung",
           "items": [
             {
               "type": "objectId",
-              "attr": "pvPowerId",
+              "attr": "aliasPvId",
               "title": "PV-Leistung (W)"
             },
             {
               "type": "objectId",
-              "attr": "gridPowerId",
+              "attr": "aliasGridId",
               "title": "Netzleistung (W): Import > 0, Export < 0"
             },
             {
               "type": "objectId",
-              "attr": "housePowerId",
+              "attr": "aliasHouseId",
               "title": "Hausverbrauch (W)"
             },
             {
               "type": "objectId",
-              "attr": "batteryPowerId",
+              "attr": "aliasBatteryId",
               "title": "Batterieleistung (W): Entladen > 0, Laden < 0"
             },
             {
               "type": "objectId",
-              "attr": "batterySocId",
+              "attr": "aliasSocId",
               "title": "Batterie SoC (%)"
             }
           ]
