@@ -1,0 +1,94 @@
+{
+  "common": {
+    "name": "nexowatt-vis",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "Initial release: Responsive NexoWatt EMS dashboard",
+        "de": "Erste Version: Responsives NexoWatt EMS Dashboard"
+      }
+    },
+    "title": "NexoWatt EMS UI",
+    "titleLang": {
+      "en": "NexoWatt EMS UI",
+      "de": "NexoWatt EMS UI"
+    },
+    "desc": {
+      "en": "OpenEMS-like responsive dashboard with NexoWatt colors (green/black). All datapoints can be linked in adapter settings.",
+      "de": "OpenEMS-ähnliches responsives Dashboard in NexoWatt-Farben (grün/schwarz). Alle Datenpunkte sind in den Adaptereinstellungen verknüpfbar."
+    },
+    "authors": [
+      "Visu Helper"
+    ],
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "compact": true,
+    "materialize": false,
+    "enabled": true,
+    "loglevel": "info",
+    "type": "visualization",
+    "adminUI": {
+      "config": "json"
+    },
+    "keywords": [
+      "visualization",
+      "ems",
+      "nexowatt",
+      "openems",
+      "dashboard"
+    ],
+    "connectionType": "local",
+    "dataSource": "poll"
+  },
+  "native": {
+    "port": 8188,
+    "bind": "0.0.0.0",
+    "publicPath": "/",
+    "units": {
+      "power": "W",
+      "energy": "kWh"
+    },
+    "datapoints": {
+      "autarky": "",
+      "selfConsumption": "",
+      "pvPower": "",
+      "productionTotal": "",
+      "consumptionTotal": "",
+      "gridBuyPower": "",
+      "gridSellPower": "",
+      "storageChargePower": "",
+      "storageDischargePower": "",
+      "storageSoc": "",
+      "consumptionEvcs": "",
+      "consumptionOther": "",
+      "evcsStatus": "",
+      "evcsLastChargeKwh": "",
+      "gridFrequency": "",
+      "gridVoltage": ""
+    },
+    "sections": {
+      "tabs": [
+        "live",
+        "history",
+        "settings",
+        "smarthome"
+      ]
+    },
+    "smartHome": {
+      "enabled": false,
+      "datapoints": {
+        "heatPumpOn": "",
+        "roomTemp": "",
+        "wallboxLock": "",
+        "gridLimit": "",
+        "pvCurtailment": ""
+      }
+    },
+    "futureOptions": {
+      "theme": "nexowatt-dark",
+      "enableAnimations": true,
+      "showGridVoltage": false
+    }
+  },
+  "instanceObjects": []
+}

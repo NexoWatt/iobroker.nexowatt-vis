@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NexoWatt EMS UI</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="menuBtn" aria-label="Menu">☰</button>
+    <h1>NexoWatt EMS</h1>
+    <nav class="tabs">
+      <button class="tab active" data-tab="live">LIVE</button>
+      <button class="tab" data-tab="history" disabled>HISTORY</button>
+    </nav>
+    <div class="status-dot" id="liveDot" title="Live Verbindung"></div>
+  </header>
+
+  <main class="content">
+    <section class="card energy-monitor">
+      <div class="card-header">
+        <div class="legend-color"></div>
+        <span>Energy monitor</span>
+      </div>
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42" />
+          <circle class="seg pv"    cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+          <circle class="seg grid"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+          <circle class="seg load"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+          <circle class="seg bat"   cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+        </svg>
+        <div class="ring-center">
+          <div class="big" id="pvPower">--</div>
+          <div class="sub">PV</div>
+        </div>
+      </div>
+      <div class="flows">
+        <div class="flow"><span>Grid buy</span><span id="gridBuyPower">--</span></div>
+        <div class="flow"><span>Grid sell</span><span id="gridSellPower">--</span></div>
+        <div class="flow"><span>Storage</span><span id="storagePower">--</span></div>
+        <div class="flow"><span>Load</span><span id="consumptionTotal">--</span></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card kpi">
+        <div class="card-header"><span>Autarky</span></div>
+        <div class="kpi-body">
+          <div class="bar"><div id="autarkyBar"></div></div>
+          <div class="bar-label" id="autarkyValue">-- %</div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>Self Consumption</span></div>
+        <div class="kpi-body">
+          <div class="bar"><div id="selfConsumptionBar"></div></div>
+          <div class="bar-label" id="selfConsumptionValue">-- %</div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>Storage System</span></div>
+        <div class="row">
+          <div class="bar small"><div id="storageSocBar"></div></div>
+          <div class="mini">
+            <div><small>SoC</small> <b id="storageSocValue">-- %</b></div>
+            <div><small>Charge</small> <b id="storageChargePower">--</b></div>
+            <div><small>Discharge</small> <b id="storageDischargePower">--</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>Grid</span></div>
+        <div class="row two">
+          <div><small>Buy</small><b id="gridBuyPowerCard">--</b></div>
+          <div><small>Sell</small><b id="gridSellPowerCard">--</b></div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>Production</span></div>
+        <div class="row two">
+          <div><small>PV</small><b id="productionTotal">--</b></div>
+          <div><small>Grid freq</small><b id="gridFrequency">--</b></div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>Consumption</span></div>
+        <div class="row two">
+          <div><small>EVCS</small><b id="consumptionEvcs">--</b></div>
+          <div><small>Other</small><b id="consumptionOther">--</b></div>
+        </div>
+      </div>
+
+      <div class="card kpi">
+        <div class="card-header"><span>EVCS</span></div>
+        <div class="row two">
+          <div><small>Status</small><b id="evcsStatus">--</b></div>
+          <div><small>Last charge</small><b id="evcsLastChargeKwh">--</b></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
