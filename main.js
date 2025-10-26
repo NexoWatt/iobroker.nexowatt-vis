@@ -138,10 +138,8 @@ async onReady() {
     this.initHistory();
 
     this.log.info('NexoWatt VIS adapter ready.');
-  } catch (e) {
-    this.log.error(`onReady error: ${e.message}`);
   }
-} catch (e) {
+ catch (e) {
       this.log.error(`onReady error: ${e.message}`);
     }
   }
@@ -183,7 +181,7 @@ app.post('/api/set', async (req, res) => {
     if (!key) return res.status(400).json({ error: 'key required' });
     const ali = (this.config && this.config.alias) || { root: 'alias' };
     const id = `${this.namespace}.${ali.root}.${key}`;
-    await this.setForeignStateAsync(id, value, true);
+    await this.setForeignStateAsync(id, value, false);
     res.json({ ok: true });
   } catch (e) {
     this.log.error(`set API error: ${e.message}`);

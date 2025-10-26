@@ -252,6 +252,7 @@ function bootstrap() {
     updateFlows();
     renderHistory();
     initSmhControls();
+    const al=document.getElementById('adminLink'); if(al){al.href=location.protocol+'//'+location.hostname+':8081/';}
     } catch (e) {
       console.warn(e);
     }
