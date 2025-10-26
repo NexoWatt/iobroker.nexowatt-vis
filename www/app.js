@@ -1,4 +1,19 @@
 
+// Draw an arc inside a quadrant slot with small gaps between quadrants
+function setArcInSlot(selector, r, slotIndex, slotFillPct){
+  const C = 2 * Math.PI * r;
+  const Q = C / 4;               // quarter length
+  const gap = 4;                 // pixels gap in each slot
+  const slotMax = Q - gap;       // usable track
+  const fill = Math.max(0, Math.min(100, slotFillPct||0));
+  const L = (fill/100) * slotMax;
+  const start = slotIndex * Q + gap/2 + (slotMax - L)/2; // center arc in slot
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.setAttribute('stroke-dasharray', L.toFixed(1) + ' ' + (C-L).toFixed(1));
+  el.setAttribute('stroke-dashoffset', start.toFixed(1));
+}
+
 function setArc(selector, r, valuePct){
   const max = 2 * Math.PI * r;
   const v = Math.max(0, Math.min(100, valuePct||0));
@@ -250,13 +265,11 @@ render = function(){
 
     const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
     setText('pvLbl', formatPower(pv));
-    setText('gridLbl', formatPower(buy));        // Fokus auf Bezug
+    setText('gridLbl', formatPower(buy));        // Fokus Bezug
     setText('loadLbl', formatPower(load));
-    setText('centerLbl', formatPower(0));        // Mitte wie im Beispiel
+    setText('centerLbl', formatPower(0));
 
     if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
-
-    // Zeiten
     if (cap && soc !== undefined) {
       const socPct = Number(soc)/100;
       const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
@@ -266,13 +279,12 @@ render = function(){
       setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
     }
 
-    // Anteil je Segment (basierend auf Max)
-    const maxFlow = Math.max(1, pv, buy, load, chg+dchg);
-    const pct = (v)=> Math.min(100, Math.max(0, (v/maxFlow)*100));
-    setArc('.donut .arc.pv',   42, pct(pv));
-    setArc('.donut .arc.grid', 42, pct(buy));
-    setArc('.donut .arc.load', 42, pct(load));
-    setArc('.donut .arc.bat',  42, pct(chg+dchg));
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const s = (v)=> Math.min(100, Math.max(0, (v/total)*100*4)); // percent of own slot (x4)
+    setArcInSlot('.donut .arc.pv',   42, 0, s(pv));   // slot 0 = top
+    setArcInSlot('.donut .arc.load', 42, 1, s(load)); // slot 1 = right
+    setArcInSlot('.donut .arc.bat',  42, 2, s(chg + dchg)); // slot 2 = bottom
+    setArcInSlot('.donut .arc.grid', 42, 3, s(buy));  // slot 3 = left
   } catch(e){ console.warn('donut update', e); }
 
   /* DONUT-HOOK */
@@ -345,13 +357,11 @@ render = function(){
 
     const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
     setText('pvLbl', formatPower(pv));
-    setText('gridLbl', formatPower(buy));        // Fokus auf Bezug
+    setText('gridLbl', formatPower(buy));        // Fokus Bezug
     setText('loadLbl', formatPower(load));
-    setText('centerLbl', formatPower(0));        // Mitte wie im Beispiel
+    setText('centerLbl', formatPower(0));
 
     if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
-
-    // Zeiten
     if (cap && soc !== undefined) {
       const socPct = Number(soc)/100;
       const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
@@ -361,13 +371,12 @@ render = function(){
       setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
     }
 
-    // Anteil je Segment (basierend auf Max)
-    const maxFlow = Math.max(1, pv, buy, load, chg+dchg);
-    const pct = (v)=> Math.min(100, Math.max(0, (v/maxFlow)*100));
-    setArc('.donut .arc.pv',   42, pct(pv));
-    setArc('.donut .arc.grid', 42, pct(buy));
-    setArc('.donut .arc.load', 42, pct(load));
-    setArc('.donut .arc.bat',  42, pct(chg+dchg));
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const s = (v)=> Math.min(100, Math.max(0, (v/total)*100*4)); // percent of own slot (x4)
+    setArcInSlot('.donut .arc.pv',   42, 0, s(pv));   // slot 0 = top
+    setArcInSlot('.donut .arc.load', 42, 1, s(load)); // slot 1 = right
+    setArcInSlot('.donut .arc.bat',  42, 2, s(chg + dchg)); // slot 2 = bottom
+    setArcInSlot('.donut .arc.grid', 42, 3, s(buy));  // slot 3 = left
   } catch(e){ console.warn('donut update', e); }
 
   /* DONUT-HOOK */

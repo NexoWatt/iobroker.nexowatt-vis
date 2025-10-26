@@ -172,3 +172,21 @@ body {
 .energy-donut .icon-block.load{right:8px;top:50%;transform:translateY(-50%)}
 .energy-donut .icon-block.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
 .energy-donut .icon-block.center .mid-val{font-size:20px}
+
+/* Donut quadrant layout */
+.donut { transform: rotate(-90deg); } /* start at 12 o'clock */
+.donut .arc, .donut .track, .donut .soc-track { transform: none; transform-origin: 50% 50%; }
+
+/* Bigger SVG icons and closer to ring */
+.energy-donut .icon{width:40px;height:40px}
+.energy-donut .icon-block.pv{top:8px;left:50%;transform:translateX(-50%)}
+.energy-donut .icon-block.grid{left:0;top:50%;transform:translateY(-50%)}
+.energy-donut .icon-block.load{right:0;top:50%;transform:translateY(-50%)}
+.energy-donut .icon-block.center{left:50%;top:50%;transform:translate(-50%,-50%)}
+.energy-donut .icon-block .val{font-size:14px}
+
+/* Donut gaps per quadrant */
+.donut .track{stroke:#2a323b;stroke-dasharray:62 4;stroke-dashoffset:0}
+.donut .soc-track{stroke:#2a323b;stroke-dasharray:52 4}
+
+/* We will set dasharray & dashoffset for arcs dynamically */
