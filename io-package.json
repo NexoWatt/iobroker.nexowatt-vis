@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -46,6 +46,10 @@
       "0.0.11": {
         "de": "Neuer Energymonitor 1:1 rund (schwarzer Hintergrund), Netz rot.",
         "en": "New round energy monitor (dark), grid in red."
+      },
+      "0.0.12": {
+        "de": "Donut mit SVG-Icons und Segmentlängen als Anteil am Gesamtfluss.",
+        "en": "Donut uses SVG icons and segment lengths as share of total flow."
       }
     },
     "title": "NexoWatt EMS UI",

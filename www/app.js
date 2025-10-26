@@ -313,8 +313,8 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const maxFlow = Math.max(1, pv, buy, sell, load, charge, discharge);
-    const pct = (v) => Math.min(100, Math.max(0, (v / maxFlow) * 100));
+    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
@@ -408,8 +408,8 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const maxFlow = Math.max(1, pv, buy, sell, load, charge, discharge);
-    const pct = (v) => Math.min(100, Math.max(0, (v / maxFlow) * 100));
+    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));

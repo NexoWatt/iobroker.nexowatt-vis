@@ -46,19 +46,17 @@
       <!-- inner SoC ring -->
       <circle class="soc-track" cx="50" cy="50" r="34" />
       <circle class="arc soc" cx="50" cy="50" r="34" stroke-dasharray="0 213" />
-    </svg>
-
-    <!-- labels/icons -->
-    <div class="lbl pv"><span class="ico">☀️</span><span id="pvLbl">--</span></div>
-    <div class="lbl grid"><span class="ico">🏭</span><span id="gridLbl">--</span></div>
-    <div class="lbl load"><span class="ico">💡</span><span id="loadLbl">--</span></div>
-    <div class="lbl center">
-      <div id="centerLbl">0 W</div>
-      <div class="soc"><span class="ico">🔋</span><span id="socLbl">-- %</span></div>
+    </svg
+    <div class="icon-block pv"><svg viewBox="0 0 64 64" class="icon pv"><path d="M8 42h48l-6-22H14l-6 22zm10-18h6l-1 10h-8l3-10zm14 0h6l1 10h-8l1-10zm-24 0h6l-3 10H6l2-10zm38 0h6l2 10h-8l0-10zM12 50h40v4H12z" /></svg><div class="val" id="pvLbl">--</div></div>
+    <div class="icon-block grid"><svg viewBox="0 0 64 64" class="icon grid"><path d="M30 6h4l8 8h-6l6 10h-6l8 12h-6l10 16h-6l-8-12-8 12h-6l10-16h-6l8-12h-6l6-10h-6l8-8z"/></svg><div class="val" id="gridLbl">--</div></div>
+    <div class="icon-block load"><svg viewBox="0 0 64 64" class="icon load"><path d="M32 8a16 16 0 0 0-10 28c2 2 2 4 2 6h16c0-2 0-4 2-6a16 16 0 0 0-10-28zm-6 40h12v4H26zm2 6h8v4h-8z"/></svg><div class="val" id="loadLbl">--</div></div>
+    <div class="icon-block center">
+      <div class="mid-val" id="centerLbl">0 W</div>
+      <div class="soc"><svg viewBox="0 0 64 64" class="icon bat small"><rect x="10" y="24" width="42" height="20" rx="4" ry="4"/><rect x="54" y="28" width="4" height="12" rx="1"/></svg><span id="socLbl">-- %</span></div>
       <div class="time"><span id="tFull">Voll --</span> • <span id="tEmpty">Leer --</span></div>
     </div>
-  </div>
-</section>
+    </div></section>
+    
 
 
 

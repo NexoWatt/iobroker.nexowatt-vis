@@ -161,3 +161,14 @@ body {
 .energy-donut .lbl.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
 .energy-donut .lbl.center #centerLbl{font-size:20px;margin-bottom:4px}
 .energy-donut .lbl.center .soc,.energy-donut .lbl.center .time{font-size:12px;opacity:.9}
+
+/* SVG icon blocks around donut */
+.energy-donut .icon{width:36px;height:36px;fill:var(--text);opacity:.95}
+.energy-donut .icon.small{width:18px;height:18px;vertical-align:-3px}
+.energy-donut .icon-block{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px}
+.energy-donut .icon-block .val{font-weight:600}
+.energy-donut .icon-block.pv{top:14px;left:50%;transform:translateX(-50%)}
+.energy-donut .icon-block.grid{left:8px;top:50%;transform:translateY(-50%)}
+.energy-donut .icon-block.load{right:8px;top:50%;transform:translateY(-50%)}
+.energy-donut .icon-block.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.energy-donut .icon-block.center .mid-val{font-size:20px}
