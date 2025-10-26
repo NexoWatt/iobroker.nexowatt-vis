@@ -33,6 +33,30 @@
     },
     {
       "type": "panel",
+      "title": "Branding",
+      "items": {
+        "branding.logoUrl": {
+          "type": "text",
+          "label": "Logo URL/Pfad (PNG/SVG)"
+        }
+      }
+    },
+    {
+      "type": "panel",
+      "title": "Alias",
+      "items": {
+        "alias.create": {
+          "type": "checkbox",
+          "label": "Alias States automatisch anlegen"
+        },
+        "alias.root": {
+          "type": "text",
+          "label": "Alias-Root (z. B. alias)"
+        }
+      }
+    },
+    {
+      "type": "panel",
       "title": "Datenpunkte",
       "items": {
         "datapoints.autarky": {

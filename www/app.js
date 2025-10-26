@@ -128,11 +128,108 @@ function render() {
   setText('evcsLastChargeKwh', d('evcsLastChargeKwh') != null ? d('evcsLastChargeKwh').toFixed(2) + ' kWh' : '--');
 }
 
-async function bootstrap() {
+async 
+
+// Brand/logo + sections
+let sections = ['live','history','settings','smarthome'];
+function applyBranding(cfg){
+  const logo = (cfg.branding && cfg.branding.logoUrl) || '';
+  const img = document.getElementById('logo');
+  if (img && logo) img.src = logo;
+  sections = cfg.sections || sections;
+}
+
+// Flow scaling
+function updateFlows(){
+  const pv = state['pvPower']?.value ?? state['productionTotal']?.value ?? 0;
+  const load = state['consumptionTotal']?.value ?? 0;
+  const buy  = state['gridBuyPower']?.value ?? 0;
+  const sell = state['gridSellPower']?.value ?? 0;
+  const ch   = state['storageChargePower']?.value ?? 0;
+  const dis  = state['storageDischargePower']?.value ?? 0;
+
+  // heuristics
+  const pvLocal = Math.max(0, pv - sell);
+  const pvToLoad = Math.max(0, Math.min(load, pvLocal));
+  const pvToBat  = Math.max(0, ch);
+  const pvToGrid = Math.max(0, sell);
+  const gridToLoad = Math.max(0, buy);
+  const batToLoad = Math.max(0, dis);
+
+  const flows = {
+    'flow-pv-load': pvToLoad,
+    'flow-pv-bat': pvToBat,
+    'flow-pv-grid': pvToGrid,
+    'flow-grid-load': gridToLoad,
+    'flow-bat-load': batToLoad
+  };
+  const max = Math.max(1, ...Object.values(flows));
+  for (const [id, val] of Object.entries(flows)){
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const w = 3 + (val / max) * 9; // 3..12px
+    el.style.strokeWidth = w + 'px';
+    // color arrow marker according to class
+    const marker = document.querySelector('#arrow path');
+    if (el.classList.contains('grid')) marker && (marker.setAttribute('fill', '#f9a825'));
+    else if (el.classList.contains('bat')) marker && (marker.setAttribute('fill', '#ab47bc'));
+    else marker && (marker.setAttribute('fill', 'var(--nx-green)'));
+  }
+}
+
+// History chart (ECharts)
+let chart, chartInited=false;
+async function renderHistory(){
+  if (!window.echarts) return;
+  const el = document.getElementById('historyChart');
+  if (!el) return;
+  if (!chart){ chart = echarts.init(el); chartInited=true; }
+  const res = await fetch('/api/live-series').then(r=>r.json()).catch(()=>({keys:[],data:[]}));
+  const keys = res.keys || [];
+  const data = res.data || [];
+  const x = data.map(r=>r.ts);
+  const series = keys.map(k=>({ name:k, type:'line', showSymbol:false, data: data.map(r=>[r.ts, r[k]]) }));
+  chart.setOption({
+    animation:true,
+    tooltip:{ trigger:'axis' },
+    legend:{ textStyle:{ color:'#ccc' } },
+    xAxis:{ type:'time', axisLabel:{ color:'#aaa' } },
+    yAxis:{ type:'value', axisLabel:{ color:'#aaa' } },
+    grid:{ left:40, right:10, top:30, bottom:30 },
+    series
+  });
+}
+
+// SmartHome control handlers
+async function apiSet(key, value){
+  await fetch('/api/set', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ key, value })
+  }).catch(()=>{});
+}
+function initSmhControls(){
+  const btnHeat = document.getElementById('btnHeatPumpToggle');
+  const btnLock = document.getElementById('btnWallboxLock');
+  const btnSave = document.getElementById('btnSaveSmh');
+  const inRt    = document.getElementById('inpRoomTemp');
+  const inGrid  = document.getElementById('inpGridLimit');
+  const inPv    = document.getElementById('inpPvCurt');
+  if (btnHeat) btnHeat.onclick = ()=> apiSet('smartHome_heatPumpOn', !(state['smartHome_heatPumpOn']?.value));
+  if (btnLock) btnLock.onclick = ()=> apiSet('smartHome_wallboxLock', !(state['smartHome_wallboxLock']?.value));
+  if (btnSave) btnSave.onclick = ()=> {
+    if (inRt && inRt.value) apiSet('smartHome_roomTemp', parseFloat(inRt.value));
+    if (inGrid && inGrid.value) apiSet('smartHome_gridLimit', parseFloat(inGrid.value));
+    if (inPv && inPv.value) apiSet('smartHome_pvCurtailment', parseFloat(inPv.value));
+  };
+}
+
+function bootstrap() {
   try {
     const cfgRes = await fetch('/config');
     const cfg = await cfgRes.json();
     units = cfg.units || units;
+      applyBranding(cfg);
   } catch(e) {}
 
   const snap = await fetch('/api/state').then(r => r.json());
@@ -152,6 +249,9 @@ async function bootstrap() {
         Object.assign(state, msg.payload);
       }
       render();
+    updateFlows();
+    renderHistory();
+    initSmhControls();
     } catch (e) {
       console.warn(e);
     }

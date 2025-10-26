@@ -94,3 +94,19 @@ body {
 .hidden{display:none}
 .btn{display:inline-block;padding:8px 12px;border:1px solid #2a323b;border-radius:10px;text-decoration:none;color:var(--text)}
 .btn:hover{border-color:var(--nx-green)}
+
+
+.brand{display:flex;align-items:center;gap:8px}
+.brand img{height:24px;width:auto;object-fit:contain}
+
+.energy-flow{width:100%;overflow:hidden;margin-bottom:8px}
+.flow-svg{width:100%;height:auto}
+.node-rect{fill:#0f1317;stroke:#1e252c;stroke-width:1}
+.node-label{fill:var(--text);font-size:14px;text-anchor:middle;dominant-baseline:middle}
+.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke:var(--nx-green);marker-end:url(#arrow);stroke-dasharray:8 10;animation: dash 1.2s linear infinite}
+.flow.grid{stroke:#f9a825}
+.flow.bat{stroke:#ab47bc}
+@keyframes dash{to{stroke-dashoffset:-18}}
+#arrow path{fill:var(--nx-green)}
+
+.input{width:100%;background:#0f1317;border:1px solid #1e252c;border-radius:8px;padding:6px 8px;color:var(--text)}
