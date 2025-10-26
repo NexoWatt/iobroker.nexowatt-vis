@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -42,6 +42,10 @@
       "0.0.10": {
         "de": "Runder Energiemonitor mit Icons + SoC-Ring und Lade-/Entladezeit. Neuer Datenpunkt: Speicher Kapazität (kWh).",
         "en": "Round energy monitor with icons + SoC ring and charge/discharge time. New datapoint: storage capacity (kWh)."
+      },
+      "0.0.11": {
+        "de": "Neuer Energymonitor 1:1 rund (schwarzer Hintergrund), Netz rot.",
+        "en": "New round energy monitor (dark), grid in red."
       }
     },
     "title": "NexoWatt EMS UI",

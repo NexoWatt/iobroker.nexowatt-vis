@@ -1,4 +1,13 @@
 
+function setArc(selector, r, valuePct){
+  const max = 2 * Math.PI * r;
+  const v = Math.max(0, Math.min(100, valuePct||0));
+  const dash = (v/100)*max, rest = max-dash;
+  const el=document.querySelector(selector);
+  if(!el) return;
+  el.setAttribute('stroke-dasharray', dash.toFixed(1)+' '+rest.toFixed(1));
+}
+
 function setDonut(cls, pct, inner=false) {
   const r = inner ? 34 : 42;
   const max = 2 * Math.PI * r;
@@ -226,6 +235,46 @@ function renderSmartHome(){
 
 const _renderOrig = render;
 render = function(){
+
+  // ---- Energy donut update ----
+  try {
+    const d = (k) => state[k]?.value;
+    const pv = +(d('pvPower') ?? 0);
+    const load = +(d('consumptionTotal') ?? 0);
+    const buy = +(d('gridBuyPower') ?? 0);
+    const sell = +(d('gridSellPower') ?? 0);
+    const chg = +(d('storageChargePower') ?? 0);
+    const dchg = +(d('storageDischargePower') ?? 0);
+    const soc = d('storageSoc');
+    const cap = +(d('storageCapacityKwh') ?? 0);
+
+    const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
+    setText('pvLbl', formatPower(pv));
+    setText('gridLbl', formatPower(buy));        // Fokus auf Bezug
+    setText('loadLbl', formatPower(load));
+    setText('centerLbl', formatPower(0));        // Mitte wie im Beispiel
+
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
+
+    // Zeiten
+    if (cap && soc !== undefined) {
+      const socPct = Number(soc)/100;
+      const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
+      const tEmpty= dchg>0 ? ((cap*socPct)*1000)/dchg : null;
+      setText('tFull', 'Voll '+(tFull?formatHours(tFull):'--'));
+      setText('tEmpty','Leer '+(tEmpty?formatHours(tEmpty):'--'));
+      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
+    }
+
+    // Anteil je Segment (basierend auf Max)
+    const maxFlow = Math.max(1, pv, buy, load, chg+dchg);
+    const pct = (v)=> Math.min(100, Math.max(0, (v/maxFlow)*100));
+    setArc('.donut .arc.pv',   42, pct(pv));
+    setArc('.donut .arc.grid', 42, pct(buy));
+    setArc('.donut .arc.load', 42, pct(load));
+    setArc('.donut .arc.bat',  42, pct(chg+dchg));
+  } catch(e){ console.warn('donut update', e); }
+
   /* DONUT-HOOK */
 
   // --- Runde Energieanzeige ---
@@ -281,6 +330,46 @@ render = function(){
 // Zusätzliche Anzeige-Updates für Energiefluss
 const _renderEF = render;
 render = function(){
+
+  // ---- Energy donut update ----
+  try {
+    const d = (k) => state[k]?.value;
+    const pv = +(d('pvPower') ?? 0);
+    const load = +(d('consumptionTotal') ?? 0);
+    const buy = +(d('gridBuyPower') ?? 0);
+    const sell = +(d('gridSellPower') ?? 0);
+    const chg = +(d('storageChargePower') ?? 0);
+    const dchg = +(d('storageDischargePower') ?? 0);
+    const soc = d('storageSoc');
+    const cap = +(d('storageCapacityKwh') ?? 0);
+
+    const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
+    setText('pvLbl', formatPower(pv));
+    setText('gridLbl', formatPower(buy));        // Fokus auf Bezug
+    setText('loadLbl', formatPower(load));
+    setText('centerLbl', formatPower(0));        // Mitte wie im Beispiel
+
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socLbl', Number(soc).toFixed(0)+' %');
+
+    // Zeiten
+    if (cap && soc !== undefined) {
+      const socPct = Number(soc)/100;
+      const tFull = chg>0 ? ((cap*(1-socPct))*1000)/chg : null;
+      const tEmpty= dchg>0 ? ((cap*socPct)*1000)/dchg : null;
+      setText('tFull', 'Voll '+(tFull?formatHours(tFull):'--'));
+      setText('tEmpty','Leer '+(tEmpty?formatHours(tEmpty):'--'));
+      setArc('.donut .arc.soc', 34, Math.max(0, Math.min(100, Number(soc))));
+    }
+
+    // Anteil je Segment (basierend auf Max)
+    const maxFlow = Math.max(1, pv, buy, load, chg+dchg);
+    const pct = (v)=> Math.min(100, Math.max(0, (v/maxFlow)*100));
+    setArc('.donut .arc.pv',   42, pct(pv));
+    setArc('.donut .arc.grid', 42, pct(buy));
+    setArc('.donut .arc.load', 42, pct(load));
+    setArc('.donut .arc.bat',  42, pct(chg+dchg));
+  } catch(e){ console.warn('donut update', e); }
+
   /* DONUT-HOOK */
 
   // --- Runde Energieanzeige ---

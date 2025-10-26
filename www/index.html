@@ -23,40 +23,43 @@
   <main class="content">
     
 
-<section class="card energy-circle">
+
+<section class="card energy-donut">
   <div class="card-header">
     <div class="legend-color"></div>
-    <span>Energiefluss</span>
+    <span>Energymonitor</span>
   </div>
-
-  <div class="circle-wrap">
+  <div class="donut-wrap">
     <svg class="donut" viewBox="0 0 100 100">
-      <circle class="bg" cx="50" cy="50" r="42" />
-      <circle class="seg pv" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="seg gridbuy" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="seg gridsell" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="seg load" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="seg storage" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <!-- inner ring for SoC -->
-      <circle class="bg inner" cx="50" cy="50" r="34" />
-      <circle class="seg soc" cx="50" cy="50" r="34" stroke-dasharray="0 213" />
+      <!-- background track split into 4 arcs -->
+      <circle class="track pv" cx="50" cy="50" r="42" />
+      <circle class="track grid" cx="50" cy="50" r="42" />
+      <circle class="track load" cx="50" cy="50" r="42" />
+      <circle class="track bat" cx="50" cy="50" r="42" />
+
+      <!-- foreground arcs -->
+      <circle class="arc pv"   cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+      <circle class="arc grid" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+      <circle class="arc load" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+      <circle class="arc bat"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+
+      <!-- inner SoC ring -->
+      <circle class="soc-track" cx="50" cy="50" r="34" />
+      <circle class="arc soc" cx="50" cy="50" r="34" stroke-dasharray="0 213" />
     </svg>
 
-    <div class="center">
-      <div class="big" id="centerLoad">--</div>
-      <div class="sub">Verbrauch</div>
-      <div class="socline"><span id="socText">SoC --%</span></div>
-      <div class="timeline"><span id="tFull">Voll --</span> • <span id="tEmpty">Leer --</span></div>
+    <!-- labels/icons -->
+    <div class="lbl pv"><span class="ico">☀️</span><span id="pvLbl">--</span></div>
+    <div class="lbl grid"><span class="ico">🏭</span><span id="gridLbl">--</span></div>
+    <div class="lbl load"><span class="ico">💡</span><span id="loadLbl">--</span></div>
+    <div class="lbl center">
+      <div id="centerLbl">0 W</div>
+      <div class="soc"><span class="ico">🔋</span><span id="socLbl">-- %</span></div>
+      <div class="time"><span id="tFull">Voll --</span> • <span id="tEmpty">Leer --</span></div>
     </div>
-
-    <!-- Legends around -->
-    <div class="legend top"><span class="ico">☀️</span> <span id="pvVal">--</span></div>
-    <div class="legend left"><span class="ico">⚡</span> <span id="gridBezugVal">--</span></div>
-    <div class="legend right"><span class="ico">↗</span> <span id="gridEinspeisungVal">--</span></div>
-    <div class="legend bottom-left"><span class="ico">🔌</span> <span id="chargeVal">--</span></div>
-    <div class="legend bottom-right"><span class="ico">🔋</span> <span id="dischargeVal">--</span></div>
   </div>
 </section>
+
 
 
 

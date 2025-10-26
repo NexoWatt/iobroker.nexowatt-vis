@@ -134,3 +134,30 @@ body {
 .legend.right{ right:18px; top:50%; transform:translateY(-50%); }
 .legend.bottom-left{ left:22%; bottom:18px; transform:translateX(-50%); }
 .legend.bottom-right{ right:22%; bottom:18px; transform:translateX(50%); }
+
+/* --- Energy donut (dark) --- */
+.card.energy-donut .donut-wrap{position:relative;display:flex;justify-content:center;align-items:center;min-height:320px}
+.donut{width:300px;height:300px}
+.donut .track{fill:none;stroke:#2a323b;stroke-width:8;opacity:.6;stroke-linecap:round}
+.donut .soc-track{fill:none;stroke:#2a323b;stroke-width:6;opacity:.6}
+.donut .arc{fill:none;stroke-width:8;stroke-linecap:round}
+/* colors */
+.donut .arc.pv{stroke:#2d74da}
+.donut .arc.grid{stroke:#e74c3c} /* grid = red */
+.donut .arc.load{stroke:#f0c24b}
+.donut .arc.bat{stroke:#27ae60}
+.donut .arc.soc{stroke:#27ae60;stroke-width:6}
+/* start angles (in CSS via rotation) */
+.donut .track.pv,.donut .arc.pv{transform:rotate(-20deg);transform-origin:50% 50%}
+.donut .track.grid,.donut .arc.grid{transform:rotate(200deg);transform-origin:50% 50%}
+.donut .track.load,.donut .arc.load{transform:rotate(20deg);transform-origin:50% 50%}
+.donut .track.bat,.donut .arc.bat{transform:rotate(135deg);transform-origin:50% 50%}
+/* labels */
+.energy-donut .lbl{position:absolute;font-size:14px;display:flex;gap:6px;align-items:center;opacity:.95}
+.energy-donut .lbl .ico{opacity:.9}
+.energy-donut .lbl.pv{top:18px;left:50%;transform:translateX(-50%)}
+.energy-donut .lbl.grid{left:10px;top:50%;transform:translateY(-50%)}
+.energy-donut .lbl.load{right:10px;top:50%;transform:translateY(-50%)}
+.energy-donut .lbl.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.energy-donut .lbl.center #centerLbl{font-size:20px;margin-bottom:4px}
+.energy-donut .lbl.center .soc,.energy-donut .lbl.center .time{font-size:12px;opacity:.9}
