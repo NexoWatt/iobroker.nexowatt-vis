@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
       "0.0.1": {
         "en": "Initial release: admin settings to map raw datapoints to normalized adapter states; ships an SVG Energy-Flow monitor for VIS 2; includes NexoWatt logos.",
         "de": "Erste Version: Admin-Einstellungen zum Zuordnen der Rohdatenpunkte zu normalisierten Adapter-States; SVG-Energieflussmonitor f\u00fcr VIS 2; Logos enthalten."
+      },
+      "0.0.2": {
+        "en": "Fix admin: use Admin5 JSON config to avoid 'index_m.html not found'.",
+        "de": "Admin-Fix: Admin5 JSON-Konfiguration aktiviert, damit 'index_m.html not found' nicht mehr erscheint."
       }
     },
     "titleLang": {
@@ -33,12 +37,15 @@
     "enabled": true,
     "mode": "daemon",
     "loglevel": "info",
-    "materialize": true,
+    "materialize": false,
     "messagebox": false,
     "compact": true,
     "type": "visualization",
     "connectionType": "local",
-    "dataSource": "push"
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    }
   },
   "native": {
     "pvPowerId": "",
