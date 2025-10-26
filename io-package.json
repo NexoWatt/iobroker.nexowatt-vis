@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -22,6 +22,10 @@
       "0.0.5": {
         "de": "Datenpunkte jetzt als auswählbare Objekt-IDs mit Suchdialog.",
         "en": "Datapoints are now selectable object IDs with search dialog."
+      },
+      "0.0.6": {
+        "de": "Fix: jsonConfig mit explizitem 'attr' je Feld; ID-Suchdialog sollte erscheinen.",
+        "en": "Fix: jsonConfig explicit 'attr' for each field; ID search dialog should appear."
       }
     },
     "title": "NexoWatt EMS UI",
