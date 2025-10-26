@@ -234,3 +234,20 @@ body {
 @media (max-width: 520px) {
   .card.energy-donut .donut-wrap{ --nudge: clamp(6px, calc(var(--size)/34), 14px); }
 }
+
+/* Brand in topbar */
+.topbar{ display:flex; align-items:center; gap:10px; }
+.topbar .brand img{ height:22px; display:block; filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+@media (min-width: 900px){ .topbar .brand img{ height:24px; } }
+
+/* Donut visual tune (OpenEMS style) */
+.donut{ transform: rotate(-90deg); }
+.donut .track{ fill:none; stroke:#28313a; stroke-width:12; opacity:.5; stroke-linecap:round; }
+.donut .soc-track{ fill:none; stroke:#28313a; stroke-width:10; opacity:.55; }
+.donut .arc{ fill:none; stroke-width:12; stroke-linecap:round; }
+.donut .arc.pv{ stroke:#2d74da; }     /* PV: blue */
+.donut .arc.grid{ stroke:#e74c3c; }   /* Grid: red */
+.donut .arc.load{ stroke:#f0c24b; }   /* Load: yellow */
+.donut .arc.bat{ stroke:#27ae60; }    /* Battery: green */
+.donut .arc.soc{ stroke:#27ae60; stroke-width:8; }
+.energy-donut .icon{ filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }

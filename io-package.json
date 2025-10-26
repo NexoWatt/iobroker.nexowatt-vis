@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -62,6 +62,10 @@
       "0.0.15": {
         "de": "Energymonitor jetzt responsiv (Größe + Icon-Abstände skalieren).",
         "en": "Energy monitor responsive."
+      },
+      "0.0.16": {
+        "de": "Header: NexoWatt-Logo links eingefügt. Donut visuell verfeinert (Farben/Strich).",
+        "en": "Header brand logo added left. Donut refined (colors/strokes)."
       }
     },
     "title": "NexoWatt EMS UI",

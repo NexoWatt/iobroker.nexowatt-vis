@@ -437,3 +437,6 @@ render = function(){
     setText('consumptionTotalBig', (load===undefined?'--':formatPower(load)));
   } catch(e) { console.warn(e); }
 }
+
+// SIDE-VALUES
+function setSideValue(id, val){ const el=document.getElementById(id); if(el) el.textContent = val; }
