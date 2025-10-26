@@ -98,3 +98,16 @@ body {
 /* NexoWatt header logo */
 .nw-header{display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem}
 #nw-logo{height:28px}
+
+/* Energiefluss Monitor */
+.card.energy-flow .flow-grid { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 120px 120px; gap: 16px; padding: 8px 12px 16px; }
+.card.energy-flow .node { background: var(--card-bg); border: 1px solid #2a323b; border-radius: 10px; padding: 10px; box-shadow: var(--card-shadow); }
+.card.energy-flow .node .title { font-weight: 600; opacity: .9; margin-bottom: 6px; }
+.card.energy-flow .node .val.big { font-size: 28px; }
+.card.energy-flow .node .pair { display:flex; justify-content:space-between; font-size:14px; line-height:1.6; }
+.card.energy-flow .node.pv { grid-column: 1; grid-row: 1; }
+.card.energy-flow .node.grid { grid-column: 2; grid-row: 1; }
+.card.energy-flow .node.storage { grid-column: 3; grid-row: 1; }
+.card.energy-flow .node.load { grid-column: 2; grid-row: 2; align-self: start; }
+.card.energy-flow .arrows { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
+.card.energy-flow .arrows .a { stroke: var(--nx-green); stroke-width: 2; fill: none; opacity: .8; }

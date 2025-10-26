@@ -21,35 +21,56 @@
   </header>
 
   <main class="content">
-    <section class="card energy-monitor">
-      <div class="card-header">
-        <div class="legend-color"></div>
-        <span>Energy monitor</span>
-      </div>
-      <div class="ring-wrap">
-        <svg class="ring" viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42" />
-          <circle class="seg pv"    cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-          <circle class="seg grid"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-          <circle class="seg load"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-          <circle class="seg bat"   cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-        </svg>
-        <div class="ring-center">
-          <div class="big" id="pvPower">--</div>
-          <div class="sub">PV</div>
-        </div>
-      </div>
-      <div class="flows">
-        <div class="flow"><span>Grid buy</span><span id="gridBuyPower">--</span></div>
-        <div class="flow"><span>Grid sell</span><span id="gridSellPower">--</span></div>
-        <div class="flow"><span>Storage</span><span id="storagePower">--</span></div>
-        <div class="flow"><span>Load</span><span id="consumptionTotal">--</span></div>
-      </div>
-    </section>
+    
+<section class="card energy-flow">
+  <div class="card-header">
+    <div class="legend-color"></div>
+    <span>Energiefluss</span>
+  </div>
+  <div class="flow-grid">
+    <div class="node pv">
+      <div class="title">PV</div>
+      <div class="val big" id="pvPowerBig">--</div>
+    </div>
+    <div class="node grid">
+      <div class="title">Netz</div>
+      <div class="pair"><small>Bezug</small><b id="gridBezugPower">--</b></div>
+      <div class="pair"><small>Einspeisung</small><b id="gridEinspeisungPower">--</b></div>
+    </div>
+    <div class="node storage">
+      <div class="title">Speicher</div>
+      <div class="pair"><small>Laden</small><b id="storageLadenPower">--</b></div>
+      <div class="pair"><small>Entladen</small><b id="storageEntladenPower">--</b></div>
+    </div>
+    <div class="node load">
+      <div class="title">Verbrauch</div>
+      <div class="val" id="consumptionTotalBig">--</div>
+    </div>
+    <!-- arrows -->
+    <svg class="arrows" viewBox="0 0 600 260" preserveAspectRatio="none">
+      <!-- PV -> Verbrauch -->
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+          <polygon points="0 0, 6 3, 0 6" />
+        </marker>
+      </defs>
+      <line class="a pv-to-load" x1="150" y1="70" x2="300" y2="210" marker-end="url(#arrow)" />
+      <!-- Netz -> Verbrauch -->
+      <line class="a grid-to-load" x1="300" y1="70" x2="300" y2="210" marker-end="url(#arrow)" />
+      <!-- Speicher -> Verbrauch -->
+      <line class="a bat-to-load" x1="450" y1="70" x2="300" y2="210" marker-end="url(#arrow)" />
+      <!-- PV -> Netz (Einspeisung) -->
+      <line class="a pv-to-grid" x1="150" y1="70" x2="300" y2="70" marker-end="url(#arrow)" />
+      <!-- Netz -> Speicher (Laden) -->
+      <line class="a grid-to-bat" x1="300" y1="70" x2="450" y2="70" marker-end="url(#arrow)" />
+    </svg>
+  </div>
+</section>
+
 
     <section class="grid">
       <div class="card kpi">
-        <div class="card-header"><span>Autarky</span></div>
+        <div class="card-header"><span>Autarkie</span></div>
         <div class="kpi-body">
           <div class="bar"><div id="autarkyBar"></div></div>
           <div class="bar-label" id="autarkyValue">-- %</div>
@@ -57,46 +78,46 @@
       </div>
 
       <div class="card kpi">
-        <div class="card-header"><span>Self Consumption</span></div>
+        <div class="card-header"><span>Eigenverbrauch</span></div>
         <div class="kpi-body">
-          <div class="bar"><div id="selfConsumptionBar"></div></div>
-          <div class="bar-label" id="selfConsumptionValue">-- %</div>
+          <div class="bar"><div id="selfVerbrauchBar"></div></div>
+          <div class="bar-label" id="selfVerbrauchValue">-- %</div>
         </div>
       </div>
 
       <div class="card kpi">
-        <div class="card-header"><span>Storage System</span></div>
+        <div class="card-header"><span>Speicher System</span></div>
         <div class="row">
           <div class="bar small"><div id="storageSocBar"></div></div>
           <div class="mini">
             <div><small>SoC</small> <b id="storageSocValue">-- %</b></div>
-            <div><small>Charge</small> <b id="storageChargePower">--</b></div>
-            <div><small>Discharge</small> <b id="storageDischargePower">--</b></div>
+            <div><small>Laden</small> <b id="storageLadenPower">--</b></div>
+            <div><small>Entladen</small> <b id="storageEntladenPower">--</b></div>
           </div>
         </div>
       </div>
 
       <div class="card kpi">
-        <div class="card-header"><span>Grid</span></div>
+        <div class="card-header"><span>Netz</span></div>
         <div class="row two">
-          <div><small>Buy</small><b id="gridBuyPowerCard">--</b></div>
-          <div><small>Sell</small><b id="gridSellPowerCard">--</b></div>
+          <div><small>Bezug</small><b id="gridBezugPowerCard">--</b></div>
+          <div><small>Einspeisung</small><b id="gridEinspeisungPowerCard">--</b></div>
         </div>
       </div>
 
       <div class="card kpi">
-        <div class="card-header"><span>Production</span></div>
+        <div class="card-header"><span>Produktion</span></div>
         <div class="row two">
           <div><small>PV</small><b id="productionTotal">--</b></div>
-          <div><small>Grid freq</small><b id="gridFrequency">--</b></div>
+          <div><small>Netz freq</small><b id="gridFrequency">--</b></div>
         </div>
       </div>
 
       <div class="card kpi">
-        <div class="card-header"><span>Consumption</span></div>
+        <div class="card-header"><span>Verbrauch</span></div>
         <div class="row two">
           <div><small>EVCS</small><b id="consumptionEvcs">--</b></div>
-          <div><small>Other</small><b id="consumptionOther">--</b></div>
+          <div><small>Sonstiges</small><b id="consumptionSonstiges">--</b></div>
         </div>
       </div>
 
@@ -104,7 +125,7 @@
         <div class="card-header"><span>EVCS</span></div>
         <div class="row two">
           <div><small>Status</small><b id="evcsStatus">--</b></div>
-          <div><small>Last charge</small><b id="evcsLastChargeKwh">--</b></div>
+          <div><small>Letzte Ladung</small><b id="evcsLastLadenKwh">--</b></div>
         </div>
       </div>
     </section>

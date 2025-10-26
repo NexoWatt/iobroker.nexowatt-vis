@@ -34,7 +34,7 @@ function setRingSegment(cls, pct) {
   const v = Math.max(0, Math.min(100, pct || 0));
   const dash = (v / 100) * max;
   const rest = max - dash;
-  const el = document.querySelector('.ring .seg.' + cls);
+  const el = document.querySelector?.('.ring .seg.' + cls);
   if (el) el.setAttribute('stroke-dasharray', `${dash} ${rest}`);
 }
 
@@ -207,4 +207,20 @@ const _renderOrig = render;
 render = function(){
   _renderOrig();
   renderSmartHome();
+}
+
+
+// Zusätzliche Anzeige-Updates für Energiefluss
+const _renderEF = render;
+render = function(){
+  _renderEF();
+  try {
+    const s = state;
+    const d = (k) => s[k]?.value;
+    const pv = d('pvPower') ?? d('productionTotal');
+    const load = d('consumptionTotal');
+    function setText(id, txt){ const el = document.getElementById(id); if (el) el.textContent = txt; }
+    setText('pvPowerBig', (pv===undefined?'--':formatPower(pv)));
+    setText('consumptionTotalBig', (load===undefined?'--':formatPower(load)));
+  } catch(e) { console.warn(e); }
 }
