@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
         "de": "Erste Version: Responsives NexoWatt EMS Dashboard"
+      },
+      "0.0.2": {
+        "de": "Logos hinzugefügt, Standard-Datenpunkte vorbelegt, GitHub-Readme aktualisiert.",
+        "en": "Added logos, default datapoints prefilled, updated GitHub readme."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -38,7 +42,9 @@
       "dashboard"
     ],
     "connectionType": "local",
-    "dataSource": "poll"
+    "dataSource": "poll",
+    "icon": "admin.png",
+    "logo": "admin_logo_.ico"
   },
   "native": {
     "port": 8188,
@@ -49,13 +55,13 @@
       "energy": "kWh"
     },
     "datapoints": {
-      "autarky": "",
-      "selfConsumption": "",
-      "pvPower": "",
-      "productionTotal": "",
-      "consumptionTotal": "",
-      "gridBuyPower": "",
-      "gridSellPower": "",
+      "autarky": "0_userdata.0.nexowatt.autarky",
+      "selfConsumption": "0_userdata.0.nexowatt.selfConsumption",
+      "pvPower": "0_userdata.0.nexowatt.pv.power",
+      "productionTotal": "0_userdata.0.nexowatt.pv.energy_total",
+      "consumptionTotal": "0_userdata.0.nexowatt.house.energy_total",
+      "gridBuyPower": "0_userdata.0.nexowatt.grid.buy.power",
+      "gridSellPower": "0_userdata.0.nexowatt.grid.sell.power",
       "storageChargePower": "",
       "storageDischargePower": "",
       "storageSoc": "",
@@ -64,7 +70,15 @@
       "evcsStatus": "",
       "evcsLastChargeKwh": "",
       "gridFrequency": "",
-      "gridVoltage": ""
+      "gridVoltage": "0_userdata.0.nexowatt.grid.voltage",
+      "gridBuyEnergy": "0_userdata.0.nexowatt.grid.buy.energy_total",
+      "gridSellEnergy": "0_userdata.0.nexowatt.grid.sell.energy_total",
+      "batteryPower": "0_userdata.0.nexowatt.battery.power",
+      "batterySOC": "0_userdata.0.nexowatt.battery.soc",
+      "batteryEnergyTotal": "0_userdata.0.nexowatt.battery.energy_total",
+      "housePower": "0_userdata.0.nexowatt.house.power",
+      "houseTemp": "0_userdata.0.nexowatt.house.temperature",
+      "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature"
     },
     "sections": {
       "tabs": [
