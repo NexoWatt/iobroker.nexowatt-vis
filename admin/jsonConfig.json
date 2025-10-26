@@ -1,7 +1,7 @@
 {
   "type": "tabs",
-  "items": [
-    {
+  "items": {
+    "allgemein": {
       "type": "panel",
       "items": {
         "port": {
@@ -41,11 +41,11 @@
       "label": "Allgemein",
       "title": "Allgemein"
     },
-    {
+    "datenpunkte": {
       "type": "panel",
       "items": {
         "datapoints.autarky": {
-          "type": "id",
+          "type": "objectId",
           "label": "Autarkie (%)",
           "types": [
             "state"
@@ -59,7 +59,7 @@
           "sm": 12
         },
         "datapoints.selfConsumption": {
-          "type": "id",
+          "type": "objectId",
           "label": "Eigenverbrauch (%)",
           "types": [
             "state"
@@ -73,7 +73,7 @@
           "sm": 12
         },
         "datapoints.pvPower": {
-          "type": "id",
+          "type": "objectId",
           "label": "PV-Leistung",
           "types": [
             "state"
@@ -87,7 +87,7 @@
           "sm": 12
         },
         "datapoints.productionTotal": {
-          "type": "id",
+          "type": "objectId",
           "label": "Produktion Gesamt (Leistung)",
           "types": [
             "state"
@@ -101,7 +101,7 @@
           "sm": 12
         },
         "datapoints.consumptionTotal": {
-          "type": "id",
+          "type": "objectId",
           "label": "Verbrauch Gesamt (Leistung)",
           "types": [
             "state"
@@ -115,7 +115,7 @@
           "sm": 12
         },
         "datapoints.gridBuyPower": {
-          "type": "id",
+          "type": "objectId",
           "label": "Netzbezug (Leistung)",
           "types": [
             "state"
@@ -129,7 +129,7 @@
           "sm": 12
         },
         "datapoints.gridSellPower": {
-          "type": "id",
+          "type": "objectId",
           "label": "Einspeisung (Leistung)",
           "types": [
             "state"
@@ -143,7 +143,7 @@
           "sm": 12
         },
         "datapoints.storageChargePower": {
-          "type": "id",
+          "type": "objectId",
           "label": "Batterie Ladeleistung",
           "types": [
             "state"
@@ -155,7 +155,7 @@
           "sm": 12
         },
         "datapoints.storageDischargePower": {
-          "type": "id",
+          "type": "objectId",
           "label": "Batterie Entladeleistung",
           "types": [
             "state"
@@ -167,7 +167,7 @@
           "sm": 12
         },
         "datapoints.storageSoc": {
-          "type": "id",
+          "type": "objectId",
           "label": "Batterie SoC (%)",
           "types": [
             "state"
@@ -179,7 +179,7 @@
           "sm": 12
         },
         "datapoints.consumptionEvcs": {
-          "type": "id",
+          "type": "objectId",
           "label": "Ladestation Verbrauch (Leistung)",
           "types": [
             "state"
@@ -191,7 +191,7 @@
           "sm": 12
         },
         "datapoints.consumptionOther": {
-          "type": "id",
+          "type": "objectId",
           "label": "Sonstiger Verbrauch (Leistung)",
           "types": [
             "state"
@@ -203,7 +203,7 @@
           "sm": 12
         },
         "datapoints.evcsStatus": {
-          "type": "id",
+          "type": "objectId",
           "label": "EVCS Status",
           "types": [
             "state"
@@ -217,7 +217,7 @@
           "sm": 12
         },
         "datapoints.evcsLastChargeKwh": {
-          "type": "id",
+          "type": "objectId",
           "label": "EVCS letzte Ladung (kWh)",
           "types": [
             "state"
@@ -229,7 +229,7 @@
           "sm": 12
         },
         "datapoints.gridFrequency": {
-          "type": "id",
+          "type": "objectId",
           "label": "Netzfrequenz (Hz)",
           "types": [
             "state"
@@ -243,7 +243,7 @@
           "sm": 12
         },
         "datapoints.gridVoltage": {
-          "type": "id",
+          "type": "objectId",
           "label": "Netzspannung (V)",
           "types": [
             "state"
@@ -260,7 +260,7 @@
       "label": "Datenpunkte",
       "title": "Datenpunkte"
     },
-    {
+    "smarthome_vorbereitet": {
       "type": "panel",
       "items": {
         "smartHome.enabled": {
@@ -271,7 +271,7 @@
           "sm": 12
         },
         "smartHome.datapoints.heatPumpOn": {
-          "type": "id",
+          "type": "objectId",
           "label": "Wärmepumpe EIN/AUS (bool)",
           "types": [
             "state"
@@ -285,7 +285,7 @@
           "sm": 12
         },
         "smartHome.datapoints.roomTemp": {
-          "type": "id",
+          "type": "objectId",
           "label": "Raumtemperatur (°C)",
           "types": [
             "state"
@@ -299,7 +299,7 @@
           "sm": 12
         },
         "smartHome.datapoints.wallboxLock": {
-          "type": "id",
+          "type": "objectId",
           "label": "Wallbox verriegeln (bool)",
           "types": [
             "state"
@@ -313,7 +313,7 @@
           "sm": 12
         },
         "smartHome.datapoints.gridLimit": {
-          "type": "id",
+          "type": "objectId",
           "label": "Netzbezugslimit (W)",
           "types": [
             "state"
@@ -327,7 +327,7 @@
           "sm": 12
         },
         "smartHome.datapoints.pvCurtailment": {
-          "type": "id",
+          "type": "objectId",
           "label": "PV-Abregelung (%)",
           "types": [
             "state"
@@ -344,7 +344,7 @@
       "label": "SmartHome (vorbereitet)",
       "title": "SmartHome (vorbereitet)"
     },
-    {
+    "erweitert___zukunft": {
       "type": "panel",
       "items": {
         "futureOptions.theme": {
@@ -382,5 +382,5 @@
       "label": "Erweitert / Zukunft",
       "title": "Erweitert / Zukunft"
     }
-  ]
+  }
 }

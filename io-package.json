@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.6",
+    "version": "0.0.8",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -26,6 +26,14 @@
       "0.0.6": {
         "de": "Fix: jsonConfig mit explizitem 'attr' je Feld; ID-Suchdialog sollte erscheinen.",
         "en": "Fix: jsonConfig explicit 'attr' for each field; ID search dialog should appear."
+      },
+      "0.0.7": {
+        "de": "Schema-Fix: Root 'tabs.items' jetzt als Objekt statt Array → Admin-Suche für IDs aktiv.",
+        "en": "Schema fix: root 'tabs.items' changed to object instead of array so Admin ID search works."
+      },
+      "0.0.8": {
+        "de": "Eingabefelder auf 'objectId' umgestellt (statt 'id'); Tabs-Struktur korrigiert.",
+        "en": "Switched inputs to 'objectId' (instead of 'id'); fixed tabs structure."
       }
     },
     "title": "NexoWatt EMS UI",
