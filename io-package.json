@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -14,6 +14,10 @@
       "0.0.3": {
         "de": "Fix: Tab-Titel in den Instanzeinstellungen (title→label).",
         "en": "Fix: Tab titles in instance settings (title→label)."
+      },
+      "0.0.4": {
+        "de": "Fix: jsonConfig validiert wieder; Tabs zeigen Titel & Label.",
+        "en": "Fix: jsonConfig validates again; tabs show title & label."
       }
     },
     "title": "NexoWatt EMS UI",

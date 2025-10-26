@@ -29,7 +29,8 @@
           ]
         }
       },
-      "label": "Allgemein"
+      "label": "Allgemein",
+      "title": "Allgemein"
     },
     {
       "type": "panel",
@@ -99,7 +100,8 @@
           "label": "Netzspannung (V)"
         }
       },
-      "label": "Datenpunkte"
+      "label": "Datenpunkte",
+      "title": "Datenpunkte"
     },
     {
       "type": "panel",
@@ -129,7 +131,8 @@
           "label": "PV-Abregelung (%)"
         }
       },
-      "label": "SmartHome (vorbereitet)"
+      "label": "SmartHome (vorbereitet)",
+      "title": "SmartHome (vorbereitet)"
     },
     {
       "type": "panel",
@@ -157,7 +160,8 @@
           "label": "Netzspannung anzeigen (experimentell)"
         }
       },
-      "label": "Erweitert / Zukunft"
+      "label": "Erweitert / Zukunft",
+      "title": "Erweitert / Zukunft"
     }
   ]
 }
