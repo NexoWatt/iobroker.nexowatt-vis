@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -10,6 +10,10 @@
       "0.0.2": {
         "de": "Logos hinzugefügt, Standard-Datenpunkte vorbelegt, GitHub-Readme aktualisiert.",
         "en": "Added logos, default datapoints prefilled, updated GitHub readme."
+      },
+      "0.0.3": {
+        "de": "Fix: Tab-Titel in den Instanzeinstellungen (title→label).",
+        "en": "Fix: Tab titles in instance settings (title→label)."
       }
     },
     "title": "NexoWatt EMS UI",

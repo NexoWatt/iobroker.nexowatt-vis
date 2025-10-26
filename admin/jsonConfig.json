@@ -3,7 +3,6 @@
   "items": [
     {
       "type": "panel",
-      "title": "Allgemein",
       "items": {
         "port": {
           "type": "number",
@@ -29,11 +28,11 @@
             }
           ]
         }
-      }
+      },
+      "label": "Allgemein"
     },
     {
       "type": "panel",
-      "title": "Datenpunkte",
       "items": {
         "datapoints.autarky": {
           "type": "id",
@@ -99,11 +98,11 @@
           "type": "id",
           "label": "Netzspannung (V)"
         }
-      }
+      },
+      "label": "Datenpunkte"
     },
     {
       "type": "panel",
-      "title": "SmartHome (vorbereitet)",
       "items": {
         "smartHome.enabled": {
           "type": "checkbox",
@@ -129,11 +128,11 @@
           "type": "id",
           "label": "PV-Abregelung (%)"
         }
-      }
+      },
+      "label": "SmartHome (vorbereitet)"
     },
     {
       "type": "panel",
-      "title": "Erweitert / Zukunft",
       "items": {
         "futureOptions.theme": {
           "type": "select",
@@ -157,7 +156,8 @@
           "type": "checkbox",
           "label": "Netzspannung anzeigen (experimentell)"
         }
-      }
+      },
+      "label": "Erweitert / Zukunft"
     }
   ]
 }
