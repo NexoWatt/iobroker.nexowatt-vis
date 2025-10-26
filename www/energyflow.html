@@ -1,0 +1,173 @@
+<!-- NexoWatt Energy Flow Monitor for VIS 2 (HTML widget). Paste this whole block into a VIS-2 HTML widget. -->
+<div id="nexowatt-flow" style="position:relative;width:100%;height:100%;background:#07150f;border-radius:18px;overflow:hidden;font-family:Inter,system-ui,Segoe UI,Roboto,Ubuntu,Arial;">
+  <div style="position:absolute;inset:0;background:radial-gradient(120% 120% at 50% 50%, rgba(15,55,35,0.9) 0%, #07150f 60%, #05100b 100%);"></div>
+  <img src="/adapter/nexowatt-vis/admin.png" alt="NexoWatt" style="position:absolute;left:16px;top:16px;height:40px;opacity:.9;filter:drop-shadow(0 0 6px rgba(0,255,150,.15));pointer-events:none;">
+  <div style="position:absolute;left:72px;top:16px;color:#7fffb4;font-weight:700;letter-spacing:.4px;text-shadow:0 0 8px rgba(0,255,120,.25);">NexoWatt • Energiefluss</div>
+
+  <svg id="flowSvg" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;padding:64px;">
+    <defs>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="4.5" result="coloredBlur"/>
+        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+      </marker>
+    </defs>
+
+    <!-- PV -->
+    <g transform="translate(80,170)">
+      <rect rx="16" ry="16" width="160" height="110" fill="#0f3322" stroke="#1bd675" stroke-width="1.5"/>
+      <text x="80" y="28" fill="#89ffca" text-anchor="middle" font-size="16" font-weight="600" id="label-pv">PV</text>
+      <text x="80" y="72" fill="#e7ffee" text-anchor="middle" font-size="22" font-weight="700" id="pvPower">0 W</text>
+    </g>
+
+    <!-- Battery -->
+    <g transform="translate(360,360)">
+      <rect rx="16" ry="16" width="180" height="120" fill="#0f3322" stroke="#1bd675" stroke-width="1.5"/>
+      <text x="90" y="28" fill="#89ffca" text-anchor="middle" font-size="16" font-weight="600" id="label-bat">Speicher</text>
+      <text x="90" y="72" fill="#e7ffee" text-anchor="middle" font-size="22" font-weight="700" id="batPower">0 W</text>
+      <g transform="translate(140,18)">
+        <circle cx="0" cy="0" r="16" fill="none" stroke="#0e452e" stroke-width="6"/>
+        <circle id="socRing" cx="0" cy="0" r="16" fill="none" stroke="#1bd675" stroke-width="6" stroke-dasharray="100" stroke-dashoffset="100" transform="rotate(-90)"/>
+      </g>
+      <text x="140" y="50" fill="#e7ffee" font-size="12" text-anchor="middle" id="socText">0%</text>
+    </g>
+
+    <!-- House -->
+    <g transform="translate(650,170)">
+      <rect rx="16" ry="16" width="160" height="110" fill="#0f3322" stroke="#1bd675" stroke-width="1.5"/>
+      <text x="80" y="28" fill="#89ffca" text-anchor="middle" font-size="16" font-weight="600" id="label-house">Haus</text>
+      <text x="80" y="72" fill="#e7ffee" text-anchor="middle" font-size="22" font-weight="700" id="housePower">0 W</text>
+    </g>
+
+    <!-- Grid -->
+    <g transform="translate(360,20)">
+      <rect rx="16" ry="16" width="180" height="110" fill="#0f3322" stroke="#1bd675" stroke-width="1.5"/>
+      <text x="90" y="28" fill="#89ffca" text-anchor="middle" font-size="16" font-weight="600" id="label-grid">Netz</text>
+      <text x="90" y="72" fill="#e7ffee" text-anchor="middle" font-size="22" font-weight="700" id="gridPower">0 W</text>
+    </g>
+
+    <!-- Flows -->
+    <path id="flow-pv-house" d="M240,225 C360,225 540,225 650,225" fill="none" stroke="#19e27d" stroke-width="2" marker-end="url(#arrow)" filter="url(#glow)"/>
+    <path id="flow-pv-bat" d="M240,240 C310,260 310,360 360,420" fill="none" stroke="#19e27d" stroke-width="2" marker-end="url(#arrow)" filter="url(#glow)"/>
+    <path id="flow-pv-grid" d="M240,190 C310,175 310,90 360,74" fill="none" stroke="#19e27d" stroke-width="2" marker-end="url(#arrow)" filter="url(#glow)"/>
+    <path id="flow-grid-house" d="M540,74 C600,95 600,200 650,210" fill="none" stroke="#19e27d" stroke-width="2" marker-end="url(#arrow)" filter="url(#glow)"/>
+    <path id="flow-bat-house" d="M540,420 C600,350 600,290 650,260" fill="none" stroke="#19e27d" stroke-width="2" marker-end="url(#arrow)" filter="url(#glow)"/>
+
+    <text id="lbl-pv-house" x="455" y="212" fill="#b6ffe2" font-size="12" text-anchor="middle">PV→Haus 0 W</text>
+    <text id="lbl-pv-bat" x="310" y="340" fill="#b6ffe2" font-size="12" text-anchor="middle">PV→Speicher 0 W</text>
+    <text id="lbl-pv-grid" x="300" y="120" fill="#b6ffe2" font-size="12" text-anchor="middle">PV→Netz 0 W</text>
+    <text id="lbl-grid-house" x="600" y="150" fill="#b6ffe2" font-size="12" text-anchor="middle">Netz→Haus 0 W</text>
+    <text id="lbl-bat-house" x="600" y="350" fill="#b6ffe2" font-size="12" text-anchor="middle">Speicher→Haus 0 W</text>
+  </svg>
+</div>
+
+<script src="/lib/js/socket.io.js"></script>
+<script>
+(function() {
+  const SCALE_W_PER_KW = 8;
+  const statePrefix = 'nexowatt-vis.0.'; // <-- change if your instance id differs
+  const oids = {
+    pv: statePrefix + 'flow.pvPower',
+    grid: statePrefix + 'flow.gridPower',
+    house: statePrefix + 'flow.housePower',
+    bat: statePrefix + 'flow.batteryPower',
+    soc: statePrefix + 'battery.soc'
+  };
+
+  const labels = {
+    pv: document.getElementById('pvPower'),
+    grid: document.getElementById('gridPower'),
+    house: document.getElementById('housePower'),
+    bat: document.getElementById('batPower'),
+    socText: document.getElementById('socText'),
+    socRing: document.getElementById('socRing'),
+    l_pv_house: document.getElementById('lbl-pv-house'),
+    l_pv_bat: document.getElementById('lbl-pv-bat'),
+    l_pv_grid: document.getElementById('lbl-pv-grid'),
+    l_grid_house: document.getElementById('lbl-grid-house'),
+    l_bat_house: document.getElementById('lbl-bat-house'),
+  };
+
+  const flows = {
+    pv_house: document.getElementById('flow-pv-house'),
+    pv_bat: document.getElementById('flow-pv-bat'),
+    pv_grid: document.getElementById('flow-pv-grid'),
+    grid_house: document.getElementById('flow-grid-house'),
+    bat_house: document.getElementById('flow-bat-house')
+  };
+
+  let values = { pv:0, grid:0, house:0, bat:0, soc:0 };
+
+  function fmt(v) {
+    const sign = v < 0 ? '-' : '';
+    v = Math.abs(v);
+    if (v >= 1000) return sign + (v/1000).toFixed(1) + ' kW';
+    return sign + Math.round(v) + ' W';
+  }
+
+  function setWidth(path, watts) {
+    const w = Math.max(2, Math.min(22, Math.abs(watts) / 1000 * SCALE_W_PER_KW));
+    path.setAttribute('stroke-width', w.toFixed(1));
+    path.style.opacity = watts > 10 ? 1 : 0.25;
+  }
+
+  function update() {
+    const pv = values.pv, grid = values.grid, house = values.house, bat = values.bat, soc = values.soc;
+    labels.pv.textContent = fmt(pv);
+    labels.grid.textContent = fmt(grid);
+    labels.house.textContent = fmt(house);
+    labels.bat.textContent = fmt(bat);
+    labels.socText.textContent = Math.round(soc) + '%';
+    const dash = Math.max(0, Math.min(100, soc));
+    labels.socRing.setAttribute('stroke-dashoffset', (100 - dash).toString());
+
+    const pv_to_bat = bat < 0 ? Math.min(pv, Math.abs(bat)) : 0;
+    const pv_to_grid = grid < 0 ? Math.min(Math.max(0, pv - pv_to_bat), Math.abs(grid)) : 0;
+    const pv_to_house = Math.max(0, pv - pv_to_bat - pv_to_grid);
+    const grid_to_house = grid > 0 ? grid : 0;
+    const bat_to_house = bat > 0 ? bat : 0;
+
+    setWidth(flows.pv_house, pv_to_house);
+    setWidth(flows.pv_bat, pv_to_bat);
+    setWidth(flows.pv_grid, pv_to_grid);
+    setWidth(flows.grid_house, grid_to_house);
+    setWidth(flows.bat_house, bat_to_house);
+
+    labels.l_pv_house.textContent = 'PV→Haus ' + fmt(pv_to_house);
+    labels.l_pv_bat.textContent   = 'PV→Speicher ' + fmt(pv_to_bat);
+    labels.l_pv_grid.textContent  = 'PV→Netz ' + fmt(pv_to_grid);
+    labels.l_grid_house.textContent = 'Netz→Haus ' + fmt(grid_to_house);
+    labels.l_bat_house.textContent  = 'Speicher→Haus ' + fmt(bat_to_house);
+  }
+
+  const socket = io.connect('/', { path: '/socket.io', transports: ['polling', 'websocket'] });
+
+  function subscribeAll() {
+    Object.values(oids).forEach(id => socket.emit('subscribe', id));
+    socket.emit('getStates', (err, states) => {
+      if (states) {
+        Object.entries(oids).forEach(([k, oid]) => {
+          if (states[oid] && states[oid].val !== undefined) values[k] = Number(states[oid].val) || 0;
+        });
+        update();
+      }
+    });
+  }
+
+  socket.on('connect', subscribeAll);
+  socket.on('stateChange', (id, state) => {
+    if (!state) return;
+    for (const [k, oid] of Object.entries(oids)) {
+      if (oid === id) {
+        values[k] = Number(state.val) || 0;
+        update();
+        break;
+      }
+    }
+  });
+
+  update();
+})();
+</script>

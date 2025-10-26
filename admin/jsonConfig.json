@@ -1,163 +1,85 @@
 {
-  "type": "tabs",
+  "type": "panel",
   "items": [
     {
-      "type": "panel",
-      "title": "Allgemein",
-      "items": {
-        "port": {
-          "type": "number",
-          "label": "HTTP Port",
-          "min": 1,
-          "max": 65535
-        },
-        "bind": {
-          "type": "text",
-          "label": "Bind-Adresse"
-        },
-        "units.power": {
-          "type": "select",
-          "label": "Leistungseinheit",
-          "options": [
+      "type": "static-image",
+      "src": "admin.png",
+      "style": {
+        "width": "180px",
+        "display": "block",
+        "margin": "0 auto 16px"
+      }
+    },
+    {
+      "type": "header",
+      "text": "NexoWatt \u2013 Datenpunkt-Zuordnung"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "text",
+      "text": "W\u00e4hle die Roh-Datenpunkte deiner Installation aus. Der Adapter spiegelt sie in eigene States unter 'nexowatt-vis.X.*'. Diese States nutzt die VIS und der Energiefluss-Monitor."
+    },
+    {
+      "type": "tabs",
+      "items": [
+        {
+          "title": "Zuordnung",
+          "items": [
             {
-              "label": "W",
-              "value": "W"
+              "type": "objectId",
+              "attr": "pvPowerId",
+              "title": "PV-Leistung (W)"
             },
             {
-              "label": "kW",
-              "value": "kW"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": "panel",
-      "title": "Datenpunkte",
-      "items": {
-        "datapoints.autarky": {
-          "type": "id",
-          "label": "Autarkie (%)"
-        },
-        "datapoints.selfConsumption": {
-          "type": "id",
-          "label": "Eigenverbrauch (%)"
-        },
-        "datapoints.pvPower": {
-          "type": "id",
-          "label": "PV-Leistung"
-        },
-        "datapoints.productionTotal": {
-          "type": "id",
-          "label": "Produktion Gesamt (Leistung)"
-        },
-        "datapoints.consumptionTotal": {
-          "type": "id",
-          "label": "Verbrauch Gesamt (Leistung)"
-        },
-        "datapoints.gridBuyPower": {
-          "type": "id",
-          "label": "Netzbezug (Leistung)"
-        },
-        "datapoints.gridSellPower": {
-          "type": "id",
-          "label": "Einspeisung (Leistung)"
-        },
-        "datapoints.storageChargePower": {
-          "type": "id",
-          "label": "Batterie Ladeleistung"
-        },
-        "datapoints.storageDischargePower": {
-          "type": "id",
-          "label": "Batterie Entladeleistung"
-        },
-        "datapoints.storageSoc": {
-          "type": "id",
-          "label": "Batterie SoC (%)"
-        },
-        "datapoints.consumptionEvcs": {
-          "type": "id",
-          "label": "Ladestation Verbrauch (Leistung)"
-        },
-        "datapoints.consumptionOther": {
-          "type": "id",
-          "label": "Sonstiger Verbrauch (Leistung)"
-        },
-        "datapoints.evcsStatus": {
-          "type": "id",
-          "label": "EVCS Status"
-        },
-        "datapoints.evcsLastChargeKwh": {
-          "type": "id",
-          "label": "EVCS letzte Ladung (kWh)"
-        },
-        "datapoints.gridFrequency": {
-          "type": "id",
-          "label": "Netzfrequenz (Hz)"
-        },
-        "datapoints.gridVoltage": {
-          "type": "id",
-          "label": "Netzspannung (V)"
-        }
-      }
-    },
-    {
-      "type": "panel",
-      "title": "SmartHome (vorbereitet)",
-      "items": {
-        "smartHome.enabled": {
-          "type": "checkbox",
-          "label": "SmartHome-Bereich aktivieren (Beta)"
-        },
-        "smartHome.datapoints.heatPumpOn": {
-          "type": "id",
-          "label": "Wärmepumpe EIN/AUS (bool)"
-        },
-        "smartHome.datapoints.roomTemp": {
-          "type": "id",
-          "label": "Raumtemperatur (°C)"
-        },
-        "smartHome.datapoints.wallboxLock": {
-          "type": "id",
-          "label": "Wallbox verriegeln (bool)"
-        },
-        "smartHome.datapoints.gridLimit": {
-          "type": "id",
-          "label": "Netzbezugslimit (W)"
-        },
-        "smartHome.datapoints.pvCurtailment": {
-          "type": "id",
-          "label": "PV-Abregelung (%)"
-        }
-      }
-    },
-    {
-      "type": "panel",
-      "title": "Erweitert / Zukunft",
-      "items": {
-        "futureOptions.theme": {
-          "type": "select",
-          "label": "Theme",
-          "options": [
-            {
-              "label": "NexoWatt Dark",
-              "value": "nexowatt-dark"
+              "type": "objectId",
+              "attr": "gridPowerId",
+              "title": "Netzleistung (W): Import > 0, Export < 0"
             },
             {
-              "label": "NexoWatt Light (später)",
-              "value": "nexowatt-light"
+              "type": "objectId",
+              "attr": "housePowerId",
+              "title": "Hausverbrauch (W)"
+            },
+            {
+              "type": "objectId",
+              "attr": "batteryPowerId",
+              "title": "Batterieleistung (W): Entladen > 0, Laden < 0"
+            },
+            {
+              "type": "objectId",
+              "attr": "batterySocId",
+              "title": "Batterie SoC (%)"
             }
           ]
         },
-        "futureOptions.enableAnimations": {
-          "type": "checkbox",
-          "label": "Animationen aktivieren"
-        },
-        "futureOptions.showGridVoltage": {
-          "type": "checkbox",
-          "label": "Netzspannung anzeigen (experimentell)"
+        {
+          "title": "Beschriftungen",
+          "items": [
+            {
+              "type": "text",
+              "attr": "pvName",
+              "title": "PV-Name"
+            },
+            {
+              "type": "text",
+              "attr": "gridName",
+              "title": "Netz-Name"
+            },
+            {
+              "type": "text",
+              "attr": "houseName",
+              "title": "Haus-Name"
+            },
+            {
+              "type": "text",
+              "attr": "batteryName",
+              "title": "Speicher-Name"
+            }
+          ]
         }
-      }
+      ]
     }
   ]
 }

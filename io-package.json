@@ -4,91 +4,75 @@
     "version": "0.0.1",
     "news": {
       "0.0.1": {
-        "en": "Initial release: Responsive NexoWatt EMS dashboard",
-        "de": "Erste Version: Responsives NexoWatt EMS Dashboard"
+        "en": "Initial release: admin settings to map raw datapoints to normalized adapter states; ships an SVG Energy-Flow monitor for VIS 2; includes NexoWatt logos.",
+        "de": "Erste Version: Admin-Einstellungen zum Zuordnen der Rohdatenpunkte zu normalisierten Adapter-States; SVG-Energieflussmonitor f\u00fcr VIS 2; Logos enthalten."
       }
     },
-    "title": "NexoWatt EMS UI",
     "titleLang": {
-      "en": "NexoWatt EMS UI",
-      "de": "NexoWatt EMS UI"
+      "en": "NexoWatt VIS Helper",
+      "de": "NexoWatt VIS Helfer"
     },
     "desc": {
-      "en": "OpenEMS-like responsive dashboard with NexoWatt colors (green/black). All datapoints can be linked in adapter settings.",
-      "de": "OpenEMS-ähnliches responsives Dashboard in NexoWatt-Farben (grün/schwarz). Alle Datenpunkte sind in den Adaptereinstellungen verknüpfbar."
+      "en": "Normalizes energy datapoints and provides a ready-to-use Energy-Flow monitor for VIS 2.",
+      "de": "Normalisiert Energiedatenpunkte und stellt einen fertigen Energiefluss-Monitor f\u00fcr VIS 2 bereit."
     },
     "authors": [
-      "Visu Helper"
+      "NexoWatt"
     ],
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "compact": true,
-    "materialize": false,
-    "enabled": true,
-    "loglevel": "info",
-    "type": "visualization",
-    "adminUI": {
-      "config": "json"
-    },
     "keywords": [
-      "visualization",
-      "ems",
-      "nexowatt",
-      "openems",
-      "dashboard"
+      "NexoWatt",
+      "VIS2",
+      "energy",
+      "flow",
+      "monitor"
     ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "admin.png",
+    "enabled": true,
+    "mode": "daemon",
+    "loglevel": "info",
+    "materialize": true,
+    "messagebox": false,
+    "compact": true,
+    "type": "visualization",
     "connectionType": "local",
-    "dataSource": "poll"
+    "dataSource": "push"
   },
   "native": {
-    "port": 8188,
-    "bind": "0.0.0.0",
-    "publicPath": "/",
-    "units": {
-      "power": "W",
-      "energy": "kWh"
-    },
-    "datapoints": {
-      "autarky": "",
-      "selfConsumption": "",
-      "pvPower": "",
-      "productionTotal": "",
-      "consumptionTotal": "",
-      "gridBuyPower": "",
-      "gridSellPower": "",
-      "storageChargePower": "",
-      "storageDischargePower": "",
-      "storageSoc": "",
-      "consumptionEvcs": "",
-      "consumptionOther": "",
-      "evcsStatus": "",
-      "evcsLastChargeKwh": "",
-      "gridFrequency": "",
-      "gridVoltage": ""
-    },
-    "sections": {
-      "tabs": [
-        "live",
-        "history",
-        "settings",
-        "smarthome"
-      ]
-    },
-    "smartHome": {
-      "enabled": false,
-      "datapoints": {
-        "heatPumpOn": "",
-        "roomTemp": "",
-        "wallboxLock": "",
-        "gridLimit": "",
-        "pvCurtailment": ""
-      }
-    },
-    "futureOptions": {
-      "theme": "nexowatt-dark",
-      "enableAnimations": true,
-      "showGridVoltage": false
-    }
+    "pvPowerId": "",
+    "gridPowerId": "",
+    "housePowerId": "",
+    "batteryPowerId": "",
+    "batterySocId": "",
+    "pvName": "PV",
+    "gridName": "Netz",
+    "houseName": "Haus",
+    "batteryName": "Speicher"
   },
-  "instanceObjects": []
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "info"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "Connection",
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }

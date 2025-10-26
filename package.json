@@ -1,43 +1,30 @@
 {
   "name": "iobroker.nexowatt-vis",
   "version": "0.0.1",
-  "description": "Responsive NexoWatt EMS visualization adapter (OpenEMS-like) for ioBroker.",
-  "author": "Visu Helper",
+  "description": "NexoWatt VIS helper adapter: normalized datapoints + SVG Energy Flow Monitor for VIS 2.",
+  "author": "NexoWatt + ChatGPT",
   "license": "MIT",
-  "main": "main.js",
-  "engines": {
-    "node": ">=16"
-  },
-  "scripts": {
-    "start": "node main.js",
-    "dev": "node main.js"
-  },
-  "dependencies": {
-    "@iobroker/adapter-core": "^3.0.0",
-    "express": "^4.18.2"
-  },
   "keywords": [
     "ioBroker",
-    "adapter",
-    "visualization",
     "NexoWatt",
-    "OpenEMS",
-    "EMS"
+    "VIS2",
+    "energy",
+    "flow",
+    "monitor"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/iobroker.nexowatt-vis.git"
+    "url": "git+https://github.com/NexoWatt/ioBroker.nexowatt-vis.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/iobroker.nexowatt-vis/issues"
+    "url": "https://github.com/NexoWatt/ioBroker.nexowatt-vis/issues"
   },
-  "homepage": "https://github.com/your-org/iobroker.nexowatt-vis#readme",
-  "files": [
-    "admin/**/*",
-    "www/**/*",
-    "main.js",
-    "io-package.json",
-    "README.md",
-    "LICENSE"
-  ]
+  "homepage": "https://github.com/NexoWatt/ioBroker.nexowatt-vis#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.1.5"
+  },
+  "main": "main.js"
 }

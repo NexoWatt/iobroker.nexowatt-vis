@@ -1,44 +1,24 @@
 
 # ioBroker.nexowatt-vis
 
-Responsive OpenEMS-ähnliches Dashboard in **NexoWatt**-Farben (grün/schwarz) als eigener ioBroker Adapter.
-Alle Datenpunkte werden in den Adaptereinstellungen verknüpft. Der Adapter stellt ein kleines Web-UI bereit.
+Prototype built 2025-10-26.
 
-## Features
-- LIVE-Ansicht mit Energie-Monitor (Ring), KPIs und Karten (Autarkie, Eigenverbrauch, Speicher, Netz, Produktion, Verbrauch, EVCS)
-- Responsive Layout (Desktop, Tablet, Smartphone)
-- Farben/Theme: NexoWatt (grün/schwarz)
-- Serverseitige Events (SSE) für Echtzeit-Updates
-- Admin5-JSON-Config mit `id`-Feldern zum direkten Verknüpfen der ioBroker States
+This helper adapter mirrors the configured raw datapoints into normalized states and
+ships an **Energy Flow Monitor** (SVG/HTML) for VIS 2 in NexoWatt colors.
 
-## Installation (Dev)
-```bash
-# auf dem ioBroker Host
-cd /opt/iobroker
-# Ordner anlegen und Dateien hineinkopieren/zips entpacken
-# anschließend:
-iobroker add nexowatt-vis --host <hostname> --enabled true
-# oder via Adapter-Admin: als benutzerdefinierten Adapter installieren
-```
+## States (read-only)
+- `nexowatt-vis.X.flow.pvPower` (W)
+- `nexowatt-vis.X.flow.gridPower` (W; import > 0, export < 0)
+- `nexowatt-vis.X.flow.housePower` (W)
+- `nexowatt-vis.X.flow.batteryPower` (W; discharge > 0, charge < 0)
+- `nexowatt-vis.X.battery.soc` (%)
 
-**Web UI**: `http://<host>:8188/` (Port in den Einstellungen änderbar).
+## Admin settings
+Map your source datapoints (object IDs) in the adapter settings. The adapter will
+subscribe to them and mirror the values into the states above.
 
-## Konfiguration
-Öffne die Instanz-Einstellungen und verknüpfe alle relevanten Datenpunkte:
-- Autarkie %, Eigenverbrauch % (optional – wird bei Bedarf aus PV/Verbrauch hergeleitet)
-- PV-/Produktion, Gesamtverbrauch
-- Netzbezug/Einspeisung
-- Speicher: Lade-/Entladeleistung, SoC
-- Verbrauch EVCS / Sonstiges
-- EVCS Status & letzte Ladung
-- (optional) Netzfrequenz, Netzspannung
+## VIS 2 Energy Flow
+Open `www/energyflow.html` and copy/paste the markup into a VIS-2 **HTML widget**.
+Adjust the instance in the script (`statePrefix = 'nexowatt-vis.0.'`) if required.
 
-Einheit für Leistung (W / kW) kann gewählt werden.
-
-## Datenfluss
-Der Adapter abonniert die konfigurierten States (subscribeForeignStates) und pusht Änderungen via SSE an das Frontend.
-Das UI nutzt eine SVG-Ringanzeige und Karten mit Progress-Bars.
-
-## Hinweise
-- Dies ist ein minimales, startfähiges Grundgerüst. Passen Sie Labels, zusätzliche Karten und Berechnungslogik nach Bedarf an.
-- Für produktiven Einsatz empfehlen wir eine Code-Signierung, erweiterte Fehlerbehandlung und Tests.
+Logos are served at `/adapter/nexowatt-vis/admin.png` and `/adapter/nexowatt-vis/admin_logo_.ico`.
