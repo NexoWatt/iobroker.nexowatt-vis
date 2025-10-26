@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -38,6 +38,10 @@
       "0.0.9": {
         "de": "PV-Kreis entfernt, Energiefluss-Monitor hinzugefügt; Oberfläche auf Deutsch.",
         "en": "Removed PV ring, added energy-flow monitor; UI translated to German."
+      },
+      "0.0.10": {
+        "de": "Runder Energiemonitor mit Icons + SoC-Ring und Lade-/Entladezeit. Neuer Datenpunkt: Speicher Kapazität (kWh).",
+        "en": "Round energy monitor with icons + SoC ring and charge/discharge time. New datapoint: storage capacity (kWh)."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -106,7 +110,8 @@
       "batteryEnergyTotal": "0_userdata.0.nexowatt.battery.energy_total",
       "housePower": "0_userdata.0.nexowatt.house.power",
       "houseTemp": "0_userdata.0.nexowatt.house.temperature",
-      "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature"
+      "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
+      "storageCapacityKwh": ""
     },
     "sections": {
       "tabs": [

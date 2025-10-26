@@ -1,4 +1,25 @@
 
+function setDonut(cls, pct, inner=false) {
+  const r = inner ? 34 : 42;
+  const max = 2 * Math.PI * r;
+  const v = Math.max(0, Math.min(100, pct || 0));
+  const dash = (v / 100) * max;
+  const rest = max - dash;
+  const q = '.donut .seg.' + cls;
+  const el = document.querySelector(q);
+  if (!el) return;
+  el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + rest.toFixed(1));
+}
+
+// Format hours to "h:mm"
+function formatHours(h) {
+  if (!h || !isFinite(h) || h <= 0) return '--';
+  const totalMin = Math.round(h * 60);
+  const hh = Math.floor(totalMin / 60);
+  const mm = totalMin % 60;
+  return hh + 'h ' + (mm<10?'0':'') + mm + 'm';
+}
+
 let state = {};
 let units = { power: 'W', energy: 'kWh' };
 
@@ -205,6 +226,53 @@ function renderSmartHome(){
 
 const _renderOrig = render;
 render = function(){
+  /* DONUT-HOOK */
+
+  // --- Runde Energieanzeige ---
+  try {
+    const d = (k) => state[k]?.value;
+    const pv = +(d('pvPower') ?? 0);
+    const load = +(d('consumptionTotal') ?? 0);
+    const buy = +(d('gridBuyPower') ?? 0);
+    const sell = +(d('gridSellPower') ?? 0);
+    const charge = +(d('storageChargePower') ?? 0);
+    const discharge = +(d('storageDischargePower') ?? 0);
+    const soc = d('storageSoc');
+    const cap = +(d('storageCapacityKwh') ?? 0);
+
+    // Values
+    const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
+    setText('pvVal', formatPower(pv));
+    setText('gridBuyVal', formatPower(buy));
+    setText('gridSellVal', formatPower(sell));
+    setText('chargeVal', formatPower(charge));
+    setText('dischargeVal', formatPower(discharge));
+    setText('centerLoad', formatPower(load));
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0) + ' %');
+
+    // Times
+    if (cap && soc !== undefined) {
+      const socPct = Number(soc) / 100;
+      const remToFull_kWh = cap * (1 - socPct);
+      const remToEmpty_kWh = cap * (socPct);
+      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
+      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
+      setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
+      setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
+      // SoC ring
+      setDonut('soc', Math.max(0, Math.min(100, Number(soc))), true);
+    }
+
+    // Arcs relative to max flow
+    const maxFlow = Math.max(1, pv, buy, sell, load, charge, discharge);
+    const pct = (v) => Math.min(100, Math.max(0, (v / maxFlow) * 100));
+    setDonut('pv', pct(pv));
+    setDonut('gridbuy', pct(buy));
+    setDonut('gridsell', pct(sell));
+    setDonut('load', pct(load));
+    setDonut('storage', pct(charge + discharge));
+  } catch(e) { console.warn('donut render error', e); }
+
   _renderOrig();
   renderSmartHome();
 }
@@ -213,6 +281,53 @@ render = function(){
 // Zusätzliche Anzeige-Updates für Energiefluss
 const _renderEF = render;
 render = function(){
+  /* DONUT-HOOK */
+
+  // --- Runde Energieanzeige ---
+  try {
+    const d = (k) => state[k]?.value;
+    const pv = +(d('pvPower') ?? 0);
+    const load = +(d('consumptionTotal') ?? 0);
+    const buy = +(d('gridBuyPower') ?? 0);
+    const sell = +(d('gridSellPower') ?? 0);
+    const charge = +(d('storageChargePower') ?? 0);
+    const discharge = +(d('storageDischargePower') ?? 0);
+    const soc = d('storageSoc');
+    const cap = +(d('storageCapacityKwh') ?? 0);
+
+    // Values
+    const setText = (id, t) => { const el=document.getElementById(id); if (el) el.textContent=t; };
+    setText('pvVal', formatPower(pv));
+    setText('gridBuyVal', formatPower(buy));
+    setText('gridSellVal', formatPower(sell));
+    setText('chargeVal', formatPower(charge));
+    setText('dischargeVal', formatPower(discharge));
+    setText('centerLoad', formatPower(load));
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0) + ' %');
+
+    // Times
+    if (cap && soc !== undefined) {
+      const socPct = Number(soc) / 100;
+      const remToFull_kWh = cap * (1 - socPct);
+      const remToEmpty_kWh = cap * (socPct);
+      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
+      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
+      setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
+      setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
+      // SoC ring
+      setDonut('soc', Math.max(0, Math.min(100, Number(soc))), true);
+    }
+
+    // Arcs relative to max flow
+    const maxFlow = Math.max(1, pv, buy, sell, load, charge, discharge);
+    const pct = (v) => Math.min(100, Math.max(0, (v / maxFlow) * 100));
+    setDonut('pv', pct(pv));
+    setDonut('gridbuy', pct(buy));
+    setDonut('gridsell', pct(sell));
+    setDonut('load', pct(load));
+    setDonut('storage', pct(charge + discharge));
+  } catch(e) { console.warn('donut render error', e); }
+
   _renderEF();
   try {
     const s = state;

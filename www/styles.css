@@ -111,3 +111,26 @@ body {
 .card.energy-flow .node.load { grid-column: 2; grid-row: 2; align-self: start; }
 .card.energy-flow .arrows { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
 .card.energy-flow .arrows .a { stroke: var(--nx-green); stroke-width: 2; fill: none; opacity: .8; }
+
+/* Runde Energieanzeige */
+.card.energy-circle .circle-wrap{ position:relative; display:flex; justify-content:center; align-items:center; min-height:300px; }
+.donut{ width:260px; height:260px; }
+.donut .bg{ fill:none; stroke:#1f2830; stroke-width:8; opacity:.9; }
+.donut .bg.inner{ stroke-width:6; }
+.donut .seg{ fill:none; stroke-width:8; stroke-linecap:round; }
+.donut .seg.pv{ stroke:#3da5f5; }
+.donut .seg.gridbuy{ stroke:#8892a5; }
+.donut .seg.gridsell{ stroke:#f0c24b; }
+.donut .seg.load{ stroke:#c084fc; }
+.donut .seg.storage{ stroke:#00d084; }
+.donut .seg.soc{ stroke:#00d084; stroke-width:6; }
+.center{ position:absolute; text-align:center; }
+.center .big{ font-size:28px; }
+.center .socline, .center .timeline{ font-size:12px; opacity:.9; }
+.legend{ position:absolute; font-size:14px; background:rgba(0,0,0,.0); padding:2px 6px; border-radius:6px; }
+.legend .ico{ opacity:.9; margin-right:6px; }
+.legend.top{ top:14px; left:50%; transform:translateX(-50%); }
+.legend.left{ left:18px; top:50%; transform:translateY(-50%); }
+.legend.right{ right:18px; top:50%; transform:translateY(-50%); }
+.legend.bottom-left{ left:22%; bottom:18px; transform:translateX(-50%); }
+.legend.bottom-right{ right:22%; bottom:18px; transform:translateX(50%); }
