@@ -114,7 +114,7 @@ body {
 
 /* Runde Energieanzeige */
 .card.energy-circle .circle-wrap{ position:relative; display:flex; justify-content:center; align-items:center; min-height:300px; }
-.donut{ width:260px; height:260px; }
+.donut{}
 .donut .bg{ fill:none; stroke:#1f2830; stroke-width:8; opacity:.9; }
 .donut .bg.inner{ stroke-width:6; }
 .donut .seg{ fill:none; stroke-width:8; stroke-linecap:round; }
@@ -137,7 +137,7 @@ body {
 
 /* --- Energy donut (dark) --- */
 .card.energy-donut .donut-wrap{position:relative;display:flex;justify-content:center;align-items:center;min-height:320px}
-.donut{width:300px;height:300px}
+.donut{}
 .donut .track{fill:none;stroke:#2a323b;stroke-width:8;opacity:.6;stroke-linecap:round}
 .donut .soc-track{fill:none;stroke:#2a323b;stroke-width:6;opacity:.6}
 .donut .arc{fill:none;stroke-width:8;stroke-linecap:round}
@@ -167,10 +167,10 @@ body {
 .energy-donut .icon.small{width:18px;height:18px;vertical-align:-3px}
 .energy-donut .icon-block{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px}
 .energy-donut .icon-block .val{font-weight:600}
-.energy-donut .icon-block.pv{top:14px;left:50%;transform:translateX(-50%)}
-.energy-donut .icon-block.grid{left:8px;top:50%;transform:translateY(-50%)}
-.energy-donut .icon-block.load{right:8px;top:50%;transform:translateY(-50%)}
-.energy-donut .icon-block.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+
+
+
+
 .energy-donut .icon-block.center .mid-val{font-size:20px}
 
 /* Donut quadrant layout */
@@ -179,10 +179,10 @@ body {
 
 /* Bigger SVG icons and closer to ring */
 .energy-donut .icon{width:40px;height:40px}
-.energy-donut .icon-block.pv{top:8px;left:50%;transform:translateX(-50%)}
-.energy-donut .icon-block.grid{left:0;top:50%;transform:translateY(-50%)}
-.energy-donut .icon-block.load{right:0;top:50%;transform:translateY(-50%)}
-.energy-donut .icon-block.center{left:50%;top:50%;transform:translate(-50%,-50%)}
+
+
+
+
 .energy-donut .icon-block .val{font-size:14px}
 
 /* Donut gaps per quadrant */
@@ -190,3 +190,47 @@ body {
 .donut .soc-track{stroke:#2a323b;stroke-dasharray:52 4}
 
 /* We will set dasharray & dashoffset for arcs dynamically */
+
+/* Ring-relative icon placement (radius ~150px, nudge 12px) */
+.energy-donut .donut-wrap{--R:150px; --nudge:12px;}
+.energy-donut .icon{width:44px;height:44px}
+.energy-donut .icon-block.pv{position:absolute; top:calc(50% - var(--R) - var(--nudge)); left:50%; transform:translateX(-50%);}
+.energy-donut .icon-block.grid{position:absolute; left:calc(50% - var(--R) - var(--nudge)); top:50%; transform:translateY(-50%);}
+.energy-donut .icon-block.load{position:absolute; right:calc(50% - var(--R) - var(--nudge)); top:50%; transform:translateY(-50%);}
+.energy-donut .icon-block.center{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);}
+.energy-donut .icon-block .val{font-size:14px; font-weight:600}
+
+/* --- Responsive energy donut --- */
+.card.energy-donut .donut-wrap{
+  /* Responsive size: clamp between 240px and 520px or 60vw */
+  --size: clamp(240px, 60vw, 520px);
+  --R: calc(var(--size) / 2);
+  --nudge: clamp(8px, calc(var(--size) / 28), 18px);
+  width: var(--size);
+  height: var(--size);
+  aspect-ratio: 1 / 1;
+  position: relative;
+  margin: 0 auto;
+}
+.donut{ width: 100%; height: 100%; }
+
+/* Icons scale with size */
+.energy-donut .icon{ 
+  width: clamp(26px, calc(var(--size)/8.5), 56px);
+  height: clamp(26px, calc(var(--size)/8.5), 56px);
+}
+.energy-donut .icon-block .val{ 
+  font-size: clamp(12px, calc(var(--size)/28), 16px);
+}
+
+/* Ring-relative positions */
+.energy-donut .icon-block.pv   { position:absolute; top:  calc(50% - var(--R) - var(--nudge)); left: 50%; transform: translateX(-50%); }
+.energy-donut .icon-block.grid { position:absolute; left: calc(50% - var(--R) - var(--nudge)); top:   50%; transform: translateY(-50%); }
+.energy-donut .icon-block.load { position:absolute; right:calc(50% - var(--R) - var(--nudge)); top:   50%; transform: translateY(-50%); }
+.energy-donut .icon-block.center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
+.energy-donut .icon-block.center .mid-val{ font-size: clamp(16px, calc(var(--size)/16), 24px); }
+.energy-donut .lbl.center .soc, .energy-donut .lbl.center .time{ font-size: clamp(11px, calc(var(--size)/40), 13px); }
+
+@media (max-width: 520px) {
+  .card.energy-donut .donut-wrap{ --nudge: clamp(6px, calc(var(--size)/34), 14px); }
+}

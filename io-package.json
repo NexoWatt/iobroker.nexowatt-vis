@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.13",
+    "version": "0.0.15",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -54,6 +54,14 @@
       "0.0.13": {
         "de": "Donut: SVG-Icons, Segmente pro Quadrant bündig am Ring, Anteil am Gesamtfluss.",
         "en": "Donut: SVG icons, quadrant-aligned segments hugging ring, share-of-total."
+      },
+      "0.0.14": {
+        "de": "SVG-Icons dichter am Ring. Anordnung: PV oben, Netz links, Speicher unten, Verbrauch rechts.",
+        "en": "SVG icons tighter to ring. Layout: PV top, Grid left, Storage bottom, Load right."
+      },
+      "0.0.15": {
+        "de": "Energymonitor jetzt responsiv (Größe + Icon-Abstände skalieren).",
+        "en": "Energy monitor responsive."
       }
     },
     "title": "NexoWatt EMS UI",
