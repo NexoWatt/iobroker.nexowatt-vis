@@ -485,3 +485,49 @@ render = function(){
 
 // SIDE-VALUES
 function setSideValue(id, val){ const el=document.getElementById(id); if(el) el.textContent = val; }
+
+// ---- Energy Web update ----
+function updateEnergyWeb() {
+  const d = (k) => state[k]?.value;
+  const pv = +(d('pvPower') ?? 0);
+  const buy = +(d('gridBuyPower') ?? 0);
+  const sell = +(d('gridSellPower') ?? 0);
+  const load = Math.max(0, +(d('consumptionTotal') ?? 0));
+  const c1 = +(d('consumer1Power') ?? 0);
+  const c2 = +(d('consumer2Power') ?? 0);
+  const soc = d('storageSoc');
+  const cap = +(d('storageCapacityKwh') ?? 0);
+  const charge = +(d('storageChargePower') ?? 0);
+  const discharge = +(d('storageDischargePower') ?? 0);
+
+  // Rest = load - c1 - c2 (>=0)
+  const rest = Math.max(0, load - (c1+c2));
+
+  function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
+  T('pvVal', formatPower(pv));
+  T('gridVal', formatPower(buy));
+  T('c1Val', formatPower(c1));
+  T('c2Val', formatPower(c2));
+  T('restVal', formatPower(rest));
+  T('centerPower', formatPower(load));
+  if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed(0)+' %');
+
+  if (cap && soc !== undefined) {
+    const socPct = Number(soc)/100;
+    const tFull = charge>0 ? ((cap*(1-socPct))*1000)/charge : null;
+    const tEmpty= discharge>0 ? ((cap*socPct)*1000)/discharge : null;
+    T('centerTime', 'Voll ' + (tFull?formatHours(tFull):'--') + ' • Leer ' + (tEmpty?formatHours(tEmpty):'--'));
+  }
+
+  // Show/hide lines based on values
+  const show = (id, on)=>{ const el=document.getElementById(id); if(el) el.style.opacity = on ? 1 : 0.15; };
+  show('linePV', pv>1);
+  show('lineGrid', buy>1);
+  show('lineC1', c1>1);
+  show('lineC2', c2>1);
+  show('lineRest', rest>1);
+}
+
+// Patch render to also update energy web
+const _renderOld = render;
+render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }

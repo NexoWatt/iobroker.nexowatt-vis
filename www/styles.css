@@ -251,3 +251,26 @@ body {
 .donut .arc.bat{ stroke:#27ae60; }    /* Battery: green */
 .donut .arc.soc{ stroke:#27ae60; stroke-width:8; }
 .energy-donut .icon{ filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+
+/* Energy Web (radial) */
+.card.energy-web .web-wrap{width:100%;display:flex;justify-content:center;align-items:center;min-height:420px}
+.web{width:min(640px,80vw);height:auto}
+.web .ring{fill:#0e1216;stroke-width:3}
+.web .ring.pv{stroke:#27ae60}
+.web .ring.grid{stroke:#e74c3c}
+.web .ring.consumer{stroke:#f0c24b}
+.web .node .ico{fill:#e6e6e6;filter:url(#soft)}
+.web text{fill:#e6e6e6;font-size:14px}
+.web text.big{font-size:16px;font-weight:600}
+.web text.lbl{opacity:.8}
+.web .hub-dot{fill:#848e9a;opacity:.9}
+.web .hub-dot.center{fill:#b0b7bf;}
+
+.flow{stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:6 12;animation:flow 2.2s linear infinite}
+.flow.pv{stroke:#27ae60}
+.flow.grid{stroke:#e74c3c}
+.flow.consumer{stroke:#f0c24b}
+.flow.dim{opacity:.5}
+@keyframes flow{from{stroke-dashoffset:0} to{stroke-dashoffset:-36}}
+/* reverse direction for outflows */
+#lineC1,#lineC2,#lineRest{animation-direction:reverse}

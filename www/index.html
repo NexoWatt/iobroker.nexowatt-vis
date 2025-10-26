@@ -24,38 +24,92 @@
     
 
 
-<section class="card energy-donut">
+
+<section class="card energy-web">
   <div class="card-header">
     <div class="legend-color"></div>
-    <span>Energymonitor</span>
+    <span>Energiefluss</span>
   </div>
-  <div class="donut-wrap">
-    <svg class="donut" viewBox="0 0 100 100">
-      <!-- background track split into 4 arcs -->
-      <circle class="track pv" cx="50" cy="50" r="42" />
-      <circle class="track grid" cx="50" cy="50" r="42" />
-      <circle class="track load" cx="50" cy="50" r="42" />
-      <circle class="track bat" cx="50" cy="50" r="42" />
 
-      <!-- foreground arcs -->
-      <circle class="arc pv"   cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="arc grid" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="arc load" cx="50" cy="50" r="42" stroke-dasharray="0 264" />
-      <circle class="arc bat"  cx="50" cy="50" r="42" stroke-dasharray="0 264" />
+  <div class="web-wrap">
+    <svg class="web" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="0.2" />
+        </filter>
+      </defs>
 
-      <!-- inner SoC ring -->
-      <circle class="soc-track" cx="50" cy="50" r="34" />
-      <circle class="arc soc" cx="50" cy="50" r="34" stroke-dasharray="0 213" />
-    </svg
-    <div class="icon-block pv"><svg viewBox="0 0 64 64" class="icon pv"><path d="M8 42h48l-6-22H14l-6 22zm10-18h6l-1 10h-8l3-10zm14 0h6l1 10h-8l1-10zm-24 0h6l-3 10H6l2-10zm38 0h6l2 10h-8l0-10zM12 50h40v4H12z" /></svg><div class="val" id="pvLbl">--</div></div>
-    <div class="icon-block grid"><svg viewBox="0 0 64 64" class="icon grid"><path d="M30 6h4l8 8h-6l6 10h-6l8 12h-6l10 16h-6l-8-12-8 12h-6l10-16h-6l8-12h-6l6-10h-6l8-8z"/></svg><div class="val" id="gridLbl">--</div></div>
-    <div class="icon-block load"><svg viewBox="0 0 64 64" class="icon load"><path d="M32 8a16 16 0 0 0-10 28c2 2 2 4 2 6h16c0-2 0-4 2-6a16 16 0 0 0-10-28zm-6 40h12v4H26zm2 6h8v4h-8z"/></svg><div class="val" id="loadLbl">--</div></div>
-    <div class="icon-block center">
-      <div class="mid-val" id="centerLbl">0 W</div>
-      <div class="soc"><svg viewBox="0 0 64 64" class="icon bat small"><rect x="10" y="24" width="42" height="20" rx="4" ry="4"/><rect x="54" y="28" width="4" height="12" rx="1"/></svg><span id="socLbl">-- %</span></div>
-      <div class="time"><span id="tFull">Voll --</span> • <span id="tEmpty">Leer --</span></div>
-    </div>
-    </div></section>
+      <!-- lines -->
+      <line id="lineGrid"  x1="300" y1="160" x2="300" y2="300" class="flow grid" />
+      <line id="linePV"    x1="420" y1="200" x2="300" y2="300" class="flow pv" />
+      <line id="lineC1"    x1="300" y1="300" x2="200" y2="320" class="flow consumer" />
+      <line id="lineC2"    x1="300" y1="300" x2="420" y2="420" class="flow consumer" />
+      <line id="lineRest"  x1="300" y1="300" x2="260" y2="460" class="flow consumer dim" />
+
+      <!-- nodes -->
+      <g class="hub">
+        <circle cx="300" cy="300" r="10" class="hub-dot"/>
+        <circle cx="300" cy="300" r="4" class="hub-dot center" />
+      </g>
+
+      <!-- Grid node -->
+      <g class="node grid" transform="translate(300,140)">
+        <circle r="34" class="ring grid"/>
+        <g class="ico">
+          <path d="M-4,-22 h8 l8,8 h-6 l6,10 h-6 l8,12 h-6 l10,16 h-6 l-8,-12 -8,12 h-6 l10,-16 h-6 l8,-12 h-6 l6,-10 h-6 l8,-8z" />
+        </g>
+        <text class="val" y="-48" text-anchor="middle" id="gridVal">--</text>
+        <text class="lbl" y="-32" text-anchor="middle">Netz</text>
+      </g>
+
+      <!-- PV node -->
+      <g class="node pv" transform="translate(440,200)">
+        <circle r="34" class="ring pv"/>
+        <g class="ico">
+          <path d="M-24,10 h48 l-6,-22 h-36 l-6,22z M-8,-8 h12 l-1,10 h-14 l3,-10z M6,-8 h12 l1,10 h-14 l1,-10z" />
+        </g>
+        <text class="val" y="-48" text-anchor="middle" id="pvVal">--</text>
+        <text class="lbl" y="-32" text-anchor="middle">PV</text>
+      </g>
+
+      <!-- Consumer left -->
+      <g class="node consumer" transform="translate(180,320)">
+        <circle r="30" class="ring consumer"/>
+        <g class="ico">
+          <path d="M-8,-10 h16 v6 h4 v12 h-8 v-6 h-8 v6 h-8 v-12 h4 v-6z" />
+        </g>
+        <text class="val" y="58" text-anchor="middle" id="c1Val">--</text>
+        <text class="lbl" y="40" text-anchor="middle">Verbraucher 1</text>
+      </g>
+
+      <!-- Consumer bottom-right -->
+      <g class="node consumer" transform="translate(440,440)">
+        <circle r="30" class="ring consumer"/>
+        <g class="ico">
+          <circle cx="0" cy="0" r="10"/><path d="M0,-16 a16,16 0 1,0 0,32 a16,16 0 1,0 0,-32z" fill="none"/>
+        </g>
+        <text class="val" y="58" text-anchor="middle" id="c2Val">--</text>
+        <text class="lbl" y="40" text-anchor="middle">Verbraucher 2</text>
+      </g>
+
+      <!-- Rest bottom-left -->
+      <g class="node consumer dim" transform="translate(260,480)">
+        <circle r="30" class="ring consumer"/>
+        <g class="ico"><circle r="7"/></g>
+        <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
+        <text class="lbl" y="40" text-anchor="middle">Rest</text>
+      </g>
+
+      <!-- center readouts -->
+      <g class="center" transform="translate(300,300)">
+        <text class="big" y="0" text-anchor="middle" id="centerPower">0 W</text>
+        <text class="minor" y="18" text-anchor="middle" id="centerSoc">-- %</text>
+        <text class="minor" y="34" text-anchor="middle" id="centerTime">Voll -- • Leer --</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
     
 
 

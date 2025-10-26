@@ -267,6 +267,28 @@
           "newLine": true,
           "placeholder": "z.B. 0_userdata.0.nexowatt.storage.capacity_kwh",
           "help": "Kapazität des Batteriespeichers in kWh (Zahl)."
+        },
+        "datapoints.consumer1Power": {
+          "type": "objectId",
+          "attr": "datapoints.consumer1Power",
+          "label": "Verbraucher 1 Leistung (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "placeholder": "optional"
+        },
+        "datapoints.consumer2Power": {
+          "type": "objectId",
+          "attr": "datapoints.consumer2Power",
+          "label": "Verbraucher 2 Leistung (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "placeholder": "optional"
         }
       },
       "label": "Datenpunkte",

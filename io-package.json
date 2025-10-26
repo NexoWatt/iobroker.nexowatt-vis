@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -70,6 +70,10 @@
       "0.0.17": {
         "de": "Donut an Vorlage ausgerichtet (Anker-Winkel), Icons am Ring, neues Logo oben links.",
         "en": "Donut aligned to reference (anchor angles), icons hug ring, new brand logo top-left."
+      },
+      "0.0.18": {
+        "de": "Neuer Energiefluss als Netz-Graph mit animierten Richtungs-Linien, responsive. Optionale Verbraucher 1/2 in Admin.",
+        "en": "New energy web graph with animated directional lines, responsive. Optional consumers in admin."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -139,7 +143,9 @@
       "housePower": "0_userdata.0.nexowatt.house.power",
       "houseTemp": "0_userdata.0.nexowatt.house.temperature",
       "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
-      "storageCapacityKwh": ""
+      "storageCapacityKwh": "",
+      "consumer1Power": "",
+      "consumer2Power": ""
     },
     "sections": {
       "tabs": [
