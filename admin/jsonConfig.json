@@ -1,91 +1,163 @@
 {
-  "type": "panel",
+  "type": "tabs",
   "items": [
     {
-      "type": "static-image",
-      "src": "admin.png",
-      "style": {
-        "width": "180px",
-        "display": "block",
-        "margin": "0 auto 16px"
-      }
-    },
-    {
-      "type": "header",
-      "text": "NexoWatt \u2013 Alias Datenpunkte & Beschriftungen"
-    },
-    {
-      "type": "text",
-      "text": "Der Adapter legt feste Alias-Datenpunkte unter 'nexowatt-vis.X.alias.*' an. Hier kannst du sie mit bestehenden Roh-Datenpunkten verkn\u00fcpfen. Optional wird zus\u00e4tzlich die Objekt-Eigenschaft 'common.alias' gesetzt."
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "checkbox",
-      "attr": "setAliasProperty",
-      "title": "Alias-Eigenschaft am Objekt setzen (common.alias.id)",
-      "default": true
-    },
-    {
-      "type": "tabs",
-      "items": [
-        {
-          "title": "Alias-Verkn\u00fcpfung",
-          "items": [
-            {
-              "type": "objectId",
-              "attr": "aliasPvId",
-              "title": "PV-Leistung (W)"
-            },
-            {
-              "type": "objectId",
-              "attr": "aliasGridId",
-              "title": "Netzleistung (W): Import > 0, Export < 0"
-            },
-            {
-              "type": "objectId",
-              "attr": "aliasHouseId",
-              "title": "Hausverbrauch (W)"
-            },
-            {
-              "type": "objectId",
-              "attr": "aliasBatteryId",
-              "title": "Batterieleistung (W): Entladen > 0, Laden < 0"
-            },
-            {
-              "type": "objectId",
-              "attr": "aliasSocId",
-              "title": "Batterie SoC (%)"
-            }
-          ]
+      "type": "panel",
+      "title": "Allgemein",
+      "items": {
+        "port": {
+          "type": "number",
+          "label": "HTTP Port",
+          "min": 1,
+          "max": 65535
         },
-        {
-          "title": "Beschriftungen",
-          "items": [
+        "bind": {
+          "type": "text",
+          "label": "Bind-Adresse"
+        },
+        "units.power": {
+          "type": "select",
+          "label": "Leistungseinheit",
+          "options": [
             {
-              "type": "text",
-              "attr": "pvName",
-              "title": "PV-Name"
+              "label": "W",
+              "value": "W"
             },
             {
-              "type": "text",
-              "attr": "gridName",
-              "title": "Netz-Name"
-            },
-            {
-              "type": "text",
-              "attr": "houseName",
-              "title": "Haus-Name"
-            },
-            {
-              "type": "text",
-              "attr": "batteryName",
-              "title": "Speicher-Name"
+              "label": "kW",
+              "value": "kW"
             }
           ]
         }
-      ]
+      }
+    },
+    {
+      "type": "panel",
+      "title": "Datenpunkte",
+      "items": {
+        "datapoints.autarky": {
+          "type": "id",
+          "label": "Autarkie (%)"
+        },
+        "datapoints.selfConsumption": {
+          "type": "id",
+          "label": "Eigenverbrauch (%)"
+        },
+        "datapoints.pvPower": {
+          "type": "id",
+          "label": "PV-Leistung"
+        },
+        "datapoints.productionTotal": {
+          "type": "id",
+          "label": "Produktion Gesamt (Leistung)"
+        },
+        "datapoints.consumptionTotal": {
+          "type": "id",
+          "label": "Verbrauch Gesamt (Leistung)"
+        },
+        "datapoints.gridBuyPower": {
+          "type": "id",
+          "label": "Netzbezug (Leistung)"
+        },
+        "datapoints.gridSellPower": {
+          "type": "id",
+          "label": "Einspeisung (Leistung)"
+        },
+        "datapoints.storageChargePower": {
+          "type": "id",
+          "label": "Batterie Ladeleistung"
+        },
+        "datapoints.storageDischargePower": {
+          "type": "id",
+          "label": "Batterie Entladeleistung"
+        },
+        "datapoints.storageSoc": {
+          "type": "id",
+          "label": "Batterie SoC (%)"
+        },
+        "datapoints.consumptionEvcs": {
+          "type": "id",
+          "label": "Ladestation Verbrauch (Leistung)"
+        },
+        "datapoints.consumptionOther": {
+          "type": "id",
+          "label": "Sonstiger Verbrauch (Leistung)"
+        },
+        "datapoints.evcsStatus": {
+          "type": "id",
+          "label": "EVCS Status"
+        },
+        "datapoints.evcsLastChargeKwh": {
+          "type": "id",
+          "label": "EVCS letzte Ladung (kWh)"
+        },
+        "datapoints.gridFrequency": {
+          "type": "id",
+          "label": "Netzfrequenz (Hz)"
+        },
+        "datapoints.gridVoltage": {
+          "type": "id",
+          "label": "Netzspannung (V)"
+        }
+      }
+    },
+    {
+      "type": "panel",
+      "title": "SmartHome (vorbereitet)",
+      "items": {
+        "smartHome.enabled": {
+          "type": "checkbox",
+          "label": "SmartHome-Bereich aktivieren (Beta)"
+        },
+        "smartHome.datapoints.heatPumpOn": {
+          "type": "id",
+          "label": "Wärmepumpe EIN/AUS (bool)"
+        },
+        "smartHome.datapoints.roomTemp": {
+          "type": "id",
+          "label": "Raumtemperatur (°C)"
+        },
+        "smartHome.datapoints.wallboxLock": {
+          "type": "id",
+          "label": "Wallbox verriegeln (bool)"
+        },
+        "smartHome.datapoints.gridLimit": {
+          "type": "id",
+          "label": "Netzbezugslimit (W)"
+        },
+        "smartHome.datapoints.pvCurtailment": {
+          "type": "id",
+          "label": "PV-Abregelung (%)"
+        }
+      }
+    },
+    {
+      "type": "panel",
+      "title": "Erweitert / Zukunft",
+      "items": {
+        "futureOptions.theme": {
+          "type": "select",
+          "label": "Theme",
+          "options": [
+            {
+              "label": "NexoWatt Dark",
+              "value": "nexowatt-dark"
+            },
+            {
+              "label": "NexoWatt Light (später)",
+              "value": "nexowatt-light"
+            }
+          ]
+        },
+        "futureOptions.enableAnimations": {
+          "type": "checkbox",
+          "label": "Animationen aktivieren"
+        },
+        "futureOptions.showGridVoltage": {
+          "type": "checkbox",
+          "label": "Netzspannung anzeigen (experimentell)"
+        }
+      }
     }
   ]
 }
