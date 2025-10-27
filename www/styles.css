@@ -95,182 +95,38 @@ body {
 .btn{display:inline-block;padding:8px 12px;border:1px solid #2a323b;border-radius:10px;text-decoration:none;color:var(--text)}
 .btn:hover{border-color:var(--nx-green)}
 
-/* NexoWatt header logo */
-.nw-header{display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem}
-#nw-logo{height:28px}
 
-/* Energiefluss Monitor */
-.card.energy-flow .flow-grid { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 120px 120px; gap: 16px; padding: 8px 12px 16px; }
-.card.energy-flow .node { background: var(--card-bg); border: 1px solid #2a323b; border-radius: 10px; padding: 10px; box-shadow: var(--card-shadow); }
-.card.energy-flow .node .title { font-weight: 600; opacity: .9; margin-bottom: 6px; }
-.card.energy-flow .node .val.big { font-size: 28px; }
-.card.energy-flow .node .pair { display:flex; justify-content:space-between; font-size:14px; line-height:1.6; }
-.card.energy-flow .node.pv { grid-column: 1; grid-row: 1; }
-.card.energy-flow .node.grid { grid-column: 2; grid-row: 1; }
-.card.energy-flow .node.storage { grid-column: 3; grid-row: 1; }
-.card.energy-flow .node.load { grid-column: 2; grid-row: 2; align-self: start; }
-.card.energy-flow .arrows { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
-.card.energy-flow .arrows .a { stroke: var(--nx-green); stroke-width: 2; fill: none; opacity: .8; }
-
-/* Runde Energieanzeige */
-.card.energy-circle .circle-wrap{ position:relative; display:flex; justify-content:center; align-items:center; min-height:300px; }
-.donut{}
-.donut .bg{ fill:none; stroke:#1f2830; stroke-width:8; opacity:.9; }
-.donut .bg.inner{ stroke-width:6; }
-.donut .seg{ fill:none; stroke-width:8; stroke-linecap:round; }
-.donut .seg.pv{ stroke:#3da5f5; }
-.donut .seg.gridbuy{ stroke:#8892a5; }
-.donut .seg.gridsell{ stroke:#f0c24b; }
-.donut .seg.load{ stroke:#c084fc; }
-.donut .seg.storage{ stroke:#00d084; }
-.donut .seg.soc{ stroke:#00d084; stroke-width:6; }
-.center{ position:absolute; text-align:center; }
-.center .big{ font-size:28px; }
-.center .socline, .center .timeline{ font-size:12px; opacity:.9; }
-.legend{ position:absolute; font-size:14px; background:rgba(0,0,0,.0); padding:2px 6px; border-radius:6px; }
-.legend .ico{ opacity:.9; margin-right:6px; }
-.legend.top{ top:14px; left:50%; transform:translateX(-50%); }
-.legend.left{ left:18px; top:50%; transform:translateY(-50%); }
-.legend.right{ right:18px; top:50%; transform:translateY(-50%); }
-.legend.bottom-left{ left:22%; bottom:18px; transform:translateX(-50%); }
-.legend.bottom-right{ right:22%; bottom:18px; transform:translateX(50%); }
-
-/* --- Energy donut (dark) --- */
-.card.energy-donut .donut-wrap{position:relative;display:flex;justify-content:center;align-items:center;min-height:320px}
-.donut{}
-.donut .track{fill:none;stroke:#2a323b;stroke-width:8;opacity:.6;stroke-linecap:round}
-.donut .soc-track{fill:none;stroke:#2a323b;stroke-width:6;opacity:.6}
-.donut .arc{fill:none;stroke-width:8;stroke-linecap:round}
-/* colors */
-.donut .arc.pv{stroke:#2d74da}
-.donut .arc.grid{stroke:#e74c3c} /* grid = red */
-.donut .arc.load{stroke:#f0c24b}
-.donut .arc.bat{stroke:#27ae60}
-.donut .arc.soc{stroke:#27ae60;stroke-width:6}
-/* start angles (in CSS via rotation) */
-.donut .track.pv,.donut .arc.pv{transform:rotate(-20deg);transform-origin:50% 50%}
-.donut .track.grid,.donut .arc.grid{transform:rotate(200deg);transform-origin:50% 50%}
-.donut .track.load,.donut .arc.load{transform:rotate(20deg);transform-origin:50% 50%}
-.donut .track.bat,.donut .arc.bat{transform:rotate(135deg);transform-origin:50% 50%}
-/* labels */
-.energy-donut .lbl{position:absolute;font-size:14px;display:flex;gap:6px;align-items:center;opacity:.95}
-.energy-donut .lbl .ico{opacity:.9}
-.energy-donut .lbl.pv{top:18px;left:50%;transform:translateX(-50%)}
-.energy-donut .lbl.grid{left:10px;top:50%;transform:translateY(-50%)}
-.energy-donut .lbl.load{right:10px;top:50%;transform:translateY(-50%)}
-.energy-donut .lbl.center{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
-.energy-donut .lbl.center #centerLbl{font-size:20px;margin-bottom:4px}
-.energy-donut .lbl.center .soc,.energy-donut .lbl.center .time{font-size:12px;opacity:.9}
-
-/* SVG icon blocks around donut */
-.energy-donut .icon{width:36px;height:36px;fill:var(--text);opacity:.95}
-.energy-donut .icon.small{width:18px;height:18px;vertical-align:-3px}
-.energy-donut .icon-block{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px}
-.energy-donut .icon-block .val{font-weight:600}
-
-
-
-
-.energy-donut .icon-block.center .mid-val{font-size:20px}
-
-/* Donut quadrant layout */
-.donut { transform: rotate(-90deg); } /* start at 12 o'clock */
-.donut .arc, .donut .track, .donut .soc-track { transform: none; transform-origin: 50% 50%; }
-
-/* Bigger SVG icons and closer to ring */
-.energy-donut .icon{width:40px;height:40px}
-
-
-
-
-.energy-donut .icon-block .val{font-size:14px}
-
-/* Donut gaps per quadrant */
-.donut .track{stroke:#2a323b;stroke-dasharray:62 4;stroke-dashoffset:0}
-.donut .soc-track{stroke:#2a323b;stroke-dasharray:52 4}
-
-/* We will set dasharray & dashoffset for arcs dynamically */
-
-/* Ring-relative icon placement (radius ~150px, nudge 12px) */
-.energy-donut .donut-wrap{--R:150px; --nudge:12px;}
-.energy-donut .icon{width:44px;height:44px}
-.energy-donut .icon-block.pv{position:absolute; top:calc(50% - var(--R) - var(--nudge)); left:50%; transform:translateX(-50%);}
-.energy-donut .icon-block.grid{position:absolute; left:calc(50% - var(--R) - var(--nudge)); top:50%; transform:translateY(-50%);}
-.energy-donut .icon-block.load{position:absolute; right:calc(50% - var(--R) - var(--nudge)); top:50%; transform:translateY(-50%);}
-.energy-donut .icon-block.center{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);}
-.energy-donut .icon-block .val{font-size:14px; font-weight:600}
-
-/* --- Responsive energy donut --- */
-.card.energy-donut .donut-wrap{
-  /* Responsive size: clamp between 240px and 520px or 60vw */
-  --size: clamp(240px, 60vw, 520px);
-  --R: calc(var(--size) / 2);
-  --nudge: clamp(8px, calc(var(--size) / 28), 18px);
-  width: var(--size);
-  height: var(--size);
-  aspect-ratio: 1 / 1;
-  position: relative;
-  margin: 0 auto;
+/* ==== Energy Graph – bigger & mobile near-full-bleed (v0.0.20) ==== */
+.card.energy-graph .graph-wrap{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: clamp(560px, 90vh, 820px);
 }
-.donut{ width: 100%; height: 100%; }
-
-/* Icons scale with size */
-.energy-donut .icon{ 
-  width: clamp(26px, calc(var(--size)/8.5), 56px);
-  height: clamp(26px, calc(var(--size)/8.5), 56px);
+.graph{
+  width: min(980px, 98vw);
+  height: auto;
 }
-.energy-donut .icon-block .val{ 
-  font-size: clamp(12px, calc(var(--size)/28), 16px);
+.graph .node text{ font-size: 15px; }
+.graph .node text.val{ font-size: 17px; }
+.graph .node circle.ring{ stroke-width: 3.5; }
+
+@media (max-width: 640px){
+  .card.energy-graph{ padding-left: 8px; padding-right: 8px; }
+  .card.energy-graph .graph-wrap{
+    min-height: clamp(620px, 92vh, 900px);
+  }
+  .graph{
+    width: 98vw;
+    max-width: none;
+  }
+  .graph .node text{ font-size: 16px; }
+  .graph .node text.val{ font-size: 18px; }
+  .graph .node circle.ring{ stroke-width: 4; }
 }
 
-/* Ring-relative positions */
-.energy-donut .icon-block.pv   { position:absolute; top:  calc(50% - var(--R) - var(--nudge)); left: 50%; transform: translateX(-50%); }
-.energy-donut .icon-block.grid { position:absolute; left: calc(50% - var(--R) - var(--nudge)); top:   50%; transform: translateY(-50%); }
-.energy-donut .icon-block.load { position:absolute; right:calc(50% - var(--R) - var(--nudge)); top:   50%; transform: translateY(-50%); }
-.energy-donut .icon-block.center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
-.energy-donut .icon-block.center .mid-val{ font-size: clamp(16px, calc(var(--size)/16), 24px); }
-.energy-donut .lbl.center .soc, .energy-donut .lbl.center .time{ font-size: clamp(11px, calc(var(--size)/40), 13px); }
-
-@media (max-width: 520px) {
-  .card.energy-donut .donut-wrap{ --nudge: clamp(6px, calc(var(--size)/34), 14px); }
+@media (min-width: 1400px){
+  .graph{ width: min(1100px, 90vw); }
+  .card.energy-graph .graph-wrap{ min-height: 72vh; }
 }
-
-/* Brand in topbar */
-.topbar{ display:flex; align-items:center; gap:10px; }
-.topbar .brand img{ height:22px; display:block; filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
-@media (min-width: 900px){ .topbar .brand img{ height:24px; } }
-
-/* Donut visual tune (OpenEMS style) */
-.donut{ transform: rotate(-90deg); }
-.donut .track{ fill:none; stroke:#28313a; stroke-width:12; opacity:.5; stroke-linecap:round; }
-.donut .soc-track{ fill:none; stroke:#28313a; stroke-width:10; opacity:.55; }
-.donut .arc{ fill:none; stroke-width:12; stroke-linecap:round; }
-.donut .arc.pv{ stroke:#2d74da; }     /* PV: blue */
-.donut .arc.grid{ stroke:#e74c3c; }   /* Grid: red */
-.donut .arc.load{ stroke:#f0c24b; }   /* Load: yellow */
-.donut .arc.bat{ stroke:#27ae60; }    /* Battery: green */
-.donut .arc.soc{ stroke:#27ae60; stroke-width:8; }
-.energy-donut .icon{ filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
-
-/* Energy Web (radial) */
-.card.energy-web .web-wrap{width:100%;display:flex;justify-content:center;align-items:center;min-height:420px}
-.web{width:min(640px,80vw);height:auto}
-.web .ring{fill:#0e1216;stroke-width:3}
-.web .ring.pv{stroke:#27ae60}
-.web .ring.grid{stroke:#e74c3c}
-.web .ring.consumer{stroke:#f0c24b}
-.web .node .ico{fill:#e6e6e6;filter:url(#soft)}
-.web text{fill:#e6e6e6;font-size:14px}
-.web text.big{font-size:16px;font-weight:600}
-.web text.lbl{opacity:.8}
-.web .hub-dot{fill:#848e9a;opacity:.9}
-.web .hub-dot.center{fill:#b0b7bf;}
-
-.flow{stroke-width:5;stroke-linecap:round;fill:none;stroke-dasharray:6 12;animation:flow 2.2s linear infinite}
-.flow.pv{stroke:#27ae60}
-.flow.grid{stroke:#e74c3c}
-.flow.consumer{stroke:#f0c24b}
-.flow.dim{opacity:.5}
-@keyframes flow{from{stroke-dashoffset:0} to{stroke-dashoffset:-36}}
-/* reverse direction for outflows */
-#lineC1,#lineC2,#lineRest{animation-direction:reverse}

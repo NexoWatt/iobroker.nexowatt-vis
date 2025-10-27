@@ -1,79 +1,15 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.18",
+    "version": "0.0.2",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
         "de": "Erste Version: Responsives NexoWatt EMS Dashboard"
       },
       "0.0.2": {
-        "de": "Logos hinzugefügt, Standard-Datenpunkte vorbelegt, GitHub-Readme aktualisiert.",
-        "en": "Added logos, default datapoints prefilled, updated GitHub readme."
-      },
-      "0.0.3": {
-        "de": "Fix: Tab-Titel in den Instanzeinstellungen (title→label).",
-        "en": "Fix: Tab titles in instance settings (title→label)."
-      },
-      "0.0.4": {
-        "de": "Fix: jsonConfig validiert wieder; Tabs zeigen Titel & Label.",
-        "en": "Fix: jsonConfig validates again; tabs show title & label."
-      },
-      "0.0.5": {
-        "de": "Datenpunkte jetzt als auswählbare Objekt-IDs mit Suchdialog.",
-        "en": "Datapoints are now selectable object IDs with search dialog."
-      },
-      "0.0.6": {
-        "de": "Fix: jsonConfig mit explizitem 'attr' je Feld; ID-Suchdialog sollte erscheinen.",
-        "en": "Fix: jsonConfig explicit 'attr' for each field; ID search dialog should appear."
-      },
-      "0.0.7": {
-        "de": "Schema-Fix: Root 'tabs.items' jetzt als Objekt statt Array → Admin-Suche für IDs aktiv.",
-        "en": "Schema fix: root 'tabs.items' changed to object instead of array so Admin ID search works."
-      },
-      "0.0.8": {
-        "de": "Eingabefelder auf 'objectId' umgestellt (statt 'id'); Tabs-Struktur korrigiert.",
-        "en": "Switched inputs to 'objectId' (instead of 'id'); fixed tabs structure."
-      },
-      "0.0.9": {
-        "de": "PV-Kreis entfernt, Energiefluss-Monitor hinzugefügt; Oberfläche auf Deutsch.",
-        "en": "Removed PV ring, added energy-flow monitor; UI translated to German."
-      },
-      "0.0.10": {
-        "de": "Runder Energiemonitor mit Icons + SoC-Ring und Lade-/Entladezeit. Neuer Datenpunkt: Speicher Kapazität (kWh).",
-        "en": "Round energy monitor with icons + SoC ring and charge/discharge time. New datapoint: storage capacity (kWh)."
-      },
-      "0.0.11": {
-        "de": "Neuer Energymonitor 1:1 rund (schwarzer Hintergrund), Netz rot.",
-        "en": "New round energy monitor (dark), grid in red."
-      },
-      "0.0.12": {
-        "de": "Donut mit SVG-Icons und Segmentlängen als Anteil am Gesamtfluss.",
-        "en": "Donut uses SVG icons and segment lengths as share of total flow."
-      },
-      "0.0.13": {
-        "de": "Donut: SVG-Icons, Segmente pro Quadrant bündig am Ring, Anteil am Gesamtfluss.",
-        "en": "Donut: SVG icons, quadrant-aligned segments hugging ring, share-of-total."
-      },
-      "0.0.14": {
-        "de": "SVG-Icons dichter am Ring. Anordnung: PV oben, Netz links, Speicher unten, Verbrauch rechts.",
-        "en": "SVG icons tighter to ring. Layout: PV top, Grid left, Storage bottom, Load right."
-      },
-      "0.0.15": {
-        "de": "Energymonitor jetzt responsiv (Größe + Icon-Abstände skalieren).",
-        "en": "Energy monitor responsive."
-      },
-      "0.0.16": {
-        "de": "Header: NexoWatt-Logo links eingefügt. Donut visuell verfeinert (Farben/Strich).",
-        "en": "Header brand logo added left. Donut refined (colors/strokes)."
-      },
-      "0.0.17": {
-        "de": "Donut an Vorlage ausgerichtet (Anker-Winkel), Icons am Ring, neues Logo oben links.",
-        "en": "Donut aligned to reference (anchor angles), icons hug ring, new brand logo top-left."
-      },
-      "0.0.18": {
-        "de": "Neuer Energiefluss als Netz-Graph mit animierten Richtungs-Linien, responsive. Optionale Verbraucher 1/2 in Admin.",
-        "en": "New energy web graph with animated directional lines, responsive. Optional consumers in admin."
+        "de": "Graph vergrößert, responsiv; auf Smartphones nahezu randlos (98vw).",
+        "en": "Graph enlarged, responsive; on phones near full-bleed (98vw)."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -106,9 +42,7 @@
       "dashboard"
     ],
     "connectionType": "local",
-    "dataSource": "poll",
-    "icon": "admin.png",
-    "logo": "admin_logo_.ico"
+    "dataSource": "poll"
   },
   "native": {
     "port": 8188,
@@ -119,13 +53,13 @@
       "energy": "kWh"
     },
     "datapoints": {
-      "autarky": "0_userdata.0.nexowatt.autarky",
-      "selfConsumption": "0_userdata.0.nexowatt.selfConsumption",
-      "pvPower": "0_userdata.0.nexowatt.pv.power",
-      "productionTotal": "0_userdata.0.nexowatt.pv.energy_total",
-      "consumptionTotal": "0_userdata.0.nexowatt.house.energy_total",
-      "gridBuyPower": "0_userdata.0.nexowatt.grid.buy.power",
-      "gridSellPower": "0_userdata.0.nexowatt.grid.sell.power",
+      "autarky": "",
+      "selfConsumption": "",
+      "pvPower": "",
+      "productionTotal": "",
+      "consumptionTotal": "",
+      "gridBuyPower": "",
+      "gridSellPower": "",
       "storageChargePower": "",
       "storageDischargePower": "",
       "storageSoc": "",
@@ -134,18 +68,7 @@
       "evcsStatus": "",
       "evcsLastChargeKwh": "",
       "gridFrequency": "",
-      "gridVoltage": "0_userdata.0.nexowatt.grid.voltage",
-      "gridBuyEnergy": "0_userdata.0.nexowatt.grid.buy.energy_total",
-      "gridSellEnergy": "0_userdata.0.nexowatt.grid.sell.energy_total",
-      "batteryPower": "0_userdata.0.nexowatt.battery.power",
-      "batterySOC": "0_userdata.0.nexowatt.battery.soc",
-      "batteryEnergyTotal": "0_userdata.0.nexowatt.battery.energy_total",
-      "housePower": "0_userdata.0.nexowatt.house.power",
-      "houseTemp": "0_userdata.0.nexowatt.house.temperature",
-      "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
-      "storageCapacityKwh": "",
-      "consumer1Power": "",
-      "consumer2Power": ""
+      "gridVoltage": ""
     },
     "sections": {
       "tabs": [
