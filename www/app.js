@@ -542,7 +542,7 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
   // Helpers
   const $ = (sel) => document.querySelector(sel);
   const d = (k)=> (window.state && window.state[k]?.value != null) ? window.state[k].value : window.state?.[k];
-  const VBOX = { w: 700, h: 520 };
+  const VBOX = { w: 640, h: 460 };
   svg.setAttribute('viewBox', `0 0 ${VBOX.w} ${VBOX.h}`);
 
   function getConfigNodes(){
@@ -598,7 +598,7 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     const pos = { grid: { x: VBOX.w/2, y: 80 }, pvPower: { x: VBOX.w*0.78, y: 130 } };
 
     const dynamic = nodes.filter(n => !n.fixed && n.key !== 'cascade');
-    const R = 170;
+    const R = 150;
     const startAngle = -20;
     const step = (dynamic.length > 0) ? (260 / Math.max(1,dynamic.length-1)) : 120;
 
@@ -687,4 +687,5 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     try { if (oldRender) oldRender(); } catch(e){}
     try { renderGraph(); } catch(e){ console.warn('graph render', e); }
   };
+  try { setTimeout(renderGraph, 0); } catch(e){}
 })();
