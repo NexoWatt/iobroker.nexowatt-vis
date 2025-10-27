@@ -42,3 +42,21 @@ Das UI nutzt eine SVG-Ringanzeige und Karten mit Progress-Bars.
 ## Hinweise
 - Dies ist ein minimales, startfähiges Grundgerüst. Passen Sie Labels, zusätzliche Karten und Berechnungslogik nach Bedarf an.
 - Für produktiven Einsatz empfehlen wir eine Code-Signierung, erweiterte Fehlerbehandlung und Tests.
+
+
+## Installation über GitHub
+
+1. Repository forken/klonen (oder deinen eigenen Repo-Namen verwenden):  
+   `https://github.com/USER/iobroker.nexowatt-vis`
+
+2. In ioBroker Admin **Adapter → GitHub-Icon** klicken, dann die URL deines Repos angeben
+   (z. B. `https://github.com/USER/iobroker.nexowatt-vis`).
+
+3. Instanz anlegen und unter **Einstellungen → Datenpunkte** die States auf deine IDs mappen.
+
+### Direkt per Shell (optional)
+```bash
+cd /opt/iobroker
+iobroker url "https://github.com/USER/iobroker.nexowatt-vis" --debug
+iobroker add nexowatt-vis
+```
