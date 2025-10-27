@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.21",
+    "version": "0.0.22",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -86,6 +86,10 @@
       "0.0.21": {
         "en": "Energy graph visible again and smaller; initial render on load; center readouts restored.",
         "de": "Energiefluss-Graph wieder sichtbar und kleiner; initiale Darstellung beim Laden; Mittelwerte wiederhergestellt."
+      },
+      "0.0.22": {
+        "en": "Energy flow monitor fixed to always render PV/Grid/Load; graph box made smaller.",
+        "de": "Energiefluss-Monitor repariert (PV/Netz/Verbrauch werden immer gezeichnet); Graph-Box deutlich verkleinert."
       }
     },
     "title": "NexoWatt EMS UI",

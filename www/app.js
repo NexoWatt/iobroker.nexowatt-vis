@@ -542,7 +542,7 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
   // Helpers
   const $ = (sel) => document.querySelector(sel);
   const d = (k)=> (window.state && window.state[k]?.value != null) ? window.state[k].value : window.state?.[k];
-  const VBOX = { w: 640, h: 460 };
+  const VBOX = { w: 520, h: 360 };
   svg.setAttribute('viewBox', `0 0 ${VBOX.w} ${VBOX.h}`);
 
   function getConfigNodes(){
@@ -598,7 +598,7 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     const pos = { grid: { x: VBOX.w/2, y: 80 }, pvPower: { x: VBOX.w*0.78, y: 130 } };
 
     const dynamic = nodes.filter(n => !n.fixed && n.key !== 'cascade');
-    const R = 150;
+    const R = 120;
     const startAngle = -20;
     const step = (dynamic.length > 0) ? (260 / Math.max(1,dynamic.length-1)) : 120;
 
@@ -625,7 +625,7 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
 
   function renderGraph(){
     const nodes = getConfigNodes();
-    const available = nodes.filter(n => n.fixed || n.key === 'grid' || n.key === 'pvPower' || (n.key && d(n.key) != null));
+    const available = nodes.filter(n => (n.key==='load' || n.key==='grid' || n.key==='pvPower' || n.fixed || (n.key && d(n.key)!=null)));
 
     layout(available);
     const map = {}; available.forEach(n => map[n.key] = n);
