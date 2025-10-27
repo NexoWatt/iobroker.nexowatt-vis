@@ -87,6 +87,8 @@
           <rect x="-14" y="-8" width="28" height="16" rx="3" />
           <rect x="14" y="-3" width="4" height="6" rx="1" />
         </g>
+      <text class="minor" x="300" y="480" text-anchor="middle" id="batteryTime"></text>
+
         <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
         <text class="lbl" y="40" text-anchor="middle">Batterie</text>
       </g>
@@ -102,9 +104,6 @@
 
       
       <!-- battery labels along vertical line -->
-      <text class="minor" x="300" y="370" text-anchor="middle" id="batterySoc">SoC -- %</text>
-      <text class="minor" x="300" y="390" text-anchor="middle" id="batteryCharge">Laden -- W</text>
-      <text class="minor" x="300" y="410" text-anchor="middle" id="batteryDischarge">Entladen -- W</text>
     
       <!-- center readouts -->
 <!-- center node -->
@@ -118,15 +117,12 @@
 
       
       <!-- battery labels along vertical line -->
-      <text class="minor" x="300" y="370" text-anchor="middle" id="batterySoc">SoC -- %</text>
-      <text class="minor" x="300" y="390" text-anchor="middle" id="batteryCharge">Laden -- W</text>
-      <text class="minor" x="300" y="410" text-anchor="middle" id="batteryDischarge">Entladen -- W</text>
     
       <!-- center readouts -->
       <g class="center" transform="translate(300,300)">
         <text class="big" y="0" text-anchor="middle" id="centerPower">0 W</text>
         <text class="minor" y="18" text-anchor="middle" id="centerSoc">-- %</text>
-        <text class="minor" y="34" text-anchor="middle" id="centerTime">Voll -- • Leer --</text>
+        <text class="minor" y="34" text-anchor="middle" id="centerTime"></text>
       </g>
     </svg>
   </div>

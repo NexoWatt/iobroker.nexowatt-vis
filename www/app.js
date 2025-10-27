@@ -520,7 +520,7 @@ if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed
     const socPct = Number(soc)/100;
     const tFull = charge>0 ? ((cap*(1-socPct))*1000)/charge : null;
     const tEmpty= discharge>0 ? ((cap*socPct)*1000)/discharge : null;
-    T('centerTime', 'Voll ' + (tFull?formatHours(tFull):'--') + ' • Leer ' + (tEmpty?formatHours(tEmpty):'--'));
+    T('batteryTime', 'Voll ' + (tFull?formatHours(tFull):'--') + ' • Leer ' + (tEmpty?formatHours(tEmpty):'--')); T('centerTime','');
   }
 
   // Show/hide lines based on values
