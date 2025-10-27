@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -74,6 +74,10 @@
       "0.0.18": {
         "de": "Neuer Energiefluss als Netz-Graph mit animierten Richtungs-Linien, responsive. Optionale Verbraucher 1/2 in Admin.",
         "en": "New energy web graph with animated directional lines, responsive. Optional consumers in admin."
+      },
+      "0.0.19": {
+        "en": "Increase donut graph size and layout width",
+        "de": "Donut-Graph vergrößert und Layout-Breite erhöht"
       }
     },
     "title": "NexoWatt EMS UI",
