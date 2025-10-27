@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -102,6 +102,10 @@
       "0.0.25": {
         "en": "Top-left brand set to NexoWatt logo; battery labels added (SoC, charge, discharge) aligned towards the battery.",
         "de": "Logo oben links auf NexoWatt gesetzt; Batterie-Beschriftungen (SoC, Laden, Entladen) entlang zur Batterie hinzugefügt."
+      },
+      "0.0.26": {
+        "en": "Top-left brand icon updated to the provided NexoWatt logo (PNG).",
+        "de": "Brand-Icon oben links auf das bereitgestellte NexoWatt-Logo (PNG) aktualisiert."
       }
     },
     "title": "NexoWatt EMS UI",
