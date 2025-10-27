@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -110,6 +110,10 @@
       "0.0.27": {
         "en": "Removed extra battery texts; moved Full/Empty time next to battery power value.",
         "de": "Zusatztexte (SoC/Laden/Entladen) entfernt; Voll/Leer-Zeit neben Batterie-Leistung angeordnet."
+      },
+      "0.0.28": {
+        "en": "Node labels and power moved inside circles; battery SoC shown inside battery; icons faded for readability.",
+        "de": "Namen und Leistungen in die Kreise verschoben; Batterie-SoC in der Batterie angezeigt; Icons leicht ausgeblendet."
       }
     },
     "title": "NexoWatt EMS UI",

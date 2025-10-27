@@ -274,3 +274,5 @@ body {
 @keyframes flow{from{stroke-dashoffset:0} to{stroke-dashoffset:-36}}
 /* reverse direction for outflows */
 #lineC1,#lineC2,#lineRest{animation-direction:reverse}
+
+.web .node .ico{opacity:.25}
