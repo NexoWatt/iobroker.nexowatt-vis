@@ -282,3 +282,7 @@ body {
 .web text.val{ font-size:14px; font-weight:700; }
 .web text.lbl{ font-size:12px; opacity:.9; }
 .web .node .ico{ opacity:.35; }
+
+/* battery font tweak */
+.web .node.consumer text.val{ font-size:14px; font-weight:700; }
+.web .node.consumer text.lbl{ font-size:12px; }
