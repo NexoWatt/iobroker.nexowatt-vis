@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -78,6 +78,10 @@
       "0.0.19": {
         "en": "Increase donut graph size and layout width",
         "de": "Donut-Graph vergrößert und Layout-Breite erhöht"
+      },
+      "0.0.20": {
+        "en": "New dynamic Energy Graph: PV, Grid, Load always present; up to 7 extra nodes; optional cascade; topbar tweaks.",
+        "de": "Neuer dynamischer Energie-Graph: PV, Netz, Verbrauch immer sichtbar; bis zu 7 zusätzliche Knoten; optionale Kaskade; Topbar-Anpassungen."
       }
     },
     "title": "NexoWatt EMS UI",

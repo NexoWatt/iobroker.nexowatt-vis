@@ -31,7 +31,7 @@ body {
   border-bottom: 1px solid #222a31;
 }
 .topbar h1 { margin: 0; font-size: 16px; letter-spacing: 0.5px; }
-.tabs { display: flex; gap: 6px; }
+.tabs { display: flex; gap: 6px;  margin-left:auto; }
 .tabs .tab {
   background: transparent;
   border: 1px solid #2a323b;
@@ -274,3 +274,22 @@ body {
 @keyframes flow{from{stroke-dashoffset:0} to{stroke-dashoffset:-36}}
 /* reverse direction for outflows */
 #lineC1,#lineC2,#lineRest{animation-direction:reverse}
+
+
+/* --- Energy Web (Graph) --- */
+.energy-web .web-wrap{ width:100%; min-height:520px; display:flex; justify-content:center; align-items:center; }
+.energy-web .web{ width:100%; height:auto; max-width:100%; }
+.web .flow{ stroke:#2a323b; stroke-width:3; stroke-dasharray:6 6; opacity:.9; }
+.web .flow.active{ filter:url(#soft); }
+.web .flow.producer{ stroke:#27ae60; }
+.web .flow.consumer{ stroke:#e0a800; }
+.web .flow.grid{ stroke:#e74c3c; }
+.web .node .ring{ fill:#0f1317; stroke:#1e252c; stroke-width:3; }
+.web .node .ring.grid{ stroke:#e74c3c; }
+.web .node .ring.producer{ stroke:#27ae60; }
+.web .node .ring.consumer{ stroke:#e0a800; }
+.web .node .ico path, .web .node .ico rect, .web .node .ico circle{ fill:var(--text); }
+.web text.lbl{ fill:var(--muted); font-size:12px; }
+.web text.val{ fill:var(--text); font-size:12px; font-weight:600; }
+.web .center .big{ fill:var(--text); font-weight:700; }
+.web .center .minor{ fill:var(--muted); font-size:12px; }

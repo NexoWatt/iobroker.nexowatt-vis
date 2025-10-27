@@ -10,7 +10,7 @@
 </head>
 <body>
   
-  <header class="topbar"><div class="brand"><img src="../admin/nexowatt-logo.png" alt="NexoWatt"/></div>
+  <header class="topbar"><div class="brand"><img src="/static/nexowatt-logo.png" alt="NexoWatt"/></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
     <h1>NexoWatt EMS</h1>
     <nav class="tabs">
@@ -39,73 +39,9 @@
         </filter>
       </defs>
 
-      <!-- lines -->
-      <line id="lineGrid"  x1="300" y1="160" x2="300" y2="300" class="flow grid" />
-      <line id="linePV"    x1="420" y1="200" x2="300" y2="300" class="flow pv" />
-      <line id="lineC1"    x1="300" y1="300" x2="200" y2="320" class="flow consumer" />
-      <line id="lineC2"    x1="300" y1="300" x2="420" y2="420" class="flow consumer" />
-      <line id="lineRest"  x1="300" y1="300" x2="260" y2="460" class="flow consumer dim" />
-
-      <!-- nodes -->
-      <g class="hub">
-        <circle cx="300" cy="300" r="10" class="hub-dot"/>
-        <circle cx="300" cy="300" r="4" class="hub-dot center" />
-      </g>
-
-      <!-- Grid node -->
-      <g class="node grid" transform="translate(300,140)">
-        <circle r="34" class="ring grid"/>
-        <g class="ico">
-          <path d="M-4,-22 h8 l8,8 h-6 l6,10 h-6 l8,12 h-6 l10,16 h-6 l-8,-12 -8,12 h-6 l10,-16 h-6 l8,-12 h-6 l6,-10 h-6 l8,-8z" />
-        </g>
-        <text class="val" y="-48" text-anchor="middle" id="gridVal">--</text>
-        <text class="lbl" y="-32" text-anchor="middle">Netz</text>
-      </g>
-
-      <!-- PV node -->
-      <g class="node pv" transform="translate(440,200)">
-        <circle r="34" class="ring pv"/>
-        <g class="ico">
-          <path d="M-24,10 h48 l-6,-22 h-36 l-6,22z M-8,-8 h12 l-1,10 h-14 l3,-10z M6,-8 h12 l1,10 h-14 l1,-10z" />
-        </g>
-        <text class="val" y="-48" text-anchor="middle" id="pvVal">--</text>
-        <text class="lbl" y="-32" text-anchor="middle">PV</text>
-      </g>
-
-      <!-- Consumer left -->
-      <g class="node consumer" transform="translate(180,320)">
-        <circle r="30" class="ring consumer"/>
-        <g class="ico">
-          <path d="M-8,-10 h16 v6 h4 v12 h-8 v-6 h-8 v6 h-8 v-12 h4 v-6z" />
-        </g>
-        <text class="val" y="58" text-anchor="middle" id="c1Val">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Verbraucher 1</text>
-      </g>
-
-      <!-- Consumer bottom-right -->
-      <g class="node consumer" transform="translate(440,440)">
-        <circle r="30" class="ring consumer"/>
-        <g class="ico">
-          <circle cx="0" cy="0" r="10"/><path d="M0,-16 a16,16 0 1,0 0,32 a16,16 0 1,0 0,-32z" fill="none"/>
-        </g>
-        <text class="val" y="58" text-anchor="middle" id="c2Val">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Verbraucher 2</text>
-      </g>
-
-      <!-- Rest bottom-left -->
-      <g class="node consumer dim" transform="translate(260,480)">
-        <circle r="30" class="ring consumer"/>
-        <g class="ico"><circle r="7"/></g>
-        <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Rest</text>
-      </g>
-
-      <!-- center readouts -->
-      <g class="center" transform="translate(300,300)">
-        <text class="big" y="0" text-anchor="middle" id="centerPower">0 W</text>
-        <text class="minor" y="18" text-anchor="middle" id="centerSoc">-- %</text>
-        <text class="minor" y="34" text-anchor="middle" id="centerTime">Voll -- • Leer --</text>
-      </g>
+      <!-- dynamic links and nodes -->
+      <g id="graphLinks"></g>
+      <g id="graphNodes"></g>
     </svg>
   </div>
 </section>

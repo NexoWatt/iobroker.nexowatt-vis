@@ -206,7 +206,8 @@ async function bootstrap() {
   try {
     const cfgRes = await fetch('/config');
     const cfg = await cfgRes.json();
-    units = cfg.units || units;
+  window._cfg = cfg;
+  units = cfg.units || units;
   } catch(e) {}
 
   const snap = await fetch('/api/state').then(r => r.json());
@@ -531,3 +532,159 @@ function updateEnergyWeb() {
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
+
+
+// === Dynamic Energy Graph (up to 10 nodes) ===
+(function(){
+  const svg = document.querySelector('.energy-web .web');
+  if (!svg) return;
+
+  // Helpers
+  const $ = (sel) => document.querySelector(sel);
+  const d = (k)=> (window.state && window.state[k]?.value != null) ? window.state[k].value : window.state?.[k];
+  const VBOX = { w: 700, h: 520 };
+  svg.setAttribute('viewBox', `0 0 ${VBOX.w} ${VBOX.h}`);
+
+  function getConfigNodes(){
+    const base = (window._cfg && window._cfg.graph) || {};
+    let nodes = [];
+    nodes.push({ key:'load', label:'Verbrauch', kind:'center', fixed:true });
+    nodes.push({ key:'pvPower', label:'PV', kind:'producer', fixed:true, icon:'pv' });
+    nodes.push({ key:'grid', label:'Netz', kind:'grid', fixed:true, icon:'grid' });
+
+    if (Array.isArray(base.nodes)) {
+      for (const it of base.nodes.slice(0,7)) {
+        if (!it || !it.id) continue;
+        nodes.push({
+          key: it.id,
+          label: it.label || it.id,
+          kind: it.role === 'producer' ? 'producer' : 'consumer',
+          icon: it.icon || (it.role === 'producer' ? 'gen' : 'load'),
+        });
+      }
+    } else {
+      for (let i=1;i<=7;i++){
+        const id = (window._cfg?.datapoints && window._cfg.datapoints[`extra${i}Power`]) || null;
+        if (id) {
+          const role = window._cfg?.graph?.[`extra${i}Role`] || 'consumer';
+          const label = window._cfg?.graph?.[`extra${i}Label`] || `Knoten ${i}`;
+          nodes.push({ key:id, label, kind: role === 'producer' ? 'producer' : 'consumer' });
+        }
+      }
+    }
+
+    const cascade = base.cascade || {};
+    if (cascade.enabled) {
+      nodes.push({ key:'cascade', label: (cascade.label || 'Kaskade'), kind:'cascade', fixed:true, icon:'cascade' });
+      if (cascade.pvPowerId) {
+        nodes.push({ key: cascade.pvPowerId, label: (cascade.pvLabel || 'PV (Kaskade)'), kind:'producer', icon:'pv' });
+      }
+    }
+
+    return nodes;
+  }
+
+  function computePowers(){
+    const pv = +(d('pvPower') ?? 0);
+    const buy = +(d('gridBuyPower') ?? 0);
+    const sell = +(d('gridSellPower') ?? 0);
+    const load = +(d('loadPower') ?? (+(d('consumer1Power') ?? 0) + +(d('consumer2Power') ?? 0) + +(d('restPower') ?? 0)));
+    const soc = d('storageSoc');
+    return { pv, buy, sell, load, soc };
+  }
+
+  function layout(nodes){
+    const center = { x: VBOX.w/2, y: VBOX.h/2 };
+    const pos = { grid: { x: VBOX.w/2, y: 80 }, pvPower: { x: VBOX.w*0.78, y: 130 } };
+
+    const dynamic = nodes.filter(n => !n.fixed && n.key !== 'cascade');
+    const R = 170;
+    const startAngle = -20;
+    const step = (dynamic.length > 0) ? (260 / Math.max(1,dynamic.length-1)) : 120;
+
+    dynamic.forEach((n, i) => {
+      const a = (startAngle + i*step) * (Math.PI/180);
+      n.x = center.x + R * Math.cos(a);
+      n.y = center.y + R * Math.sin(a);
+    });
+
+    for (const n of nodes){
+      if (n.key === 'load') { n.x = center.x; n.y = center.y; }
+      if (n.key === 'grid') { n.x = pos.grid.x; n.y = pos.grid.y; }
+      if (n.key === 'pvPower') { n.x = pos.pvPower.x; n.y = pos.pvPower.y; }
+      if (n.key === 'cascade') { n.x = center.x; n.y = center.y - 120; }
+    }
+  }
+
+  function iconSvg(kind){
+    if (kind === 'grid') return '<path d="M-8,14 L-2,2 L-6,2 L2,-14 L2,0 L6,0 L-2,14 Z"/>';
+    if (kind === 'pv' || kind === 'producer') return '<rect x="-12" y="-8" width="24" height="12" rx="2" /><rect x="-10" y="6" width="20" height="4" rx="1" />';
+    if (kind === 'cascade') return '<circle r="7" /><path d="M-12,0 h24" />';
+    return '<circle r="6" />';
+  }
+
+  function renderGraph(){
+    const nodes = getConfigNodes();
+    const available = nodes.filter(n => n.fixed || n.key === 'grid' || n.key === 'pvPower' || (n.key && d(n.key) != null));
+
+    layout(available);
+    const map = {}; available.forEach(n => map[n.key] = n);
+
+    const links = [];
+    const base = (window._cfg && window._cfg.graph) || {};
+    const cascade = base.cascade || {};
+    const P = computePowers();
+
+    if (cascade.enabled && map['cascade']) {
+      links.push({ from:'grid', to:'cascade', cls:'grid' });
+      links.push({ from:'cascade', to:'load', cls:'consumer' });
+      if (cascade.pvPowerId && map[cascade.pvPowerId]) {
+        links.push({ from:cascade.pvPowerId, to:'cascade', cls:'producer' });
+      }
+    } else {
+      links.push({ from:'pvPower', to:'load', cls:'producer' });
+      if (P.buy > 0 && P.sell <= 0) { links.push({ from:'grid', to:'load', cls:'grid' }); }
+      else if (P.sell > 0 && P.buy <= 0) { links.push({ from:'load', to:'grid', cls:'grid' }); }
+      else { links.push({ from:'grid', to:'load', cls:'grid' }); }
+    }
+
+    for (const n of available){
+      if (['load','grid','pvPower','cascade'].includes(n.key)) continue;
+      links.push({ from: (n.kind === 'producer' ? n.key : 'load'), to: (n.kind === 'producer' ? 'load' : n.key), cls: (n.kind === 'producer' ? 'producer' : 'consumer') });
+    }
+
+    const linksG = document.getElementById('graphLinks');
+    const nodesG = document.getElementById('graphNodes');
+    if (!linksG || !nodesG) return;
+
+    linksG.innerHTML = links.map(l => {
+      const a = map[l.from], b = map[l.to];
+      if (!a || !b) return '';
+      return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" class="flow ${l.cls}"/>`;
+    }).join('');
+
+    nodesG.innerHTML = available.map(n => {
+      const label = n.label || n.key;
+      const valKey = (n.key==='grid') ? null : n.key;
+      const valTxt = (valKey && d(valKey) != null) ? `${Math.round(+d(valKey))} W` : (n.key==='grid' ? '' : '--');
+      const ringCls = (n.key==='grid') ? 'grid' : (n.kind==='producer' ? 'producer' : (n.kind==='cascade' ? 'grid' : 'consumer'));
+      return `<g class="node" transform="translate(${n.x},${n.y})">
+        <circle r="28" class="ring ${ringCls}"/>
+        <g class="ico">${iconSvg(n.icon || n.kind || 'consumer')}</g>
+        <text class="lbl" y="40" text-anchor="middle">${label}</text>
+        <text class="val" y="58" text-anchor="middle">${valTxt}</text>
+      </g>`;
+    }).join('');
+
+    const centerTxt = document.getElementById('centerPower'), socTxt = document.getElementById('centerSoc'), timeTxt = document.getElementById('centerTime');
+    if (centerTxt) centerTxt.textContent = `${Math.round(P.load || 0)} W`;
+    if (socTxt) socTxt.textContent = (P.soc != null ? `${P.soc} %` : '-- %');
+    if (timeTxt) timeTxt.textContent = '';
+  }
+
+  const oldRender = window.render;
+  window.render = function(){
+    try { if (oldRender) oldRender(); } catch(e){}
+    try { renderGraph(); } catch(e){ console.warn('graph render', e); }
+  };
+})();

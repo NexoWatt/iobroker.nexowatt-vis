@@ -415,6 +415,99 @@
       },
       "label": "Erweitert / Zukunft",
       "title": "Erweitert / Zukunft"
+    },
+    "graph": {
+      "type": "panel",
+      "label": "Graph",
+      "title": "Graph",
+      "items": {
+        "graph.nodes": {
+          "type": "table",
+          "label": "Zusätzliche Knoten (max. 7)",
+          "columns": [
+            {
+              "name": "label",
+              "title": "Label",
+              "type": "text"
+            },
+            {
+              "name": "role",
+              "title": "Rolle",
+              "type": "select",
+              "options": [
+                [
+                  "producer",
+                  "Erzeuger"
+                ],
+                [
+                  "consumer",
+                  "Verbraucher"
+                ]
+              ]
+            },
+            {
+              "name": "icon",
+              "title": "Icon",
+              "type": "select",
+              "options": [
+                [
+                  "gen",
+                  "Generator"
+                ],
+                [
+                  "load",
+                  "Verbrauch"
+                ],
+                [
+                  "pv",
+                  "PV"
+                ],
+                [
+                  "grid",
+                  "Netz"
+                ]
+              ]
+            },
+            {
+              "name": "id",
+              "title": "Datenpunkt-ID (W)",
+              "type": "objectId",
+              "types": [
+                "state"
+              ],
+              "button": true
+            }
+          ],
+          "attr": "graph.nodes",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.enabled": {
+          "type": "checkbox",
+          "label": "Kaskade aktivieren",
+          "attr": "graph.cascade.enabled",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.label": {
+          "type": "text",
+          "label": "Kaskade Label",
+          "attr": "graph.cascade.label",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.pvPowerId": {
+          "type": "objectId",
+          "label": "PV an Kaskade (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "graph.cascade.pvPowerId",
+          "xs": 12,
+          "sm": 12
+        }
+      }
     }
   }
 }
