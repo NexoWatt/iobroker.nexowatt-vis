@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -94,6 +94,10 @@
       "0.0.23": {
         "en": "Restore Energy Flow Monitor to v0.18 implementation; keep topbar tweaks.",
         "de": "Energieflussmonitor wieder wie in v0.18 hergestellt; Topbar-Anpassungen beibehalten."
+      },
+      "0.0.24": {
+        "en": "Energy flow arranged: Load center; PV top; Grid left; Wallbox right; Battery bottom. Header logo updated.",
+        "de": "Energiefluss angeordnet: Verbrauch Mitte; PV oben; Netz links; Wallbox rechts; Batterie unten. Header-Logo aktualisiert."
       }
     },
     "title": "NexoWatt EMS UI",

@@ -494,14 +494,14 @@ function updateEnergyWeb() {
   const sell = +(d('gridSellPower') ?? 0);
   const load = Math.max(0, +(d('consumptionTotal') ?? 0));
   const c1 = +(d('consumer1Power') ?? 0);
-  const c2 = +(d('consumer2Power') ?? 0);
+  const c2 = +(d('consumptionEvcs') ?? 0); // Wallbox
   const soc = d('storageSoc');
   const cap = +(d('storageCapacityKwh') ?? 0);
   const charge = +(d('storageChargePower') ?? 0);
   const discharge = +(d('storageDischargePower') ?? 0);
 
   // Rest = load - c1 - c2 (>=0)
-  const rest = Math.max(0, load - (c1+c2));
+  const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
   T('pvVal', formatPower(pv));
@@ -523,7 +523,7 @@ function updateEnergyWeb() {
   const show = (id, on)=>{ const el=document.getElementById(id); if(el) el.style.opacity = on ? 1 : 0.15; };
   show('linePV', pv>1);
   show('lineGrid', buy>1);
-  show('lineC1', c1>1);
+  show('lineC1', false);
   show('lineC2', c2>1);
   show('lineRest', rest>1);
 }

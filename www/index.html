@@ -40,11 +40,11 @@
       </defs>
 
       <!-- lines -->
-      <line id="lineGrid"  x1="300" y1="160" x2="300" y2="300" class="flow grid" />
-      <line id="linePV"    x1="420" y1="200" x2="300" y2="300" class="flow pv" />
-      <line id="lineC1"    x1="300" y1="300" x2="200" y2="320" class="flow consumer" />
-      <line id="lineC2"    x1="300" y1="300" x2="420" y2="420" class="flow consumer" />
-      <line id="lineRest"  x1="300" y1="300" x2="260" y2="460" class="flow consumer dim" />
+      <line id="lineGrid" x1="160" y1="300" x2="300" y2="300" class="flow grid" />
+      <line id="linePV" x1="300" y1="160" x2="300" y2="300" class="flow pv" />
+      <line id="lineC1" x1="300" y1="300" x2="300" y2="300" class="flow consumer" style="opacity:0" />
+      <line id="lineC2" x1="300" y1="300" x2="440" y2="300" class="flow consumer" />
+      <line id="lineRest" x1="300" y1="300" x2="300" y2="460" class="flow consumer" />
 
       <!-- nodes -->
       <g class="hub">
@@ -52,52 +52,62 @@
         <circle cx="300" cy="300" r="4" class="hub-dot center" />
       </g>
 
-      <!-- Grid node -->
-      <g class="node grid" transform="translate(300,140)">
+      <!-- Grid node (left) -->
+      <g class="node grid" transform="translate(160,300)">
         <circle r="34" class="ring grid"/>
         <g class="ico">
-          <path d="M-4,-22 h8 l8,8 h-6 l6,10 h-6 l8,12 h-6 l10,16 h-6 l-8,-12 -8,12 h-6 l10,-16 h-6 l8,-12 h-6 l6,-10 h-6 l8,-8z" />
+          <path d="M-6,12 L-2,2 L-5,2 L1,-14 L1,0 L5,0 L-1,12 Z" />
         </g>
         <text class="val" y="-48" text-anchor="middle" id="gridVal">--</text>
         <text class="lbl" y="-32" text-anchor="middle">Netz</text>
       </g>
-
-      <!-- PV node -->
-      <g class="node pv" transform="translate(440,200)">
+<!-- PV node (top) -->
+      <g class="node pv" transform="translate(300,160)">
         <circle r="34" class="ring pv"/>
         <g class="ico">
-          <path d="M-24,10 h48 l-6,-22 h-36 l-6,22z M-8,-8 h12 l-1,10 h-14 l3,-10z M6,-8 h12 l1,10 h-14 l1,-10z" />
+          <rect x="-12" y="-8" width="24" height="12" rx="2"/>
+          <rect x="-10" y="6" width="20" height="4" rx="1"/>
         </g>
         <text class="val" y="-48" text-anchor="middle" id="pvVal">--</text>
         <text class="lbl" y="-32" text-anchor="middle">PV</text>
       </g>
-
-      <!-- Consumer left -->
-      <g class="node consumer" transform="translate(180,320)">
+<!-- Wallbox right -->
+      <g class="node consumer" transform="translate(440,300)">
         <circle r="30" class="ring consumer"/>
         <g class="ico">
-          <path d="M-8,-10 h16 v6 h4 v12 h-8 v-6 h-8 v6 h-8 v-12 h4 v-6z" />
-        </g>
-        <text class="val" y="58" text-anchor="middle" id="c1Val">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Verbraucher 1</text>
-      </g>
-
-      <!-- Consumer bottom-right -->
-      <g class="node consumer" transform="translate(440,440)">
-        <circle r="30" class="ring consumer"/>
-        <g class="ico">
-          <circle cx="0" cy="0" r="10"/><path d="M0,-16 a16,16 0 1,0 0,32 a16,16 0 1,0 0,-32z" fill="none"/>
+          <path d="M-12,6 h24 v6 h-24 z M-10,-2 h20 a8,8 0 0 0 -20,0 z" />
         </g>
         <text class="val" y="58" text-anchor="middle" id="c2Val">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Verbraucher 2</text>
+        <text class="lbl" y="40" text-anchor="middle">Wallbox</text>
+      </g>
+<!-- Batterie bottom -->
+      <g class="node consumer" transform="translate(300,460)">
+        <circle r="30" class="ring consumer"/>
+        <g class="ico">
+          <rect x="-14" y="-8" width="28" height="16" rx="3" />
+          <rect x="14" y="-3" width="4" height="6" rx="1" />
+        </g>
+        <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
+        <text class="lbl" y="40" text-anchor="middle">Batterie</text>
       </g>
 
-      <!-- Rest bottom-left -->
-      <g class="node consumer dim" transform="translate(260,480)">
-        <circle r="30" class="ring consumer"/>
-        <g class="ico"><circle r="7"/></g>
-        <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
-        <text class="lbl" y="40" text-anchor="middle">Rest</text>
+      <!-- center node -->
+      <g class="node center" transform="translate(300,300)">
+        <circle r="28" class="ring consumer"/>
+        <g class="ico">
+          <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z" />
+        </g>
+        <text class="lbl" y="-36" text-anchor="middle">Verbrauch</text>
+      </g>
+
+      <!-- center readouts -->
+<!-- center node -->
+      <g class="node center" transform="translate(300,300)">
+        <circle r="28" class="ring consumer"/>
+        <g class="ico">
+          <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z" />
+        </g>
+        <text class="lbl" y="-36" text-anchor="middle">Verbrauch</text>
       </g>
 
       <!-- center readouts -->
