@@ -276,3 +276,9 @@ body {
 #lineC1,#lineC2,#lineRest{animation-direction:reverse}
 
 .web .node .ico{opacity:.25}
+
+
+/* Bigger node text for inside-circle layout */
+.web text.val{ font-size:14px; font-weight:700; }
+.web text.lbl{ font-size:12px; opacity:.9; }
+.web .node .ico{ opacity:.35; }

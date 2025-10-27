@@ -509,7 +509,9 @@ function updateEnergyWeb() {
   T('c1Val', formatPower(c1));
   T('c2Val', formatPower(c2));
   T('restVal', formatPower(rest));
+  // set default battery soc
   T('centerPower', formatPower(load));
+  if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
   if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); T('centerSoc',''); }
   if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
   else T('batterySoc', '-- %');
