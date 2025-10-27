@@ -510,7 +510,11 @@ function updateEnergyWeb() {
   T('c2Val', formatPower(c2));
   T('restVal', formatPower(rest));
   T('centerPower', formatPower(load));
-  if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed(0)+' %');
+  if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
+  else T('batterySoc', '-- %');
+  T('batteryCharge', 'Laden ' + formatPower(charge));
+  T('batteryDischarge', 'Entladen ' + formatPower(discharge));
+if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed(0)+' %');
 
   if (cap && soc !== undefined) {
     const socPct = Number(soc)/100;
