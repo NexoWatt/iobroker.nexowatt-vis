@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.31",
+    "version": "0.0.31+v2c",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -126,6 +126,10 @@
       "0.0.31": {
         "en": "Names inside circles; power values outside; same ring size for all; storage SoC at battery; menu button opens subpage with Settings.",
         "de": "Namen in Kreisen; Leistungen außerhalb; gleich große Ringe; Speicher-SoC bei Batterie; Menü-Button öffnet Unterseite mit Einstellungen."
+      },
+      "0.0.31+v2c": {
+        "de": "Energiefluss (live) integriert, Quick-Menü neben Logo, neue Seiten: Smarthome, Einstellungen, Installer (PIN). VIS-Layout unverändert.",
+        "en": "Integrated live energy flow, quick menu near logo, new pages: Smarthome, Settings, Installer (PIN). VIS layout unchanged."
       }
     },
     "title": "NexoWatt EMS UI",

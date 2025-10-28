@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NexoWatt – Einstellungen</title>
+<link rel="stylesheet" href="/adapter/nexowatt-vis/styles.css">
+<script src="/socket.io/socket.io.js"></script>
+<style>
+body{ background:#0f1317; color:#e6edf3; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; padding:16px }
+.wrap{ max-width:1100px; margin:0 auto }
+.card{ background:#12171c; border:1px solid #2a323b; border-radius:16px; padding:18px; margin-bottom:14px }
+.row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center }
+.tile{ flex:1 1 280px; background:#a7cf16; color:#111; border-radius:10px; padding:14px 16px; font-size:18px; font-weight:600 }
+.tile small{display:block; opacity:.75; margin-bottom:6px }
+input[type="text"], input[type="number"]{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid #2a323b; background:#0f1317; color:#e6edf3 }
+.switch{ display:flex; align-items:center; gap:10px }
+.switch input{ transform: scale(1.2); }
+.slider{ width:100%; accent-color:#3ddc84 }
+.footer{ display:flex; justify-content:flex-end; margin-top:12px }
+.btn{ padding:10px 14px; border:1px solid #39424c; border-radius:10px; background:#1b2229; color:#e6edf3; cursor:pointer }
+.btn:hover{ background:#242c34 }
+.muted{ color:#9aa4af }
+</style></head><body>
+<div class="wrap">
+  <h1 style="margin:8px 0 14px">Einstellungen</h1>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Benachrichtigungen</h2>
+      <label class="switch"><span class="muted">Ein</span><input id="s_notif" type="checkbox"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="tile" style="background:#a7cf16;color:#111;max-width:720px">
+        <small>Email:</small>
+        <input id="t_email" type="text" placeholder="maxmustermann@mail.com">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Dynamischer Zeittarif</h2>
+      <label class="switch"><span class="muted">Ein</span><input id="s_dyn" type="checkbox"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="tile">
+        <small>Speicher Leistung</small>
+        <input id="n_spPower" type="number" step="10">
+        <div class="muted">Einheit: W (negativ = Laden)</div>
+      </div>
+      <div class="tile">
+        <small>Strompreis</small>
+        <input id="n_price" type="number" step="0.01">
+        <div class="muted">Einheit: €/kWh</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 10px">Priorität</h2>
+    <div class="row">
+      <div style="min-width:90px">Speicher</div>
+      <input id="sl_prio" class="slider" type="range" min="0" max="100" step="1" style="flex:1">
+      <div style="min-width:110px;text-align:right">Ladestation</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 10px">Modus Tarif</h2>
+    <div class="row">
+      <div style="min-width:90px">Manuell</div>
+      <input id="sl_mode" class="slider" type="range" min="0" max="1" step="1" style="flex:1">
+      <div style="min-width:110px;text-align:right">Automatisch</div>
+    </div>
+    <div class="footer">
+      <a class="btn" href="/adapter/nexowatt-vis/installer.html">Installer</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const base = '0_userdata.0.EMS.';
+const dp = {
+  notif: base+'notifications.enabled',
+  email: base+'notifications.email',
+  dyn: base+'tariff.dynamicEnabled',
+  price: base+'tariff.priceEurPerKWh',
+  spPower: base+'storage.powerSetpointW',
+  prio: base+'priority.evVsStorage',
+  mode: base+'mode.tariff',
+};
+const socket = io('/', {path: '/socket.io'});
+function getState(id){ return new Promise(res => socket.emit('getState', id, (err, st)=>res(st && st.val))); }
+function setState(id,val){ socket.emit('setState', id, val); }
+
+(async ()=>{
+  document.getElementById('s_notif').checked = !!(await getState(dp.notif));
+  document.getElementById('t_email').value = (await getState(dp.email)) || '';
+  document.getElementById('s_dyn').checked = !!(await getState(dp.dyn));
+  document.getElementById('n_price').value = (await getState(dp.price)) ?? 0.34;
+  document.getElementById('n_spPower').value = (await getState(dp.spPower)) ?? -2500;
+  document.getElementById('sl_prio').value = (await getState(dp.prio)) ?? 50;
+  document.getElementById('sl_mode').value = (await getState(dp.mode)) ?? 1;
+
+  document.getElementById('s_notif').addEventListener('change', e => setState(dp.notif, e.target.checked));
+  document.getElementById('t_email').addEventListener('change', e => setState(dp.email, e.target.value.trim()));
+  document.getElementById('s_dyn').addEventListener('change', e => setState(dp.dyn, e.target.checked));
+  document.getElementById('n_price').addEventListener('change', e => setState(dp.price, parseFloat(e.target.value)));
+  document.getElementById('n_spPower').addEventListener('change', e => setState(dp.spPower, parseFloat(e.target.value)));
+  document.getElementById('sl_prio').addEventListener('input', e => setState(dp.prio, parseInt(e.target.value,10)));
+  document.getElementById('sl_mode').addEventListener('input', e => setState(dp.mode, parseInt(e.target.value,10)));
+})();
+</script>
+</body></html>

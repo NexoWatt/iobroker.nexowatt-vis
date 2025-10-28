@@ -10,7 +10,8 @@
 </head>
 <body>
   
-  <header class="topbar"><div class="brand"><img src="/static/nexowatt-logo.png" alt="NexoWatt"/></div>
+  <header class="topbar"><div class="brand"><img src="/static/nexowatt-logo.png" alt="NexoWatt"/>
+    <button id="quickMenuBtn" class="under-btn" aria-label="Menü">≡</button></div>
     <button id="menuBtn" aria-label="Menu">☰</button>
     <h1>NexoWatt EMS</h1>
     <nav class="tabs">
@@ -195,7 +196,21 @@
         </div>
       </div>
     </section>
-  </main>
+  
+<section class="card energy-embed">
+  <div class="card-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+    <div class="title">Energieflussmonitor</div>
+    <div class="actions" style="display:flex;gap:8px;">
+      <a id="openEnergyNewTab" class="btn" href="/adapter/nexowatt-vis/energiefluss/index.html" target="_blank" rel="noopener">In neuem Tab</a>
+      <button id="openEnergySettings" class="btn btn-secondary">Einstellungen</button>
+    </div>
+  </div>
+  <div class="embed-energy">
+    <iframe id="energyFrame" src="/adapter/nexowatt-vis/energiefluss/index.html" loading="lazy"></iframe>
+  </div>
+</section>
+
+</main>
 
   <script src="/static/app.js"></script>
 
@@ -205,6 +220,21 @@
       <div class="btns">
         <button id="openSettings" class="btn">Einstellungen</button>
         <button id="closeOverlay" class="btn btn-secondary">Schließen</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Quick Menu Overlay -->
+  <section id="quickMenuOverlay" class="overlay">
+    <div class="sheet">
+      <h2 class="sheet-title">Menü</h2>
+      <div class="menu-list">
+        <a class="menu-item" href="/adapter/nexowatt-vis/smarthome.html">🏠 Smarthome</a>
+        <a class="menu-item" href="/adapter/nexowatt-vis/settings.html">⚙️ Einstellungen</a>
+      </div>
+      <div class="menu-actions">
+        <button id="quickMenuClose" class="btn btn-secondary">Schließen</button>
       </div>
     </div>
   </section>

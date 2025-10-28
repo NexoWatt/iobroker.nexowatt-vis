@@ -556,3 +556,14 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     });
   }
 })();
+
+
+// Quick Menu toggle
+(function(){
+  const btn = document.getElementById('quickMenuBtn');
+  const ovl = document.getElementById('quickMenuOverlay');
+  const close = document.getElementById('quickMenuClose');
+  if (btn && ovl){ btn.addEventListener('click', ()=> ovl.classList.add('show')); }
+  if (close){ close.addEventListener('click', ()=> ovl.classList.remove('show')); }
+  ovl && ovl.addEventListener('click', (e)=>{ if (e.target === ovl) ovl.classList.remove('show'); });
+})();
