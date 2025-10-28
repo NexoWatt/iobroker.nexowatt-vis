@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -126,6 +126,10 @@
       "0.0.32": {
         "en": "Add hamburger submenu with Settings; add settings panel with SoC badge toggle; minor styles",
         "de": "Untermenü (Hamburger) mit 'Einstellungen' hinzugefügt; Einstellungsseite inkl. SoC-Badge-Schalter; kleinere Styles"
+      },
+      "0.0.33": {
+        "en": "Settings page cleaned; Added Admin tab 'Einstellungen' with datapoint ID mappings for notifications, tariff, power setpoints and priorities. Fix LIVE navigation.",
+        "de": "Settings-Seite bereinigt; Admin-Reiter 'Einstellungen' mit Datenpunkt-IDs für Benachrichtigungen, Tarif, Leistungs-Sollwerte und Priorität hinzugefügt. LIVE-Navigation repariert."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -197,7 +201,14 @@
       "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
       "storageCapacityKwh": "",
       "consumer1Power": "",
-      "consumer2Power": ""
+      "consumer2Power": "",
+      "notifyEnabled": "",
+      "notifyEmail": "",
+      "dynamicTariffEnabled": "",
+      "storagePowerSetpoint": "",
+      "energyPrice": "",
+      "priority": "",
+      "tariffMode": ""
     },
     "sections": {
       "tabs": [

@@ -233,27 +233,7 @@ async function bootstrap() {
 }
 
 
-// --- Menu & Settings ---
-function initMenu(){
-  const btn = document.getElementById('menuBtn');
-  const menu = document.getElementById('menuDropdown');
-  if (!btn || !menu) return;
-  const open = ()=> menu.classList.toggle('hidden');
-  const close = ()=> menu.classList.add('hidden');
-  btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
-  document.addEventListener('click', ()=> close());
-  const settingsBtn = document.getElementById('menuOpenSettings');
-  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    // show settings section
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="settings"]');
-    if (sec) sec.classList.remove('hidden');
-    // deactivate tab buttons
-    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-    // initialize settings UI
-    initSettingsPanel();
+// --- Menu & Settings (simplified) ---
   });
 }
 
