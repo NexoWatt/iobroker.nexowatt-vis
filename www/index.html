@@ -166,7 +166,7 @@
 </div>
 </div>
 </section>
-<section class="card control"><div class="card-header"><span>Steuerung</span></div><div class="ctrl-grid"><div class="ctrl-block"><label for="ctlNotify">Benachrichtigungen</label><input id="ctlNotify" type="checkbox"/><label for="ctlEmail">E-Mail</label><input id="ctlEmail" placeholder="name@domain.tld" type="email"/></div><div class="ctrl-block"><label for="ctlDynTariff">Dynamischer Zeittarif</label><input id="ctlDynTariff" type="checkbox"/><label for="ctlEnergyPrice">Strompreis (€/kWh)</label><input id="ctlEnergyPrice" step="0.001" type="number"/></div><div class="ctrl-block"><label for="ctlStorageSet">Speicher Leistung (W)</label><input id="ctlStorageSet" type="number"/><div>Priorität: <b id="ctlPriorityVal">0</b></div><input id="ctlPriority" max="100" min="0" type="range" value="0"/><div class="mode-switch"><button class="mode-btn" id="ctlModeManual">Manuell</button><button class="mode-btn" id="ctlModeAuto">Automatisch</button></div></div></div></section></main>
+</main>
 <script src="/static/app.js"></script>
-<section class="hidden settings-wrap" data-tab-content="settings"><section class="card"><div class="card-header"><span>Einstellungen</span></div><div>Die Konfiguration erfolgt in der Admin-Instanz (Adapter-Einstellungen).</div></section></section></body>
+<section class="hidden settings-wrap" data-tab-content="settings"><section class="card"><div class="card-header"><span>Einstellungen</span></div><div class="settings-content"><label class="setting-item"><input id="optShowSocBadge" type="checkbox"/> SoC-Badge in Batterie anzeigen</label><label class="setting-item"> Update-Intervall (s) <input id="optRefreshSec" min="1" type="number" value="1"/></label></div></section><section class="card"><div class="card-header"><span>Über NexoWatt EMS</span></div><div>Build mit Menü &amp; Einstellungen.</div></section></section></body>
 </html>

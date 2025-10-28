@@ -303,13 +303,3 @@ body {
 .settings-wrap .card { margin-bottom: 16px; }
 .setting-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
 .setting-item input[type="number"] { width: 90px; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: inherit; }
-
-
-/* --- Controls card --- */
-.card.control { margin-top: 16px; }
-.ctrl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; padding: 12px 16px 20px; }
-.ctrl-block { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 8px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
-.ctrl-block input[type="number"], .ctrl-block input[type="email"] { padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: inherit; }
-.mode-switch { display: flex; gap: 8px; }
-.mode-switch .mode-btn { padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: transparent; cursor: pointer; }
-.mode-switch .mode-btn.active { background: rgba(0, 200, 120, 0.15); border-color: rgba(0,200,120,0.35); }
