@@ -233,74 +233,48 @@ async function bootstrap() {
 }
 
 
-// --- Menu & Settings (simplified) ---
+// --- Menu & Settings ---
+function initMenu(){
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('menuDropdown');
+  if(!btn || !menu) return;
+  const close=()=>menu.classList.add('hidden');
+  btn.addEventListener('click', (e)=>{e.stopPropagation(); menu.classList.toggle('hidden');});
+  document.addEventListener('click', ()=>close());
+  const settingsBtn = document.getElementById('menuOpenSettings');
+  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+    e.preventDefault(); close();
+    document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
+    const sec = document.querySelector('[data-tab-content="settings"]');
+    if (sec) sec.classList.remove('hidden');
+    document.querySelector('.content').style.display='none';
   });
 }
 
-function initSettingsPanel(){
-  const LS_KEY = 'nexowatt.settings';
-  let opts;
-  try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
+function initSettingsPanel(){ /* placeholder: config is in Admin */ }
 
-  const elSoc = document.getElementById('optShowSocBadge');
-  if (elSoc) {
-    if (typeof opts.showSocBadge === 'undefined') opts.showSocBadge = true;
-    elSoc.checked = !!opts.showSocBadge;
-    const applySoc = ()=> {
-      const t = document.getElementById('batterySocIn');
-      if (t) t.style.display = elSoc.checked ? '' : 'none';
-    };
-    elSoc.addEventListener('change', ()=>{
-      opts.showSocBadge = elSoc.checked;
-      localStorage.setItem(LS_KEY, JSON.stringify(opts));
-      applySoc();
-    });
-    applySoc();
-  }
-
-  const elRef = document.getElementById('optRefreshSec');
-  if (elRef) {
-    if (typeof opts.refreshSec === 'undefined') opts.refreshSec = 1;
-    elRef.value = opts.refreshSec;
-    elRef.addEventListener('change', ()=>{
-      const v = Math.max(1, parseInt(elRef.value||'1', 10));
-      opts.refreshSec = v;
-      localStorage.setItem(LS_KEY, JSON.stringify(opts));
-    });
+function initControls(){
+  const qp = (k,v)=> fetch(`/api/set?key=${k}&val=${encodeURIComponent(v)}`);
+  const d = (k)=> state[k]?.value; // current values from snapshot
+  const bindToggle = (id, key)=>{ const el=document.getElementById(id); if(!el) return; el.addEventListener('change', ()=> qp(key, el.checked)); if(d(key)!==undefined) el.checked = !!d(key); };
+  const bindInput  = (id, key, map=(v)=>v)=>{ const el=document.getElementById(id); if(!el) return; el.addEventListener('change', ()=> qp(key, map(el.value))); if(d(key)!==undefined) el.value = d(key); };
+  const bindRange  = (id, key)=>{ const el=document.getElementById(id); if(!el) return; el.addEventListener('input', ()=>{document.getElementById(id+'Val').textContent=el.value;}); el.addEventListener('change', ()=> qp(key, el.value)); if(d(key)!==undefined){ el.value = d(key); const v=document.getElementById(id+'Val'); if(v) v.textContent=el.value; } };
+  bindToggle('ctlNotify', 'notifyEnabled');
+  bindInput('ctlEmail','notifyEmail', v=>String(v||''));
+  bindToggle('ctlDynTariff','dynamicTariffEnabled');
+  bindInput('ctlEnergyPrice','energyPrice', v=>Number(v));
+  bindInput('ctlStorageSet','storagePowerSetpoint', v=>Number(v));
+  bindRange('ctlPriority','priority');
+  const modeManual=document.getElementById('ctlModeManual');
+  const modeAuto=document.getElementById('ctlModeAuto');
+  if(modeManual && modeAuto){
+    const upd=(val)=>{ modeManual.classList.toggle('active', val==='manual'); modeAuto.classList.toggle('active', val==='auto'); };
+    [modeManual, modeAuto].forEach(btn=> btn.addEventListener('click', ()=>{ const val = (btn===modeManual)?'manual':'auto'; qp('tariffMode', val); upd(val); }));
+    if(d('tariffMode')) upd(String(d('tariffMode')));
   }
 }
 
-bootstrap();
-initMenu();
-initSettingsPanel();
-
-
-
-// Simple tab switching
-function initTabs(){
-  const buttons = document.querySelectorAll('.tabs .tab');
-  const sections = {
-    live: document.querySelector('.content'),
-    history: document.querySelector('[data-tab-content="history"]'),
-    settings: document.querySelector('[data-tab-content="settings"]'),
-    smarthome: document.querySelector('[data-tab-content="smarthome"]'),
-  };
-  buttons.forEach(btn => btn.addEventListener('click', () => {
-    buttons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const tab = btn.getAttribute('data-tab');
-
-    // Show/hide groups
-    // main ".content" holds live top sections; other sections are siblings
-    document.querySelector('.content').style.display = (tab==='live') ? 'grid' : 'none';
-    for (const k of ['history','settings','smarthome']) {
-      const el = sections[k];
-      if (el) el.classList.toggle('hidden', tab !== k);
-    }
-  }));
-}
-
-function renderSmartHome(){
+function renderSmartHome(){(){
   const onTxt = (v)=> v ? 'AN' : 'AUS';
   const d = (k)=> state[k]?.value;
   const get = (path) => {
@@ -533,7 +507,11 @@ function updateEnergyWeb() {
   const pv = +(d('pvPower') ?? 0);
   const buy = +(d('gridBuyPower') ?? 0);
   const sell = +(d('gridSellPower') ?? 0);
-  const load = Math.max(0, +(d('consumptionTotal') ?? 0));
+  let load = 0;
+  const hasC1 = (state['consumer1Power']!==undefined);
+  if (hasC1) load = +(d('consumer1Power')||0);
+  else if (state['consumptionEvcs']!==undefined || state['consumptionOther']!==undefined) load = (+(d('consumptionEvcs')||0)) + (+(d('consumptionOther')||0));
+  else { const pv = +(d('pvPower')||0), buy = +(d('gridBuyPower')||0), sell = +(d('gridSellPower')||0), charge=+(d('storageChargePower')||0), discharge=+(d('storageDischargePower')||0); load = Math.max(0, pv + buy - sell - discharge + charge); }
   const c1 = +(d('consumer1Power') ?? 0);
   const c2 = +(d('consumptionEvcs') ?? 0); // Wallbox
   const soc = d('storageSoc');
@@ -542,7 +520,7 @@ function updateEnergyWeb() {
   const discharge = +(d('storageDischargePower') ?? 0);
 
   // Rest = load - c1 - c2 (>=0)
-  const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
+  const rest = (state['consumptionOther']!==undefined) ? +(d('consumptionOther')||0) : Math.max(0, load - (+(d('consumptionEvcs')||0)));
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
   T('pvVal', formatPower(pv));

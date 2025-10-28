@@ -43,6 +43,10 @@ class NexoWattVis extends utils.Adapter {
 
     app.use('/static', express.static(path.join(__dirname, 'www')));
 
+    // simple parser for json and urlencoded
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
     // config for client
     app.get('/config', (_req, res) => {
       res.json({ units: this.config.units || { power: 'W', energy: 'kWh' } });
@@ -52,6 +56,29 @@ class NexoWattVis extends utils.Adapter {
     app.get('/api/state', (_req, res) => {
       res.json(this.stateCache);
     });
+    // write by datapoint key (mapped in admin)
+    app.get('/api/set', async (req, res) => {
+      try {
+        const key = req.query.key;
+        if (!key) return res.status(400).json({ ok:false, error:'missing key' });
+        const id = (this.config && this.config.datapoints && this.config.datapoints[key]) || '';
+        if (!id) return res.status(404).json({ ok:false, error:'datapoint not configured' });
+        let val = req.query.val;
+        if (val === undefined) return res.status(400).json({ ok:false, error:'missing val' });
+        // parse types
+        if (val === 'true' || val === 'false') {
+          val = (val === 'true');
+        } else if (!isNaN(val)) {
+          val = Number(val);
+        }
+        await this.setForeignStateAsync(id, val);
+        res.json({ ok:true, id, key, val });
+      } catch (e) {
+        this.log.warn('set error: ' + e.message);
+        res.status(500).json({ ok:false, error: e.message });
+      }
+    });
+    
 
     // server-sent events for live updates
     app.get('/events', (req, res) => {
