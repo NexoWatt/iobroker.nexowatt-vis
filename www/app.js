@@ -253,6 +253,7 @@ function initMenu(){
     e.preventDefault();
     close();
     // show settings section
+    hideAllPanels();
     document.querySelector('.content').style.display = 'none';
     const sec = document.querySelector('[data-tab-content="settings"]');
     if (sec) sec.classList.remove('hidden');
@@ -272,6 +273,7 @@ function initMenu(){
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
       INSTALLER_TOKEN = j.token || 'ok';
       // Navigate to installer page only after successful login
+      hideAllPanels();
       document.querySelector('.content').style.display = 'none';
       const sec = document.querySelector('[data-tab-content="installer"]');
       if (sec) sec.classList.remove('hidden');
@@ -321,6 +323,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
   initMenu();
   initSettingsPanel();
   initTabs();
+hideAllPanels();
 });
 
 
@@ -494,8 +497,10 @@ render = function(){
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
       const remToEmpty_kWh = cap * (socPct);
-      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
-      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
+      const chg2 = +(d('storageChargePower') ?? 0);
+      const dchg2 = +(d('storageDischargePower') ?? 0);
+      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
       // SoC ring
@@ -509,7 +514,7 @@ render = function(){
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(charge + discharge));
+    setDonut('storage', pct(chg2 + dchg2));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderOrig();
@@ -594,8 +599,10 @@ render = function(){
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
       const remToEmpty_kWh = cap * (socPct);
-      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
-      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
+      const chg2 = +(d('storageChargePower') ?? 0);
+      const dchg2 = +(d('storageDischargePower') ?? 0);
+      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
       // SoC ring
@@ -609,7 +616,7 @@ render = function(){
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(charge + discharge));
+    setDonut('storage', pct(chg2 + dchg2));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderEF();
