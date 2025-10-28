@@ -352,3 +352,14 @@ header .title, .topbar .title, .appbar .title, header .app-title, header h1, .br
 
 /* Overlay on top always */
 .overlay{ z-index: 99999 !important; }
+
+
+/* === Header layout with left logo + left black menu button, centered title === */
+header{ position:relative; min-height:44px; }
+header .nxw-logo{ position:absolute; left:12px; top:50%; transform:translateY(-50%); height:22px; width:auto; border-radius:4px; }
+#quickMenuBtn{ position:absolute; left:44px; top:50%; transform:translateY(-50%); z-index:5; }
+header .title{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); margin:0; font-weight:600; letter-spacing:.2px; }
+
+/* hide default/white hamburger or other left buttons */
+header .mdc-top-app-bar__navigation-icon,
+header .hamburger, header .menu-toggle, header .btn-white, header .icon-button:not(#quickMenuBtn){ display:none !important; }

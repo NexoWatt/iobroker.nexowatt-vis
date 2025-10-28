@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.31+v2d+v2e+v2f",
+    "version": "0.0.32",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -138,6 +138,10 @@
       "0.0.31+v2d+v2e+v2f": {
         "de": "Header endgültig bereinigt (nur Text mittig), Quick-Menü stabil, Duplikate/alter Energiefluss hart entfernt.",
         "en": "Header finally cleaned (center text only), quick menu stable, duplicates/old energy flow hard-removed."
+      },
+      "0.0.32": {
+        "de": "Header: linkes weißes Icon entfernt, schwarzer Menü-Button links, Logo wieder eingefügt. Titel mittig. Alt-Monitor entfernt, Einbettung bleibt oben.",
+        "en": "Header: removed white left icon, placed black menu button left, restored logo. Title centered. Old monitor removed, embedded stays on top."
       }
     },
     "title": "NexoWatt EMS UI",
