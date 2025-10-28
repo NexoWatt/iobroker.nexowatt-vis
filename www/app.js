@@ -293,9 +293,7 @@ function initSettingsPanel(){
 bootstrap();
 initMenu();
 initSettingsPanel();
-
-
-
+initTabs();
 // Simple tab switching
 function initTabs(){
   const buttons = document.querySelectorAll('.tabs .tab');

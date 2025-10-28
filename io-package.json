@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.32",
+    "version": "0.3.3",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -126,6 +126,10 @@
       "0.0.32": {
         "en": "Add hamburger submenu with Settings; add settings panel with SoC badge toggle; minor styles",
         "de": "Untermenü (Hamburger) mit 'Einstellungen' hinzugefügt; Einstellungsseite inkl. SoC-Badge-Schalter; kleinere Styles"
+      },
+      "0.3.3": {
+        "en": "Fix: LIVE tab switches back to main page (initTabs on startup).",
+        "de": "Fix: LIVE-Tab wechselt wieder zur Hauptseite (initTabs beim Start)."
       }
     },
     "title": "NexoWatt EMS UI",
