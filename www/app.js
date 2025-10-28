@@ -214,25 +214,25 @@ async function bootstrap() {
   window.latestState = state;
   render();
 
-  const es = new EventSource('/events');
-  const dot = document.getElementById('liveDot');
-  es.onopen = () => dot.classList.add('live');
-  es.onerror = () => dot.classList.remove('live');
-  es.onmessage = (ev) => {
-    try {
-      const msg = JSON.parse(ev.data);
-      if (msg.type === 'init' && msg.payload) {
-        state = msg.payload;
-        window.latestState = state;
-      } else if (msg.type === 'update' && msg.payload) {
-        Object.assign(state, msg.payload);
-        window.latestState = state;
-      }
-      render();
-    } catch (e) {
-      console.warn(e);
-    }
-  };
+  function startEvents(){
+  try{
+    const es = new EventSource('/events');
+    const dot = document.getElementById('liveDot');
+    if (dot) dot.classList.remove('live');
+    es.onopen = () => { if (dot) dot.classList.add('live'); };
+    es.onerror = () => { if (dot) dot.classList.remove('live'); try{ es.close(); }catch(_){ } setTimeout(startEvents, 3000); };
+    es.onmessage = (ev) => {
+      try {
+        const msg = JSON.parse(ev.data);
+        if (msg.type === 'init' && msg.payload) { state = msg.payload; window.latestState = state; }
+        else if (msg.type === 'update' && msg.payload) { Object.assign(state, msg.payload); window.latestState = state; }
+        render();
+      } catch (e) { console.warn(e); }
+    };
+  } catch(e){ console.warn('events', e); setTimeout(startEvents, 3000); }
+}
+startEvents();
+
 }
 
 
@@ -316,10 +316,12 @@ function initSettingsPanel(){
   }
 }
 
-bootstrap();
-initMenu();
-initSettingsPanel();
-initTabs();
+window.addEventListener('DOMContentLoaded', ()=>{
+  bootstrap();
+  initMenu();
+  initSettingsPanel();
+  initTabs();
+});
 
 
 // --- Settings & Installer logic ---
