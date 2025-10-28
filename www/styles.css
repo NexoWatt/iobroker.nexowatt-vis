@@ -286,3 +286,6 @@ body {
 /* battery font tweak */
 .web .node.consumer text.val{ font-size:14px; font-weight:700; }
 .web .node.consumer text.lbl{ font-size:12px; }
+
+/* Hide SoC pill inside battery on energy web */
+#batterySocIn{display:none}

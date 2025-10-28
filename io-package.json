@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -122,6 +122,10 @@
       "0.0.30": {
         "en": "Battery circle enlarged and inner layout tuned. Energy monitor respects existing datapoint settings.",
         "de": "Batteriekreis vergrößert und Innenlayout angepasst. Energiemonitor berücksichtigt die bestehenden Datenpunkte."
+      },
+      "0.0.31": {
+        "de": "SoC-Anzeige im Energiefluss (Batterie-Badge) entfernt.",
+        "en": "Removed SoC badge on energy web battery node."
       }
     },
     "title": "NexoWatt EMS UI",
