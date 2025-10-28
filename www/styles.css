@@ -287,5 +287,19 @@ body {
 .web .node.consumer text.val{ font-size:14px; font-weight:700; }
 .web .node.consumer text.lbl{ font-size:12px; }
 
-/* Hide SoC pill inside battery on energy web */
-#batterySocIn{display:none}
+
+/* --- Dropdown menu (hamburger) --- */
+.topbar { position: relative; }
+#menuBtn { background: transparent; border: none; font-size: 20px; padding: 6px 10px; margin: 0 8px 0 12px; cursor: pointer; border-radius: 8px; }
+#menuBtn:hover { background: rgba(255,255,255,0.06); }
+.menu { position: absolute; top: 48px; left: 12px; background: var(--card-bg, #2a2a2a); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); min-width: 200px; z-index: 50; padding: 6px; }
+.menu.hidden { display: none; }
+.menu .menu-item { width: 100%; text-align: left; padding: 10px 12px; background: transparent; border: none; color: var(--text, #eaeaea); font-size: 14px; border-radius: 8px; cursor: pointer; }
+.menu .menu-item:hover { background: rgba(255,255,255,0.08); }
+
+/* --- Settings panel --- */
+.settings-wrap.hidden { display: none; }
+.settings-wrap { padding: 16px; max-width: 1100px; margin: 0 auto; }
+.settings-wrap .card { margin-bottom: 16px; }
+.setting-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.setting-item input[type="number"] { width: 90px; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: inherit; }

@@ -232,7 +232,68 @@ async function bootstrap() {
   };
 }
 
+
+// --- Menu & Settings ---
+function initMenu(){
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('menuDropdown');
+  if (!btn || !menu) return;
+  const open = ()=> menu.classList.toggle('hidden');
+  const close = ()=> menu.classList.add('hidden');
+  btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
+  document.addEventListener('click', ()=> close());
+  const settingsBtn = document.getElementById('menuOpenSettings');
+  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    close();
+    // show settings section
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="settings"]');
+    if (sec) sec.classList.remove('hidden');
+    // deactivate tab buttons
+    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+    // initialize settings UI
+    initSettingsPanel();
+  });
+}
+
+function initSettingsPanel(){
+  const LS_KEY = 'nexowatt.settings';
+  let opts;
+  try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
+
+  const elSoc = document.getElementById('optShowSocBadge');
+  if (elSoc) {
+    if (typeof opts.showSocBadge === 'undefined') opts.showSocBadge = true;
+    elSoc.checked = !!opts.showSocBadge;
+    const applySoc = ()=> {
+      const t = document.getElementById('batterySocIn');
+      if (t) t.style.display = elSoc.checked ? '' : 'none';
+    };
+    elSoc.addEventListener('change', ()=>{
+      opts.showSocBadge = elSoc.checked;
+      localStorage.setItem(LS_KEY, JSON.stringify(opts));
+      applySoc();
+    });
+    applySoc();
+  }
+
+  const elRef = document.getElementById('optRefreshSec');
+  if (elRef) {
+    if (typeof opts.refreshSec === 'undefined') opts.refreshSec = 1;
+    elRef.value = opts.refreshSec;
+    elRef.addEventListener('change', ()=>{
+      const v = Math.max(1, parseInt(elRef.value||'1', 10));
+      opts.refreshSec = v;
+      localStorage.setItem(LS_KEY, JSON.stringify(opts));
+    });
+  }
+}
+
 bootstrap();
+initMenu();
+initSettingsPanel();
+
 
 
 // Simple tab switching
@@ -511,6 +572,8 @@ function updateEnergyWeb() {
   T('restVal', formatPower(rest));
   // set default battery soc
   T('centerPower', formatPower(load));
+  if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
+  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); T('centerSoc',''); }
   if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
   else T('batterySoc', '-- %');
   T('batteryCharge', 'Laden ' + formatPower(charge));
