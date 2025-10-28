@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.9",
+    "version": "0.3.10",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -154,6 +154,10 @@
       "0.3.9": {
         "en": "SSE auto-reconnect + DOMContentLoaded init (submenu + live green).",
         "de": "SSE Auto-Reconnect + DOMContentLoaded-Init (Untermenü + Live grün)."
+      },
+      "0.3.10": {
+        "en": "Fix: JS syntax error (extra '}') prevented menu & live status. Now resolved.",
+        "de": "Fix: JS-Syntaxfehler (extra '}') blockierte Menü & Live-Status. Behoben."
       }
     },
     "title": "NexoWatt EMS UI",

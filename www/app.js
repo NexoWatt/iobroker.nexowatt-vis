@@ -376,8 +376,6 @@ function setupInstaller(){
     a.href = url;
   }
 
-  }
-
 // Simple tab switching
 function initTabs(){
   const buttons = document.querySelectorAll('.tabs .tab');
