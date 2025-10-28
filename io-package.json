@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.32",
+    "version": "0.0.30",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -122,26 +122,6 @@
       "0.0.30": {
         "en": "Battery circle enlarged and inner layout tuned. Energy monitor respects existing datapoint settings.",
         "de": "Batteriekreis vergrößert und Innenlayout angepasst. Energiemonitor berücksichtigt die bestehenden Datenpunkte."
-      },
-      "0.0.31": {
-        "en": "Names inside circles; power values outside; same ring size for all; storage SoC at battery; menu button opens subpage with Settings.",
-        "de": "Namen in Kreisen; Leistungen außerhalb; gleich große Ringe; Speicher-SoC bei Batterie; Menü-Button öffnet Unterseite mit Einstellungen."
-      },
-      "0.0.31+v2d": {
-        "de": "Energiefluss oben in Graph integriert; untere Karte entfernt; weißes Icon entfernt; Quick-Menü repariert. Instanz: neuer Reiter 'Energiefluss (Datenpunkte)' ersetzt 'Graphen'.",
-        "en": "Energy flow embedded at top graph; bottom card removed; white icon removed; quick menu fixed. Instance: new 'Energy Flow (Datapoints)' tab replaces 'Graph'."
-      },
-      "0.0.31+v2d+v2e": {
-        "de": "Header bereinigt (nur Text mittig, weißes Icon entfernt), Quick-Menü klickbar, alter Energieflussmonitor und zugehörige Einstellungsreiter entfernt.",
-        "en": "Header cleaned (center title only, white icon removed), quick menu clickable, removed old energy flow monitor and its settings tab."
-      },
-      "0.0.31+v2d+v2e+v2f": {
-        "de": "Header endgültig bereinigt (nur Text mittig), Quick-Menü stabil, Duplikate/alter Energiefluss hart entfernt.",
-        "en": "Header finally cleaned (center text only), quick menu stable, duplicates/old energy flow hard-removed."
-      },
-      "0.0.32": {
-        "de": "Header: linkes weißes Icon entfernt, schwarzer Menü-Button links, Logo wieder eingefügt. Titel mittig. Alt-Monitor entfernt, Einbettung bleibt oben.",
-        "en": "Header: removed white left icon, placed black menu button left, restored logo. Title centered. Old monitor removed, embedded stays on top."
       }
     },
     "title": "NexoWatt EMS UI",
