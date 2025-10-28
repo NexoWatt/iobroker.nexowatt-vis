@@ -538,21 +538,3 @@ if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
-
-
-// submenu overlay
-(function(){
-  const open = document.getElementById('menuBtn');
-  const overlay = document.getElementById('submenuOverlay');
-  const close = document.getElementById('closeOverlay');
-  const openSettings = document.getElementById('openSettings');
-  if (open && overlay){
-    open.addEventListener('click', ()=> overlay.classList.add('show'));
-  }
-  if (close) close.addEventListener('click', ()=> overlay.classList.remove('show'));
-  if (openSettings){
-    openSettings.addEventListener('click', ()=> {
-      window.open('/adapter/nexowatt-vis/', '_blank');
-    });
-  }
-})();

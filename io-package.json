@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.0.31",
+    "version": "0.0.30",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -122,10 +122,6 @@
       "0.0.30": {
         "en": "Battery circle enlarged and inner layout tuned. Energy monitor respects existing datapoint settings.",
         "de": "Batteriekreis vergrößert und Innenlayout angepasst. Energiemonitor berücksichtigt die bestehenden Datenpunkte."
-      },
-      "0.0.31": {
-        "en": "Names inside circles; power values outside; same ring size for all; storage SoC at battery; menu button opens subpage with Settings.",
-        "de": "Namen in Kreisen; Leistungen außerhalb; gleich große Ringe; Speicher-SoC bei Batterie; Menü-Button öffnet Unterseite mit Einstellungen."
       }
     },
     "title": "NexoWatt EMS UI",
