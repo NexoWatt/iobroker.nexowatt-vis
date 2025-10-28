@@ -660,12 +660,12 @@ function updateEnergyWeb() {
   // set default battery soc
   T('centerPower', formatPower(load));
   if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
-  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); T('centerSoc',''); }
+  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); /* centerSoc removed */ }
   if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
   else T('batterySoc', '-- %');
   T('batteryCharge', 'Laden ' + formatPower(charge));
   T('batteryDischarge', 'Entladen ' + formatPower(discharge));
-if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed(0)+' %');
+if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFixed(0)+' %');
 
   if (cap && soc !== undefined) {
     const socPct = Number(soc)/100;
