@@ -244,6 +244,8 @@ function initMenu(){
   const open = ()=> menu.classList.toggle('hidden');
   const close = ()=> menu.classList.add('hidden');
   btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
+  menu.addEventListener('click', (e)=> e.stopPropagation());
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
   const installerBtn = document.getElementById('menuOpenInstaller');

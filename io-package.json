@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -142,6 +142,10 @@
       "0.3.6": {
         "en": "Menu cleanup (removed About), Settings page without Installer button, pre-login before Installer view, improved Installer layout.",
         "de": "Menü bereinigt (Über entfernt), Einstellungen ohne Installateur-Button, Login vor Installateur-Seite, bessere Installateur-Proportionen."
+      },
+      "0.3.7": {
+        "en": "Menu reliability improvements (submenu toggle hardened).",
+        "de": "Untermenü zuverlässig: Toggle/Schließen robuster (StopPropagation + ESC)."
       }
     },
     "title": "NexoWatt EMS UI",
