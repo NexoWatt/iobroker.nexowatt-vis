@@ -211,6 +211,7 @@ async function bootstrap() {
 
   const snap = await fetch('/api/state').then(r => r.json());
   state = snap || {};
+  window.latestState = state;
   render();
 
   const es = new EventSource('/events');
@@ -222,8 +223,10 @@ async function bootstrap() {
       const msg = JSON.parse(ev.data);
       if (msg.type === 'init' && msg.payload) {
         state = msg.payload;
+        window.latestState = state;
       } else if (msg.type === 'update' && msg.payload) {
         Object.assign(state, msg.payload);
+        window.latestState = state;
       }
       render();
     } catch (e) {
@@ -243,6 +246,7 @@ function initMenu(){
   btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
+  const installerBtn = document.getElementById('menuOpenInstaller');
   if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     close();
@@ -254,8 +258,19 @@ function initMenu(){
     document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
     // initialize settings UI
     initSettingsPanel();
+    setupSettings();
+  });
+  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    close();
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="installer"]');
+    if (sec) sec.classList.remove('hidden');
+    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+    setupInstaller();
   });
 }
+
 
 function initSettingsPanel(){
   const LS_KEY = 'nexowatt.settings';
@@ -294,6 +309,78 @@ bootstrap();
 initMenu();
 initSettingsPanel();
 initTabs();
+
+
+// --- Settings & Installer logic ---
+let INSTALLER_TOKEN = null;
+let SERVER_CFG = { adminUrl: null, installerLocked: false };
+
+async function loadConfig() {
+  try {
+    const r = await fetch('/config');
+    const j = await r.json();
+    SERVER_CFG = j || {};
+  } catch(e) { console.warn('cfg', e); }
+}
+
+function bindInputValue(el, stateKey) {
+  // set initial value from state cache
+  const st = (window.latestState || {});
+  const info = st[stateKey] || st['settings.'+el.dataset.key] || st['installer.'+el.dataset.key];
+  if (info && info.value !== undefined) {
+    if (el.type === 'checkbox') el.checked = !!info.value;
+    else el.value = info.value;
+  }
+  el.addEventListener('change', async ()=>{
+    const scope = el.dataset.scope;
+    const key = el.dataset.key;
+    const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
+    if (scope === 'installer' && SERVER_CFG.installerLocked && INSTALLER_TOKEN) payload.token = INSTALLER_TOKEN;
+    try {
+      await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    } catch(e) { console.warn('set', e); }
+  });
+}
+
+function setupSettings(){
+  document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
+}
+
+function setupInstaller(){
+  const loginBox = document.getElementById('installerLoginBox');
+  const form = document.getElementById('installerForm');
+  if (SERVER_CFG.installerLocked && !INSTALLER_TOKEN) {
+    loginBox.classList.remove('hidden');
+    form.classList.add('hidden');
+  } else {
+    loginBox.classList.add('hidden');
+    form.classList.remove('hidden');
+    document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
+    // admin link
+    const a = document.getElementById('openAdminBtn');
+    let url = SERVER_CFG.adminUrl;
+    if (!url) {
+      const u = new URL(window.location.href);
+      url = u.origin.replace(/:\d+$/, ':8081');
+    }
+    a.href = url;
+  }
+
+  document.getElementById('inst_login').onclick = async ()=>{
+    const pw = document.getElementById('inst_pw').value;
+    try {
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw })});
+      const j = await r.json();
+      if (j && j.ok) {
+        INSTALLER_TOKEN = j.token || 'ok';
+        setupInstaller(); // re-render
+      } else {
+        alert('Passwort falsch');
+      }
+    } catch(e){ console.warn(e); alert('Login fehlgeschlagen'); }
+  };
+}
+
 // Simple tab switching
 function initTabs(){
   const buttons = document.querySelectorAll('.tabs .tab');

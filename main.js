@@ -4,6 +4,7 @@
 const utils = require('@iobroker/adapter-core');
 const express = require('express');
 const path = require('path');
+const bodyParser = express.json();
 
 class NexoWattVis extends utils.Adapter {
   constructor(options) {
@@ -43,14 +44,65 @@ class NexoWattVis extends utils.Adapter {
 
     app.use('/static', express.static(path.join(__dirname, 'www')));
 
+    // JSON body parser
+    app.use(bodyParser);
+
     // config for client
     app.get('/config', (_req, res) => {
-      res.json({ units: this.config.units || { power: 'W', energy: 'kWh' } });
+      res.json({
+        units: this.config.units || { power: 'W', energy: 'kWh' },
+        settings: this.config.settings || {},
+        installer: this.config.installer || {},
+        adminUrl: this.config.adminUrl || null,
+        installerLocked: !!(this.config.installerPassword)
+      });
     });
 
     // snapshot
     app.get('/api/state', (_req, res) => {
       res.json(this.stateCache);
+    });
+
+    // login for installer
+    app.post('/api/installer/login', (req, res) => {
+      const pw = (this.config && this.config.installerPassword) || '';
+      const provided = (req.body && req.body.password) || '';
+      if (!pw || provided === pw) {
+        // generate volatile token
+        this._installerToken = Math.random().toString(36).slice(2);
+        res.json({ ok: true, token: this._installerToken });
+      } else {
+        res.status(401).json({ ok: false, error: 'Unauthorized' });
+      }
+    });
+
+    // generic setter for settings/installer datapoints
+    app.post('/api/set', async (req, res) => {
+      try {
+        const scope = req.body && req.body.scope;
+        const key = req.body && req.body.key;
+        const value = req.body && req.body.value;
+        if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
+        let map = {};
+        if (scope === 'installer') {
+          // verify token if password configured
+          const pw = (this.config && this.config.installerPassword) || '';
+          if (pw) {
+            const token = req.body && req.body.token;
+            if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
+          }
+          map = (this.config && this.config.installer) || {};
+        } else {
+          map = (this.config && this.config.settings) || {};
+        }
+        const id = map[key];
+        if (!id) return res.status(404).json({ ok: false, error: 'id not configured' });
+        await this.setForeignStateAsync(id, value);
+        res.json({ ok: true });
+      } catch (e) {
+        this.log.warn('set error: ' + e.message);
+        res.status(500).json({ ok: false, error: 'internal error' });
+      }
     });
 
     // server-sent events for live updates
@@ -86,10 +138,19 @@ class NexoWattVis extends utils.Adapter {
 
   async subscribeConfiguredStates() {
     const dps = (this.config && this.config.datapoints) || {};
-    const keys = Object.keys(dps);
+    const settings = (this.config && this.config.settings) || {};
+    const installer = (this.config && this.config.installer) || {};
+    const keys = [
+      ...Object.keys(dps),
+      ...Object.keys(settings).map(k => 'settings.' + k),
+      ...Object.keys(installer).map(k => 'installer.' + k),
+    ];
 
     for (const key of keys) {
-      const id = dps[key];
+      let id;
+      if (key.startsWith('settings.')) id = settings[key.slice(9)];
+      else if (key.startsWith('installer.')) id = installer[key.slice(10)];
+      else id = dps[key];
       if (!id) continue;
 
       // subscribe
@@ -121,9 +182,11 @@ class NexoWattVis extends utils.Adapter {
 
   keyFromId(id) {
     const dps = (this.config && this.config.datapoints) || {};
-    for (const [key, dpId] of Object.entries(dps)) {
-      if (dpId === id) return key;
-    }
+    for (const [key, dpId] of Object.entries(dps)) { if (dpId === id) return key; }
+    const settings = (this.config && this.config.settings) || {};
+    for (const [k, dpId] of Object.entries(settings)) { if (dpId === id) return 'settings.' + k; }
+    const installer = (this.config && this.config.installer) || {};
+    for (const [k, dpId] of Object.entries(installer)) { if (dpId === id) return 'installer.' + k; }
     return null;
   }
 

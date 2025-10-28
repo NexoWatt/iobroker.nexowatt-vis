@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.3",
+    "version": "0.3.5",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -130,6 +130,14 @@
       "0.3.3": {
         "en": "Fix: LIVE tab switches back to main page (initTabs on startup).",
         "de": "Fix: LIVE-Tab wechselt wieder zur Hauptseite (initTabs beim Start)."
+      },
+      "0.3.4": {
+        "en": "Removed settings cards (SoC badge & refresh interval) and About panel from both main & settings view.",
+        "de": "Einstellungs-Karten (SoC-Badge & Aktualisierungsintervall) und Über-Panel aus Haupt- und Einstellungsansicht entfernt."
+      },
+      "0.3.5": {
+        "en": "Added Settings and password-protected Installer pages with ioBroker state bindings and admin link.",
+        "de": "Neue Seiten: Einstellungen und passwortgeschützte Installateur-Ansicht inkl. ioBroker-State-Zuordnungen und Admin-Link."
       }
     },
     "title": "NexoWatt EMS UI",

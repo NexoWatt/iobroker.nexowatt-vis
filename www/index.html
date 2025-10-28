@@ -18,7 +18,7 @@
 <button class="tab" data-tab="history" disabled="">HISTORY</button>
 </nav>
 <div class="status-dot" id="liveDot" title="Live Verbindung"></div>
-<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button><button class="menu-item" id="menuOpenAbout">Über</button></div></header>
+<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button><button class="menu-item" id="menuOpenInstaller">Installateur</button><button class="menu-item" id="menuOpenAbout">Über</button><button class="menu-item" id="menuOpenAbout">Über</button></div></header>
 <main class="content">
 <section class="card energy-web">
 <div class="card-header">
@@ -168,5 +168,91 @@
 </section>
 </main>
 <script src="/static/app.js"></script>
-<section class="hidden settings-wrap" data-tab-content="settings"><section class="card"><div class="card-header"><span>Einstellungen</span></div><div class="settings-content"><label class="setting-item"><input id="optShowSocBadge" type="checkbox"/> SoC-Badge in Batterie anzeigen</label><label class="setting-item"> Update-Intervall (s) <input id="optRefreshSec" min="1" type="number" value="1"/></label></div></section><section class="card"><div class="card-header"><span>Über NexoWatt EMS</span></div><div>Build mit Menü &amp; Einstellungen.</div></section></section></body>
+
+<section class="hidden settings-wrap" data-tab-content="settings">
+  <section class="card">
+    <div class="card-header"><span>Allgemeine Einstellungen</span></div>
+    <div class="form">
+      <label class="row"><span>Benachrichtigungen</span>
+        <input type="checkbox" id="s_notify" data-scope="settings" data-key="notifyEnabled">
+      </label>
+      <label class="row"><span>E-Mail</span>
+        <input type="email" id="s_email" data-scope="settings" data-key="email">
+      </label>
+      <label class="row"><span>Dynamischer Zeittarif</span>
+        <input type="checkbox" id="s_dyn" data-scope="settings" data-key="dynamicTariff">
+      </label>
+      <label class="row"><span>Speicher Leistung (W)</span>
+        <input type="number" id="s_storagePower" step="1" data-scope="settings" data-key="storagePower">
+      </label>
+      <label class="row"><span>Strompreis (€)</span>
+        <input type="number" id="s_price" step="0.01" data-scope="settings" data-key="price">
+      </label>
+      <div class="row"><span>Priorität (Speicher ↔ Ladestation)</span>
+        <input type="range" min="0" max="100" id="s_priority" data-scope="settings" data-key="priority">
+      </div>
+      <div class="row"><span>Modus Tarif</span>
+        <input type="range" min="0" max="1" id="s_tariffMode" data-scope="settings" data-key="tariffMode">
+        <small>0 = Manuell, 1 = Automatisch</small>
+      </div>
+    </div>
+  </section>
+
+  <div class="center mtop">
+    <button class="btn" id="openInstallerBtn">Installateur</button>
+  </div>
+</section>
+
+
+<section class="hidden settings-wrap" data-tab-content="installer">
+  <section class="card">
+    <div class="card-header"><span>Installateur</span></div>
+    <div class="form" id="installerLoginBox">
+      <label class="row"><span>Passwort</span>
+        <input type="password" id="inst_pw">
+      </label>
+      <button class="btn" id="inst_login">Freischalten</button>
+    </div>
+    <div class="form hidden" id="installerForm">
+      <div class="grid">
+        <label class="row"><span>Leistung Netzanschluss (W)</span>
+          <input type="number" data-scope="installer" data-key="gridConnectionPower">
+        </label>
+        <label class="row"><span>§14a</span>
+          <input type="checkbox" data-scope="installer" data-key="para14a">
+        </label>
+        <label class="row"><span>Anzahl Ladepunkte</span>
+          <input type="number" data-scope="installer" data-key="evChargingPoints">
+        </label>
+        <label class="row"><span>Anzahl Speicher (Modus)</span>
+          <input type="number" data-scope="installer" data-key="storageCount">
+        </label>
+        <label class="row"><span>Leistung Speicher (W)</span>
+          <input type="number" data-scope="installer" data-key="storagePower">
+        </label>
+        <label class="row"><span>Betriebsmodus EMS</span>
+          <input type="number" data-scope="installer" data-key="emsMode">
+          <small>1=Normal 2=Lastspitze 3=Multi-Use</small>
+        </label>
+        <label class="row"><span>SOC Min (%)</span>
+          <input type="number" data-scope="installer" data-key="socMin">
+        </label>
+        <label class="row"><span>SOC Bereich Lastspitze (%)</span>
+          <input type="number" data-scope="installer" data-key="socPeakRange">
+        </label>
+        <label class="row"><span>Beladeleistung max (W)</span>
+          <input type="number" data-scope="installer" data-key="chargeLimitMax">
+        </label>
+        <label class="row"><span>Entladeleistung max (W)</span>
+          <input type="number" data-scope="installer" data-key="dischargeLimitMax">
+        </label>
+      </div>
+      <div class="center mtop">
+        <a class="btn" id="openAdminBtn" target="_blank" rel="noopener">ioBroker Admin öffnen</a>
+      </div>
+    </div>
+  </section>
+</section>
+
+</body>
 </html>
