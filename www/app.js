@@ -557,3 +557,6 @@ if (soc !== undefined && !isNaN(Number(soc))) T('centerSoc', Number(soc).toFixed
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
+
+// ---- Boot ----
+document.addEventListener('DOMContentLoaded', ()=>{ try{ bootstrap(); initTabs(); initMenu(); initSettingsPanel(); initControls(); }catch(e){ console.warn(e); } });
