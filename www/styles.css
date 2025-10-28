@@ -322,3 +322,13 @@ header .menu-toggle, header .btn-white, header .brand-badge, header .logo-button
 .menu-item{ display:block; padding:10px 12px; border:1px solid #2a323b; border-radius:10px; background:#1b2229; color:#e6edf3; text-decoration:none }
 .menu-item:hover{ background:#242c34 }
 .menu-actions{ display:flex; justify-content:flex-end; margin-top:12px; }
+
+
+/* Center title in header and hide legacy icons */
+header .menu-toggle, header .btn-white, header .brand-badge, header .logo-button, header .logo img { display:none !important; }
+header .logo, header .brand { display:none !important; } /* hide graphic logo completely */
+header .title, header .app-title, header .brand-title, header .logo-text, header h1 {
+  position: absolute; left:50%; transform:translateX(-50%);
+  margin:0; text-align:center; pointer-events:none; color:#e6edf3;
+}
+#quickMenuBtn{ position:relative; z-index:5; pointer-events:auto; }
