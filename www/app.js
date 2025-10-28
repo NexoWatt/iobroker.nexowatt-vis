@@ -607,3 +607,47 @@ document.addEventListener('click', (e)=>{
   const ovl = document.getElementById('quickMenuOverlay');
   if (btn && ovl){ e.preventDefault(); ovl.classList.add('show'); }
 });
+
+
+// Robust quick menu open/close
+document.addEventListener('DOMContentLoaded', ()=>{
+  const btn = document.getElementById('quickMenuBtn');
+  const ovl = document.getElementById('quickMenuOverlay');
+  const close = document.getElementById('quickMenuClose');
+  if (btn && ovl) btn.addEventListener('click', ()=> ovl.classList.add('show'));
+  if (close) close.addEventListener('click', ()=> ovl.classList.remove('show'));
+  ovl && ovl.addEventListener('click', (e)=>{ if (e.target === ovl) ovl.classList.remove('show'); });
+});
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('#quickMenuBtn');
+  const ovl = document.getElementById('quickMenuOverlay');
+  if (btn && ovl){ e.preventDefault(); ovl.classList.add('show'); }
+});
+
+// Move energy iframe to first Energiefluss/Graph card and remove duplicates/old monitor
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    const frames = Array.from(document.querySelectorAll('iframe[src*="/energiefluss/"]'));
+    const cards = Array.from(document.querySelectorAll('.card'));
+    // find top graph/energiefluss card
+    let graphCard = cards.find(c => /Energiefluss/i.test(c.textContent)) || cards[0];
+    if (frames.length){
+      const frame = frames[0];
+      const host = document.createElement('div');
+      host.className = 'embed-energy';
+      host.appendChild(frame);
+      (graphCard.querySelector('.card-body') || graphCard).appendChild(host);
+      // remove all other energyflow iframes/cards
+      frames.slice(1).forEach(f => {
+        const card = f.closest('.card');
+        if (card) card.remove(); else f.remove();
+      });
+    }
+    // remove legacy cards with 'Energieflussmonitor' text (not the header label)
+    document.querySelectorAll('.card').forEach(card => {
+      if (/Energieflussmonitor/i.test(card.textContent) && card !== graphCard){
+        card.remove();
+      }
+    });
+  }catch(e){ console.warn('cleanup energyflow duplicates failed', e); }
+});

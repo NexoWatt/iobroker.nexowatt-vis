@@ -332,3 +332,23 @@ header .title, header .app-title, header .brand-title, header .logo-text, header
   margin:0; text-align:center; pointer-events:none; color:#e6edf3;
 }
 #quickMenuBtn{ position:relative; z-index:5; pointer-events:auto; }
+
+
+/* --- Strong header cleanup & center title --- */
+header img, header svg.icon, header .logo, header .brand, header .mdc-top-app-bar__navigation-icon,
+header .hamburger, header .menu, header .menu-toggle, header .btn-white, header .logo-button,
+header .left > button:not(#quickMenuBtn), header .left > a, header .left .icon-button:not(#quickMenuBtn) {
+  display: none !important;
+}
+/* title centering */
+header, .topbar, .appbar { position: relative; }
+header .title, .topbar .title, .appbar .title, header .app-title, header h1, .brand-title {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  margin: 0; line-height: 1; top: 50%; transform: translate(-50%,-50%);
+  color: #e6edf3; font-weight: 600; letter-spacing: .2px; pointer-events: none;
+}
+/* keep black quick menu button visible & clickable */
+#quickMenuBtn { display:inline-flex !important; position: relative; z-index: 5; pointer-events: auto; }
+
+/* Overlay on top always */
+.overlay{ z-index: 99999 !important; }
