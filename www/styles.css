@@ -286,3 +286,13 @@ body {
 /* battery font tweak */
 .web .node.consumer text.val{ font-size:14px; font-weight:700; }
 .web .node.consumer text.lbl{ font-size:12px; }
+
+
+/* overlay submenu */
+.overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:1000}
+.overlay.show{display:flex}
+.overlay .sheet{background:#12171c;border:1px solid #2a323b;border-radius:16px;padding:20px 24px;min-width:280px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.overlay .btns{display:flex;gap:12px;justify-content:flex-end;margin-top:12px}
+.btn{padding:10px 14px;border-radius:10px;border:1px solid #39424c;background:#1b2229;color:#e6edf3;cursor:pointer}
+.btn:hover{background:#242c34}
+.btn-secondary{background:transparent}

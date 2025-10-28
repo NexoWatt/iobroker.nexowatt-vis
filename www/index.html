@@ -73,7 +73,7 @@
       </g>
 <!-- Wallbox right -->
       <g class="node consumer" transform="translate(440,300)">
-        <circle r="36" class="ring consumer"/>
+        <circle r="40" class="ring consumer"/>
         <g class="ico" transform="translate(0,-10)">
           <path d="M-12,6 h24 v6 h-24 z M-10,-2 h20 a8,8 0 0 0 -20,0 z" />
         </g>
@@ -91,12 +91,12 @@
       <text class="minor" x="300" y="480" text-anchor="middle" id="batteryTime"></text>
 
         <text class="val" y="58" text-anchor="middle" id="restVal">--</text>
-        <text class="lbl" y="24" text-anchor="middle">Batterie</text>
+        <text class="lbl" y="22" text-anchor="middle">Batterie</text>
       </g>
 
       <!-- center node -->
       <g class="node center" transform="translate(300,300)">
-        <circle r="32" class="ring consumer"/>
+        <circle r="40" class="ring consumer"/>
         <g class="ico" transform="translate(0,-14)">
           <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z" />
         </g>
@@ -109,8 +109,8 @@
       <!-- center readouts -->
 <!-- center node -->
       <g class="node center" transform="translate(300,300)">
-        <circle r="32" class="ring consumer"/>
-        <g class="ico">
+        <circle r="40" class="ring consumer"/>
+        <g class="ico" transform="translate(0,-10)">
           <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z" />
         </g>
         <text class="lbl" y="-36" text-anchor="middle">Verbrauch</text>
@@ -198,5 +198,16 @@
   </main>
 
   <script src="/static/app.js"></script>
+
+  <section id="submenuOverlay" class="overlay hidden">
+    <div class="sheet">
+      <h2>Menü</h2>
+      <div class="btns">
+        <button id="openSettings" class="btn">Einstellungen</button>
+        <button id="closeOverlay" class="btn btn-secondary">Schließen</button>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
