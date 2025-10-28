@@ -558,12 +558,36 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
 })();
 
 
-// Quick Menu toggle
-(function(){
+// Relocate energy iframe into the top Energiefluss card
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    const frame = document.getElementById('energyFrame');
+    const cards = Array.from(document.querySelectorAll('.card'));
+    const graphCard = cards.find(c => /Energiefluss/i.test(c.textContent)) || cards[0];
+    if (frame && graphCard){
+      const host = document.createElement('div');
+      host.className = 'embed-energy';
+      host.appendChild(frame);
+      (graphCard.querySelector('.card-body') || graphCard).appendChild(host);
+    }
+    const old = document.querySelector('.card.energy-embed');
+    old && old.remove();
+  }catch(e){ console.warn('Relocate energy frame failed', e); }
+});
+
+// Quick Menu toggle (robust)
+document.addEventListener('DOMContentLoaded', ()=>{
   const btn = document.getElementById('quickMenuBtn');
   const ovl = document.getElementById('quickMenuOverlay');
   const close = document.getElementById('quickMenuClose');
-  if (btn && ovl){ btn.addEventListener('click', ()=> ovl.classList.add('show')); }
-  if (close){ close.addEventListener('click', ()=> ovl.classList.remove('show')); }
+  if (btn && ovl) btn.addEventListener('click', ()=> ovl.classList.add('show'));
+  if (close) close.addEventListener('click', ()=> ovl.classList.remove('show'));
   ovl && ovl.addEventListener('click', (e)=>{ if (e.target === ovl) ovl.classList.remove('show'); });
-})();
+});
+
+// delegated open (fallback)
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('#quickMenuBtn');
+  const ovl = document.getElementById('quickMenuOverlay');
+  if (btn && ovl){ e.preventDefault(); ovl.classList.add('show'); }
+});
