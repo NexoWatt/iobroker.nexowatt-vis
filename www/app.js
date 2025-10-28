@@ -260,14 +260,23 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
+  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
     e.preventDefault();
     close();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="installer"]');
-    if (sec) sec.classList.remove('hidden');
-    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-    setupInstaller();
+    try {
+      const pw = prompt('Passwort eingeben');
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
+      const j = await r.json();
+      if (!j || !j.ok) { alert('Passwort falsch'); return; }
+      INSTALLER_TOKEN = j.token || 'ok';
+      // Navigate to installer page only after successful login
+      document.querySelector('.content').style.display = 'none';
+      const sec = document.querySelector('[data-tab-content="installer"]');
+      if (sec) sec.classList.remove('hidden');
+      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+      loadConfig();
+      setupInstaller();
+    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
   });
 }
 
@@ -312,6 +321,7 @@ initTabs();
 
 
 // --- Settings & Installer logic ---
+function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
 let INSTALLER_TOKEN = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
@@ -349,12 +359,8 @@ function setupSettings(){
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const form = document.getElementById('installerForm');
-  if (SERVER_CFG.installerLocked && !INSTALLER_TOKEN) {
-    loginBox.classList.remove('hidden');
-    form.classList.add('hidden');
-  } else {
-    loginBox.classList.add('hidden');
-    form.classList.remove('hidden');
+  loginBox.classList.add('hidden');
+  form.classList.remove('hidden');
     document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
     // admin link
     const a = document.getElementById('openAdminBtn');
@@ -366,20 +372,7 @@ function setupInstaller(){
     a.href = url;
   }
 
-  document.getElementById('inst_login').onclick = async ()=>{
-    const pw = document.getElementById('inst_pw').value;
-    try {
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw })});
-      const j = await r.json();
-      if (j && j.ok) {
-        INSTALLER_TOKEN = j.token || 'ok';
-        setupInstaller(); // re-render
-      } else {
-        alert('Passwort falsch');
-      }
-    } catch(e){ console.warn(e); alert('Login fehlgeschlagen'); }
-  };
-}
+  }
 
 // Simple tab switching
 function initTabs(){
