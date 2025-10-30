@@ -1,256 +1,92 @@
-
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>NexoWatt EMS UI</title>
-<link href="/static/styles.css" rel="stylesheet"/>
-<link href="../admin/admin_logo_.ico" rel="icon"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NexoWatt EMS</title>
+<link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-<header class="topbar"><div class="brand"><img alt="NexoWatt" src="/static/nexowatt-logo.png"/></div>
-<button aria-label="Menu" id="menuBtn">☰</button>
-<h1>NexoWatt EMS</h1>
-<nav class="tabs">
-<button class="tab active" data-tab="live">LIVE</button>
-<button class="tab" data-tab="history" disabled="">HISTORY</button>
+<header class="topbar">
+  <button id="menuBtn" aria-label="menu">☰</button>
+  <div class="brand"><img src="/static/icon.png" alt="NexoWatt"><span>NexoWatt EMS</span></div>
+  <div class="status"><span id="liveDot" class="status-dot"></span><button class="tab active" data-tab="live">LIVE</button><button class="tab" data-tab="history">HISTORY</button></div>
+</header>
+
+<nav id="menuDropdown" class="menu hidden">
+  <button class="menu-item" id="menuOpenSettings">Einstellungen</button>
+  <button class="menu-item" id="menuOpenInstaller">Installateur</button>
 </nav>
-<div class="status-dot" id="liveDot" title="Live Verbindung"></div>
-<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button><button class="menu-item" id="menuOpenInstaller">Installateur</button></div></header>
-<main class="content">
-<section class="card energy-web">
-<div class="card-header">
-<div class="legend-color"></div>
-<span>Energiefluss</span>
-</div>
-<div class="web-wrap">
-<svg class="web" preserveaspectratio="xMidYMid meet" viewbox="0 0 600 600">
-<defs>
-<filter height="140%" id="soft" width="140%" x="-20%" y="-20%">
-<fegaussianblur in="SourceGraphic" stddeviation="0.2"></fegaussianblur>
-</filter>
-</defs>
-<!-- lines -->
-<line class="flow grid" id="lineGrid" x1="160" x2="300" y1="300" y2="300"></line>
-<line class="flow pv" id="linePV" x1="300" x2="300" y1="160" y2="300"></line>
-<line class="flow consumer" id="lineC1" style="opacity:0" x1="300" x2="300" y1="300" y2="300"></line>
-<line class="flow consumer" id="lineC2" x1="300" x2="440" y1="300" y2="300"></line>
-<line class="flow consumer" id="lineRest" x1="300" x2="300" y1="300" y2="460"></line>
-<!-- nodes -->
-<g class="hub">
-<circle class="hub-dot" cx="300" cy="300" r="10"></circle>
-<circle class="hub-dot center" cx="300" cy="300" r="4"></circle>
-</g>
-<!-- Grid node (left) -->
-<g class="node grid" transform="translate(160,300)">
-<circle class="ring grid" r="44"></circle>
-<g class="ico" transform="translate(0,-10)">
-<path d="M-6,12 L-2,2 L-5,2 L1,-14 L1,0 L5,0 L-1,12 Z"></path>
-</g>
-<text class="val" id="gridVal" text-anchor="middle" y="-48">--</text>
-<text class="lbl" text-anchor="middle" y="6">Netz</text>
-</g>
-<!-- PV node (top) -->
-<g class="node pv" transform="translate(300,160)">
-<circle class="ring pv" r="44"></circle>
-<g class="ico" transform="translate(0,-10)">
-<rect height="12" rx="2" width="24" x="-12" y="-8"></rect>
-<rect height="4" rx="1" width="20" x="-10" y="6"></rect>
-</g>
-<text class="val" id="pvVal" text-anchor="middle" y="-48">--</text>
-<text class="lbl" text-anchor="middle" y="6">PV</text>
-</g>
-<!-- Wallbox right -->
-<g class="node consumer" transform="translate(440,300)">
-<circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,-10)">
-<path d="M-12,6 h24 v6 h-24 z M-10,-2 h20 a8,8 0 0 0 -20,0 z"></path>
-</g>
-<text class="val" id="c2Val" text-anchor="middle" y="58">--</text>
-<text class="lbl" text-anchor="middle" y="6">Wallbox</text>
-</g>
-<!-- Batterie bottom -->
-<g class="node consumer" transform="translate(300,460)">
-<circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,-10)">
-<rect height="16" rx="3" width="28" x="-14" y="-8"></rect>
-<rect height="6" rx="1" width="4" x="14" y="-3"></rect>
-</g>
-<text class="minor" id="batterySocIn" text-anchor="middle" y="-12">-- %</text>
-<text class="minor" id="batteryTime" text-anchor="middle" x="300" y="480"></text>
-<text class="val" id="restVal" text-anchor="middle" y="58">--</text>
-<text class="lbl" text-anchor="middle" y="6">Batterie</text>
-</g>
-<!-- center node -->
-<g class="node center" transform="translate(300,300)">
-<circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,-14)">
-<path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
-</g>
-<text class="lbl" text-anchor="middle" y="6">Gebäude</text>
-</g>
-<!-- battery labels along vertical line -->
-<!-- center readouts -->
-<!-- center node -->
-<g class="node center" transform="translate(300,300)">
-<circle class="ring consumer" r="44"></circle>
-<g class="ico">
-<path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
-</g>
-<text class="lbl" text-anchor="middle" y="6">Gebäude</text>
-</g>
-<!-- battery labels along vertical line -->
-<!-- center readouts -->
-<g class="center" transform="translate(300,300)">
-<text class="big" id="centerPower" text-anchor="middle" y="0">0 W</text>
-<text class="minor" id="centerSoc" text-anchor="middle" y="18">-- %</text>
-<text class="minor" id="centerTime" text-anchor="middle" y="34"></text>
-</g>
-</svg>
-</div>
-</section>
-<section class="grid">
-<div class="card kpi">
-<div class="card-header"><span>Autarkie</span></div>
-<div class="kpi-body">
-<div class="bar"><div id="autarkyBar"></div></div>
-<div class="bar-label" id="autarkyValue">-- %</div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>Eigenverbrauch</span></div>
-<div class="kpi-body">
-<div class="bar"><div id="selfVerbrauchBar"></div></div>
-<div class="bar-label" id="selfVerbrauchValue">-- %</div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>Speicher System</span></div>
-<div class="row">
-<div class="bar small"><div id="storageSocBar"></div></div>
-<div class="mini">
-<div><small>SoC</small> <b id="storageSocValue">-- %</b></div>
-<div><small>Laden</small> <b id="storageLadenPower">--</b></div>
-<div><small>Entladen</small> <b id="storageEntladenPower">--</b></div>
-</div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>Netz</span></div>
-<div class="row two">
-<div><small>Bezug</small><b id="gridBezugPowerCard">--</b></div>
-<div><small>Einspeisung</small><b id="gridEinspeisungPowerCard">--</b></div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>Produktion</span></div>
-<div class="row two">
-<div><small>PV</small><b id="productionTotal">--</b></div>
-<div><small>Netz freq</small><b id="gridFrequency">--</b></div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>Verbrauch</span></div>
-<div class="row two">
-<div><small>EVCS</small><b id="consumptionEvcs">--</b></div>
-<div><small>Sonstiges</small><b id="consumptionSonstiges">--</b></div>
-</div>
-</div>
-<div class="card kpi">
-<div class="card-header"><span>EVCS</span></div>
-<div class="row two">
-<div><small>Status</small><b id="evcsStatus">--</b></div>
-<div><small>Letzte Ladung</small><b id="evcsLastLadenKwh">--</b></div>
-</div>
-</div>
-</section>
+
+<main>
+  <section class="content" data-tab-content="live">
+    <section class="card energy-web">
+      <div class="card-title"><span class="dot dot-ok"></span>Energiefluss</div>
+      <div class="web-wrap">
+        <svg class="web" viewBox="-200 -200 400 400">
+          <!-- equal ring size nodes with labels inside -->
+          <g transform="translate(0,-90)" class="node pv">
+            <circle class="ring ring-pv" r="44"></circle>
+            <text class="lbl" y="6">PV</text>
+          </g>
+          <g transform="translate(-90,0)" class="node grid">
+            <circle class="ring ring-grid" r="44"></circle>
+            <text class="lbl" y="6">Netz</text>
+          </g>
+          <g transform="translate(90,0)" class="node wb">
+            <circle class="ring ring-wb" r="44"></circle>
+            <text class="lbl" y="6">Wallbox</text>
+          </g>
+          <g transform="translate(0,90)" class="node bat">
+            <circle class="ring ring-bat" r="44"></circle>
+            <text class="lbl" y="6">Batterie</text>
+          </g>
+          <g transform="translate(0,0)" class="node center">
+            <circle class="ring ring-center" r="32"></circle>
+            <text class="big" y="-2" id="centerPower">0 W</text>
+            <text class="minor" y="14" id="centerLabel">Gebäude</text>
+          </g>
+          <!-- Battery SoC value -->
+          <text class="minor" id="batterySocIn" x="0" y="120" text-anchor="middle">-- %</text>
+        </svg>
+      </div>
+    </section>
+  </section>
+
+  <section class="card settings hidden" data-tab-content="settings">
+    <h3>Allgemeine Einstellungen</h3>
+    <div class="form grid-2">
+      <label><span>Benachrichtigungen</span><input type="checkbox" id="s_notify"></label>
+      <label><span>E-Mail</span><input type="email" id="s_email"></label>
+      <label><span>Dynamischer Zeittarif</span><input type="checkbox" id="s_dynamicTariff"></label>
+      <label><span>Speicher Leistung (W)</span><input type="number" id="s_storagePower"></label>
+      <label><span>Strompreis (€)</span><input type="number" step="0.01" id="s_price"></label>
+      <label><span>Priorität</span><input type="range" min="0" max="100" id="s_priority"></label>
+      <label><span>Modus Tarif</span><input type="range" min="0" max="1" id="s_tariffMode"></label>
+    </div>
+  </section>
+
+  <section class="card installer hidden" data-tab-content="installer">
+    <h3>Installateur</h3>
+    <div class="form grid-2">
+      <label><span>Leistung Netzanschluss (W)</span><input type="number" id="i_gridConnectionPower"></label>
+      <label><span>§14a</span><input type="checkbox" id="i_para14a"></label>
+      <label><span>Anzahl Ladepunkte</span><input type="number" id="i_chargepoints"></label>
+      <label><span>Anzahl Speicher (Modus)</span><input type="number" id="i_storageCountMode"></label>
+      <label><span>Leistung Speicher (W)</span><input type="number" id="i_storagePower"></label>
+      <label><span>Betriebsmodus EMS</span><input type="number" id="i_emsMode"></label>
+      <label><span>SOC Min (%)</span><input type="number" id="i_socMin"></label>
+      <label><span>SOC Bereich Lastspitze (%)</span><input type="number" id="i_socPeakRange"></label>
+      <label><span>Beladeleistung max (W)</span><input type="number" id="i_chargePowerMax"></label>
+      <label><span>Entladeleistung max (W)</span><input type="number" id="i_dischargePowerMax"></label>
+      <label><span>NexoWatt Admin URL</span><input type="text" id="i_adminUrl" placeholder="http://host:8081"></label>
+    </div>
+    <div class="mt">
+      <a class="btn" id="openAdmin" target="_blank" rel="noopener">NexoWatt Admin öffnen</a>
+    </div>
+  </section>
 </main>
+
 <script src="/static/app.js"></script>
-
-<section class="hidden settings-wrap" data-tab-content="settings">
-  <section class="card">
-    <div class="card-header"><span>Allgemeine Einstellungen</span></div>
-    <div class="form">
-      <label class="row"><span>Benachrichtigungen</span>
-        <input type="checkbox" id="s_notify" data-scope="settings" data-key="notifyEnabled">
-      </label>
-      <label class="row"><span>E-Mail</span>
-        <input type="email" id="s_email" data-scope="settings" data-key="email">
-      </label>
-      <label class="row"><span>Dynamischer Zeittarif</span>
-        <input type="checkbox" id="s_dyn" data-scope="settings" data-key="dynamicTariff">
-      </label>
-      <label class="row"><span>Speicher Leistung (W)</span>
-        <input type="number" id="s_storagePower" step="1" data-scope="settings" data-key="storagePower">
-      </label>
-      <label class="row"><span>Strompreis (€)</span>
-        <input type="number" id="s_price" step="0.01" data-scope="settings" data-key="price">
-      </label>
-      <div class="row"><span>Priorität (Speicher ↔ Ladestation)</span>
-        <input type="range" min="0" max="100" id="s_priority" data-scope="settings" data-key="priority">
-      </div>
-      <div class="row"><span>Modus Tarif</span>
-        <input type="range" min="0" max="1" id="s_tariffMode" data-scope="settings" data-key="tariffMode">
-        <small>0 = Manuell, 1 = Automatisch</small>
-      </div>
-    </div>
-  </section>
-
-  
-</section>
-
-
-<section class="hidden settings-wrap" data-tab-content="installer">
-  <section class="card">
-    <div class="card-header"><span>Installateur</span></div>
-    <div class="form" id="installerLoginBox">
-      <label class="row"><span>Passwort</span>
-        <input type="password" id="inst_pw">
-      </label>
-      <button class="btn" id="inst_login">Freischalten</button>
-    </div>
-    <div class="form hidden" id="installerForm">
-      <div class="grid-inst">
-        <label class="row"><span>Leistung Netzanschluss (W)</span>
-          <input type="number" data-scope="installer" data-key="gridConnectionPower">
-        </label>
-        <label class="row"><span>§14a</span>
-          <input type="checkbox" data-scope="installer" data-key="para14a">
-        </label>
-        <label class="row"><span>Anzahl Ladepunkte</span>
-          <input type="number" data-scope="installer" data-key="evChargingPoints">
-        </label>
-        <label class="row"><span>Anzahl Speicher (Modus)</span>
-          <input type="number" data-scope="installer" data-key="storageCount">
-        </label>
-        <label class="row"><span>Leistung Speicher (W)</span>
-          <input type="number" data-scope="installer" data-key="storagePower">
-        </label>
-        <label class="row"><span>Betriebsmodus EMS</span>
-          <input type="number" data-scope="installer" data-key="emsMode">
-          <small>1=Normal 2=Lastspitze 3=Multi-Use</small>
-        </label>
-        <label class="row"><span>SOC Min (%)</span>
-          <input type="number" data-scope="installer" data-key="socMin">
-        </label>
-        <label class="row"><span>SOC Bereich Lastspitze (%)</span>
-          <input type="number" data-scope="installer" data-key="socPeakRange">
-        </label>
-        <label class="row"><span>Beladeleistung max (W)</span>
-          <input type="number" data-scope="installer" data-key="chargeLimitMax">
-        </label>
-        <label class="row"><span>Entladeleistung max (W)</span>
-          <input type="number" data-scope="installer" data-key="dischargeLimitMax">
-        </label>
-      </div>
-      <div class="center mtop">
-        <a class="btn" id="openAdminBtn" target="_blank" rel="noopener">NexoWatt Admin öffnen</a>
-      </div>
-    </div>
-  </section>
-</section>
-
 </body>
 </html>
