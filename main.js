@@ -94,11 +94,11 @@ class NexoWattVis extends utils.Adapter {
       }
     };
     await ensureLocalStates();
-    
+
     // login for installer
     app.post('/api/installer/login', (req, res) => {
-  const pw = (this.config && this.config.installerPassword) || '';
-  const provided = (req.body && req.body.password) || '';
+  const pw = String((this.config && this.config.installerPassword) || '').trim();
+  const provided = String((req.body && req.body.password) || '').trim();
   if (!pw) return res.status(403).json({ ok: false, error: 'locked' });
   if (provided === pw) {
     this._installerToken = Math.random().toString(36).slice(2);
@@ -106,6 +106,10 @@ class NexoWattVis extends utils.Adapter {
   }
   res.status(401).json({ ok: false, error: 'unauthorized' });
 });
+      } else {
+        res.status(401).json({ ok: false, error: 'Unauthorized' });
+      }
+    });
 
     // generic setter for settings/installer datapoints
     
