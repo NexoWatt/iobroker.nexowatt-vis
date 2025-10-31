@@ -54,20 +54,13 @@ class NexoWattVis extends utils.Adapter {
         settings: this.config.settings || {},
         installer: this.config.installer || {},
         adminUrl: this.config.adminUrl || null,
-        installerLocked: falsefalse
+        installerLocked: false
       });
     });
 
     // snapshot
     app.get('/api/state', (_req, res) => {
       res.json(this.stateCache);
-    });
-}
-        return res.status(401).json({ ok: false, error: 'unauthorized' });
-      } catch (e) {
-        this.log.warn('login error: ' + e.message);
-        return res.status(500).json({ ok: false, error: 'internal error' });
-      }
     });
 
     // generic setter for settings/installer datapoints (hardened)
