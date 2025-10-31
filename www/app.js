@@ -265,7 +265,7 @@ function initMenu(){
     setupSettings();
   });
 }
-functionfunction initSettingsPanel(){
+function initSettingsPanel(){
   const LS_KEY = 'nexowatt.settings';
   let opts;
   try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
