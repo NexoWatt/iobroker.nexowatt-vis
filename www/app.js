@@ -237,18 +237,20 @@ startEvents();
 
 
 // --- Menu & Settings ---
+
 function initMenu(){
   const btn = document.getElementById('menuBtn');
   const menu = document.getElementById('menuDropdown');
   if (!btn || !menu) return;
-  const open = ()=> menu.classList.toggle('hidden');
+  const open  = ()=> menu.classList.toggle('hidden');
   const close = ()=> menu.classList.add('hidden');
   btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
   menu.addEventListener('click', (e)=> e.stopPropagation());
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
   document.addEventListener('click', ()=> close());
+
   const settingsBtn = document.getElementById('menuOpenSettings');
-  const installerBtn = document.getElementById('  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     close();
     // show settings section
@@ -262,23 +264,8 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  const j = await r.json();
-      if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      null = j.token || 'ok';
-      // Navigate to installer page only after successful login
-      hideAllPanels();
-      document.querySelector('.content').style.display = 'none';
-      const sec = document.querySelector('[data-tab-content="installer"]');
-      if (sec) sec.classList.remove('hidden');
-      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-      loadConfig();
-      setupInstaller();
-    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
-  });
 }
-
-
-function initSettingsPanel(){
+functionfunction initSettingsPanel(){
   const LS_KEY = 'nexowatt.settings';
   let opts;
   try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
@@ -328,7 +315,6 @@ let SERVER_CFG = { adminUrl: null, installerLocked: false };
 async function loadConfig() {
   try {
     const r = await fetch('/config');
-    const j = await r.json();
     SERVER_CFG = j || {};
   } catch(e) { console.warn('cfg', e); }
 }
