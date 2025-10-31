@@ -54,7 +54,7 @@ class NexoWattVis extends utils.Adapter {
         settings: this.config.settings || {},
         installer: this.config.installer || {},
         adminUrl: this.config.adminUrl || null,
-        installerLocked: false
+        installerLocked: true
       });
     });
 
@@ -64,7 +64,23 @@ class NexoWattVis extends utils.Adapter {
     });
 
     // generic setter for settings/installer datapoints (hardened)
-    app.post('/api/set', async (req, res) => {
+    
+    // login for installer (fixed password)
+    app.post('/api/installer/login', (req, res) => {
+      try {
+        const provided = String((req.body && req.body.password) || '').trim();
+        const PW = 'install2025!'; // fixed password
+        if (provided === PW) {
+          this._installerToken = Math.random().toString(36).slice(2);
+          return res.json({ ok: true, token: this._installerToken });
+        }
+        return res.status(401).json({ ok: false, error: 'unauthorized' });
+      } catch(e) {
+        this.log.warn('login error: ' + e.message);
+        return res.status(500).json({ ok: false, error: 'internal error' });
+      }
+    });
+app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body?.scope;
         const key   = req.body?.key;

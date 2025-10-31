@@ -265,6 +265,56 @@ function initMenu(){
     setupSettings();
   });
 }
+
+function setupInstaller(){
+  const loginBox = document.getElementById('installerLoginBox');
+  const form = document.getElementById('installerForm');
+  if (!loginBox || !form) return;
+  const locked = !!(SERVER_CFG && SERVER_CFG.installerLocked);
+  if (locked && !INSTALLER_TOKEN) {
+    loginBox.classList.remove('hidden');
+    form.classList.add('hidden');
+  } else {
+    loginBox.classList.add('hidden');
+    form.classList.remove('hidden');
+  }
+  const btn = document.getElementById('inst_login');
+  const pwInput = document.getElementById('inst_pw');
+  if (btn && pwInput && !btn.dataset.bound){
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', async ()=>{
+      const pw = String(pwInput.value || '');
+      try{
+        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw }) });
+        const j = await r.json();
+        if (j && j.ok && j.token) {
+          INSTALLER_TOKEN = j.token;
+          loginBox.classList.add('hidden');
+          form.classList.remove('hidden');
+        } else {
+          alert('Passwort falsch');
+        }
+      }catch(e){ alert('Login fehlgeschlagen'); }
+    });
+  }
+}
+
+function initInstallerPanel(){
+  // bind inputs inside the installer form to states
+  document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
+    const key = el.dataset.key;
+    const stateKey = 'installer.' + key;
+    bindInputValue(el, stateKey);
+  });
+  // admin link
+  const btn = document.getElementById('openAdminBtn');
+  if (btn){
+    btn.addEventListener('click', ()=>{
+      const url = (SERVER_CFG && SERVER_CFG.adminUrl) || '/';
+      btn.href = url || '/';
+    });
+  }
+}
 function initSettingsPanel(){
   const LS_KEY = 'nexowatt.settings';
   let opts;
@@ -316,6 +366,7 @@ function hideAllPanels(){
   } catch(e){ console.warn('hideAllPanels', e); }
 }
 
+let INSTALLER_TOKEN = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
 async function loadConfig() {
@@ -340,7 +391,7 @@ function bindInputValue(el, stateKey) {
     const scope = el.dataset.scope;
     const key = el.dataset.key;
     const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
-    if (scope === 'installer' && SERVER_CFG.installerLocked && null) payload.token = null;
+    if (scope === 'installer' && SERVER_CFG.installerLocked && INSTALLER_TOKEN) payload.token = INSTALLER_TOKEN;
     try {
       await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
     } catch(e) { console.warn('set', e); }
@@ -362,7 +413,7 @@ function setupSettings(){
       url = u.origin.replace(/:\d+$/, ':8081');
     }
     a.href = url;
-  
+  }
 
 // Simple tab switching
 function initTabs(){
