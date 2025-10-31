@@ -80,33 +80,36 @@ class NexoWattVis extends utils.Adapter {
         return res.status(500).json({ ok: false, error: 'internal error' });
       }
     });
-app.post('/api/set', async (req, res) => {
-      try {
-        const scope = req.body?.scope;
-        const key   = req.body?.key;
-        const value = req.body?.value;
-        if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
 
-        // Installer scope needs token
+    // generic setter (settings/installer/datapoints)
+    
+    // generic setter (settings/installer/datapoints)
+    app.post('/api/set', async (req, res) => {
+      try {
+        const scope = req.body && req.body.scope;
+        const key   = req.body && req.body.key;
+        const value = req.body && req.body.value;
+        if (!scope || !key) {
+          return res.status(400).json({ ok:false, error:'bad request' });
+        }
+
         if (scope === 'installer') {
-          const token = req.body?.token;
+          const token = req.body && req.body.token;
           if (!token || token !== this._installerToken) {
-            return res.status(403).json({ ok: false, error: 'forbidden' });
+            return res.status(403).json({ ok:false, error:'forbidden' });
           }
         }
 
-        // resolve id from config or fallback to local
         let id;
         if (scope === 'installer') {
-          id = this.config?.installer?.[key];
+          id = this.config && this.config.installer && this.config.installer[key];
         } else if (scope === 'settings') {
-          id = this.config?.settings?.[key];
+          id = this.config && this.config.settings && this.config.settings[key];
         } else {
-          id = this.config?.datapoints?.[key];
+          id = this.config && this.config.datapoints && this.config.datapoints[key];
         }
         if (!id) id = `${this.namespace}.${scope}.${key}`;
 
-        // create local object if missing
         if (id.startsWith(this.namespace + '.')) {
           const isBool = typeof value === 'boolean';
           const isNum  = typeof value === 'number';
@@ -117,19 +120,18 @@ app.post('/api/set', async (req, res) => {
             common: { name: id.slice(this.namespace.length + 1), type, role, read: true, write: true },
             native: {}
           });
-        }
-
-        if (id.startsWith(this.namespace + '.')) {
           await this.setStateAsync(id, { val: value, ack: true });
         } else {
           await this.setForeignStateAsync(id, value);
         }
-        res.json({ ok: true });
+
+        return res.json({ ok: true });
       } catch (e) {
         this.log.warn('set error: ' + e.message);
-        res.status(500).json({ ok: false, error: 'internal error' });
+        return res.status(500).json({ ok: false, error: 'internal error' });
       }
     });
+
 app.get('/events', (req, res) => {
       res.set({
         'Content-Type': 'text/event-stream',
