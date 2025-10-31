@@ -63,7 +63,7 @@ class NexoWattVis extends utils.Adapter {
       res.json(this.stateCache);
     });
 
-    // Ensure internal objects for settings & installer keys exist
+    // Ensure internal objects for settings & installer keys exist (idempotent)
     const ensureLocalStates = async () => {
       const defs = [
         { id: 'settings.notifyEnabled', type:'boolean', role:'switch', def:false },
@@ -106,35 +106,38 @@ class NexoWattVis extends utils.Adapter {
   }
   res.status(401).json({ ok: false, error: 'unauthorized' });
 });
-      } else {
-        res.status(401).json({ ok: false, error: 'Unauthorized' });
-      }
-    });
 
     // generic setter for settings/installer datapoints
+    
     app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body && req.body.scope;
         const key = req.body && req.body.key;
         const value = req.body && req.body.value;
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
-        let map = {};
+
+        let id;
         if (scope === 'installer') {
           const token = req.body && req.body.token;
           if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
-          map = (this.config && this.config.installer) || {};
+          const map = (this.config && this.config.installer) || {};
+          id = map[key];
+        } else if (scope === 'settings') {
+          const map = (this.config && this.config.settings) || {};
+          id = map[key];
         } else {
-          map = (this.config && this.config.settings) || {};
+          const dps = (this.config && this.config.datapoints) || {};
+          id = dps[key];
         }
-        let id = map[key];
         if (!id) id = `${this.namespace}.${scope}.${key}`;
+
         try {
           if (id.startsWith(this.namespace + '.')) {
             await this.setStateAsync(id, { val: value, ack: true });
           } else {
             await this.setForeignStateAsync(id, value);
           }
-        } catch(e){
+        } catch(e) {
           this.log.warn('set error: ' + e.message);
           return res.status(500).json({ ok: false, error: 'write failed' });
         }
