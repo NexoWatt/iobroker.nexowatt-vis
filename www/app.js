@@ -308,14 +308,23 @@ hideAllPanels();
 
 
 // --- Settings & Installer logic ---
-function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
-let null = null;
+function hideAllPanels(){
+  try {
+    document.querySelectorAll('[data-tab-content]')?.forEach(el => el.classList.add('hidden'));
+    const content = document.querySelector('.content');
+    if (content) content.style.display = 'block';
+  } catch(e){ console.warn('hideAllPanels', e); }
+}
+
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
 async function loadConfig() {
   try {
     const r = await fetch('/config');
+    const j = await r.json();
     SERVER_CFG = j || {};
+  } catch(e) { console.warn('cfg', e); }
+};
   } catch(e) { console.warn('cfg', e); }
 }
 
