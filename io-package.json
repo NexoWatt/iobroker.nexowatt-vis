@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.17",
+    "version": "0.3.18",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -178,6 +178,10 @@
       "0.3.17": {
         "de": "Frontend Syntaxfix (app.js) und Admin-Tab 'Einstellungen' entfernt.",
         "en": "Frontend syntax fix (app.js) and removed Admin tab 'Einstellungen'."
+      },
+      "0.3.18": {
+        "de": "UI Syntaxfix um loadConfig() bereinigt (hängende catch/Braces entfernt).",
+        "en": "UI syntax fix around loadConfig() (removed dangling catch/braces)."
       }
     },
     "title": "NexoWatt EMS UI",

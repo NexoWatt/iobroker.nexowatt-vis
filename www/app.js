@@ -323,9 +323,10 @@ async function loadConfig() {
     const r = await fetch('/config');
     const j = await r.json();
     SERVER_CFG = j || {};
-  } catch(e) { console.warn('cfg', e); }
-};
-  } catch(e) { console.warn('cfg', e); }
+  } catch (e) {
+    console.warn('cfg', e);
+  }
+}
 
 function bindInputValue(el, stateKey) {
   // set initial value from state cache
