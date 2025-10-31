@@ -326,7 +326,6 @@ async function loadConfig() {
   } catch(e) { console.warn('cfg', e); }
 };
   } catch(e) { console.warn('cfg', e); }
-}
 
 function bindInputValue(el, stateKey) {
   // set initial value from state cache
