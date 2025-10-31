@@ -106,10 +106,6 @@ class NexoWattVis extends utils.Adapter {
   }
   res.status(401).json({ ok: false, error: 'unauthorized' });
 });
-      } else {
-        res.status(401).json({ ok: false, error: 'Unauthorized' });
-      }
-    });
 
     // generic setter for settings/installer datapoints
     
