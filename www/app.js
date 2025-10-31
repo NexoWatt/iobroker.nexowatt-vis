@@ -362,7 +362,7 @@ function setupSettings(){
       url = u.origin.replace(/:\d+$/, ':8081');
     }
     a.href = url;
-  }
+  
 
 // Simple tab switching
 function initTabs(){
