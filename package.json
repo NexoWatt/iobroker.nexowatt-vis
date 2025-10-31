@@ -1,6 +1,6 @@
 {
   "name": "iobroker.nexowatt-vis",
-  "version": "0.3.12",
+  "version": "0.3.14",
   "description": "Responsive NexoWatt EMS visualization adapter (OpenEMS-like) for ioBroker.",
   "author": "Visu Helper",
   "license": "MIT",

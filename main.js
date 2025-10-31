@@ -54,7 +54,7 @@ class NexoWattVis extends utils.Adapter {
         settings: this.config.settings || {},
         installer: this.config.installer || {},
         adminUrl: this.config.adminUrl || null,
-        installerLocked: true!(this.config.installerPassword)
+        installerLocked: true
       });
     });
 
@@ -64,17 +64,17 @@ class NexoWattVis extends utils.Adapter {
     });
 
     
-    // login for installer (fixed password)
+    // login for installer (fixed password, cleanly bracketed)
     app.post('/api/installer/login', (req, res) => {
       try {
-        const provided = String((req.body && req.body.password) || '').trim();
-        const PW = 'install2025!'; // fixed as requested
+        const provided = String((req?.body?.password) ?? '').trim();
+        const PW = 'install2025!'; // fixed password for installer
         if (provided === PW) {
           this._installerToken = Math.random().toString(36).slice(2);
           return res.json({ ok: true, token: this._installerToken });
         }
         return res.status(401).json({ ok: false, error: 'unauthorized' });
-      } catch(e) {
+      } catch (e) {
         this.log.warn('login error: ' + e.message);
         return res.status(500).json({ ok: false, error: 'internal error' });
       }
@@ -83,57 +83,48 @@ class NexoWattVis extends utils.Adapter {
     // generic setter for settings/installer datapoints (hardened)
     app.post('/api/set', async (req, res) => {
       try {
-        const scope = req.body && req.body.scope;
-        const key   = req.body && req.body.key;
-        const value = req.body && req.body.value;
+        const scope = req.body?.scope;
+        const key   = req.body?.key;
+        const value = req.body?.value;
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
 
-        // require token for installer
+        // Installer scope needs token
         if (scope === 'installer') {
-          const token = req.body && req.body.token;
-          if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
+          const token = req.body?.token;
+          if (!token || token !== this._installerToken) {
+            return res.status(403).json({ ok: false, error: 'forbidden' });
+          }
         }
 
-        // resolve target id from config, otherwise fallback to local state
+        // resolve id from config or fallback to local
         let id;
         if (scope === 'installer') {
-          const map = (this.config && this.config.installer) || {};
-          id = map[key];
+          id = this.config?.installer?.[key];
         } else if (scope === 'settings') {
-          const map = (this.config && this.config.settings) || {};
-          id = map[key];
+          id = this.config?.settings?.[key];
         } else {
-          const dps = (this.config && this.config.datapoints) || {};
-          id = dps[key];
+          id = this.config?.datapoints?.[key];
         }
         if (!id) id = `${this.namespace}.${scope}.${key}`;
 
-        // create local object if needed
+        // create local object if missing
         if (id.startsWith(this.namespace + '.')) {
-          const parts = id.slice(this.namespace.length + 1).split('.');
-          const localKey = parts.join('.');
           const isBool = typeof value === 'boolean';
           const isNum  = typeof value === 'number';
           const type = isBool ? 'boolean' : (isNum ? 'number' : 'string');
-          const role = isBool ? 'switch' : (isNum ? 'level' : 'text');
+          const role = isBool ? 'switch'   : (isNum ? 'level'   : 'text');
           await this.setObjectNotExistsAsync(id, {
             type: 'state',
-            common: { name: localKey, type, role, read: true, write: true },
+            common: { name: id.slice(this.namespace.length + 1), type, role, read: true, write: true },
             native: {}
           });
         }
 
-        try {
-          if (id.startsWith(this.namespace + '.')) {
-            await this.setStateAsync(id, { val: value, ack: true });
-          } else {
-            await this.setForeignStateAsync(id, value);
-          }
-        } catch (e) {
-          this.log.warn('set write error: ' + e.message);
-          return res.status(500).json({ ok: false, error: 'write failed' });
+        if (id.startsWith(this.namespace + '.')) {
+          await this.setStateAsync(id, { val: value, ack: true });
+        } else {
+          await this.setForeignStateAsync(id, value);
         }
-
         res.json({ ok: true });
       } catch (e) {
         this.log.warn('set error: ' + e.message);
