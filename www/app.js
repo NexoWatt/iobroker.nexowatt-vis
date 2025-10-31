@@ -238,8 +238,9 @@ startEvents();
 
 // --- Menu & Settings ---
 
+
 function initMenu(){
-  const btn = document.getElementById('menuBtn');
+  const btn  = document.getElementById('menuBtn');
   const menu = document.getElementById('menuDropdown');
   if (!btn || !menu) return;
   const open  = ()=> menu.classList.toggle('hidden');
@@ -249,22 +250,29 @@ function initMenu(){
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
   document.addEventListener('click', ()=> close());
 
+  // Einstellungen
   const settingsBtn = document.getElementById('menuOpenSettings');
   if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    // show settings section
+    e.preventDefault(); close();
     hideAllPanels();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="settings"]');
-    if (sec) sec.classList.remove('hidden');
-    // deactivate tab buttons
+    const content = document.querySelector('.content'); if (content) content.style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="settings"]'); if (sec) sec.classList.remove('hidden');
     document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-    // initialize settings UI
-    initSettingsPanel();
-    setupSettings();
+    initSettingsPanel(); setupSettings();
+  });
+
+  // Installateur
+  const instBtn = document.getElementById('menuOpenInstaller');
+  if (instBtn) instBtn.addEventListener('click', (e)=>{
+    e.preventDefault(); close();
+    hideAllPanels();
+    const content = document.querySelector('.content'); if (content) content.style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) sec.classList.remove('hidden');
+    if (typeof setupInstaller === 'function') setupInstaller();
+    if (typeof initInstallerPanel === 'function') initInstallerPanel();
   });
 }
+
 
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');

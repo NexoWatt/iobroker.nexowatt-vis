@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.22",
+    "version": "0.3.22.2",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -194,6 +194,14 @@
       "0.3.22": {
         "de": "Installer-Bereich wiederhergestellt (Passwortschutz, Token, UI).",
         "en": "Installer area restored (password, token, UI)."
+      },
+      "0.3.22.1": {
+        "de": "Installer-Menü-Handler in initMenu() ergänzt (öffnen der Installer-Seite).",
+        "en": "Added Installer menu handler in initMenu() to open installer panel."
+      },
+      "0.3.22.2": {
+        "de": "initMenu() erweitert: Menüpunkt 'Installateur' öffnet den Installer-Tab und initialisiert Login/Formular.",
+        "en": "initMenu() extended: 'Installateur' menu opens installer tab and initializes login/form."
       }
     },
     "title": "NexoWatt EMS UI",
