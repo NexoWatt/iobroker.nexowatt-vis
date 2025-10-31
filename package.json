@@ -1,27 +1,43 @@
 {
   "name": "iobroker.nexowatt-vis",
-  "version": "0.3.16",
-  "description": "NexoWatt EMS VIS (standalone web UI for ioBroker)",
-  "main": "main.js",
-  "scripts": {
-    "start": "node main.js",
-    "prepare": "echo nothing"
-  },
-  "author": "NexoWatt",
+  "version": "0.3.12",
+  "description": "Responsive NexoWatt EMS visualization adapter (OpenEMS-like) for ioBroker.",
+  "author": "Visu Helper",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.19.2",
-    "@iobroker/adapter-core": "^3.1.3"
-  },
+  "main": "main.js",
   "engines": {
     "node": ">=16"
   },
+  "scripts": {
+    "start": "node main.js",
+    "dev": "node main.js"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.0.0",
+    "express": "^4.18.2"
+  },
+  "keywords": [
+    "ioBroker",
+    "adapter",
+    "visualization",
+    "NexoWatt",
+    "OpenEMS",
+    "EMS"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexoWatt/ioBroker.nexowatt-vis.git"
+    "url": "git+https://github.com/USER/iobroker.nexowatt-vis.git"
   },
   "bugs": {
-    "url": "https://github.com/NexoWatt/ioBroker.nexowatt-vis/issues"
+    "url": "https://github.com/USER/iobroker.nexowatt-vis/issues"
   },
-  "homepage": "https://github.com/NexoWatt/ioBroker.nexowatt-vis"
+  "homepage": "https://github.com/USER/iobroker.nexowatt-vis#readme",
+  "files": [
+    "admin/**/*",
+    "www/**/*",
+    "main.js",
+    "io-package.json",
+    "README.md",
+    "LICENSE"
+  ]
 }
