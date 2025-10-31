@@ -54,7 +54,7 @@ class NexoWattVis extends utils.Adapter {
         settings: this.config.settings || {},
         installer: this.config.installer || {},
         adminUrl: this.config.adminUrl || null,
-        installerLocked: true
+        installerLocked: true!(this.config.installerPassword)
       });
     });
 
@@ -63,68 +63,40 @@ class NexoWattVis extends utils.Adapter {
       res.json(this.stateCache);
     });
 
-    // Ensure internal objects for settings & installer keys exist (idempotent)
-    const ensureLocalStates = async () => {
-      const defs = [
-        { id: 'settings.notifyEnabled', type:'boolean', role:'switch', def:false },
-        { id: 'settings.email', type:'string', role:'text', def:'' },
-        { id: 'settings.dynamicTariff', type:'boolean', role:'switch', def:false },
-        { id: 'settings.storagePower', type:'number', role:'value.power', def:0 },
-        { id: 'settings.price', type:'number', role:'value', def:0 },
-        { id: 'settings.priority', type:'number', role:'level', def:1, min:1, max:2 },
-        { id: 'settings.tariffMode', type:'number', role:'level', def:1, min:1, max:2 },
-        { id: 'installer.gridConnectionPower', type:'number', role:'value.power', def:0 },
-        { id: 'installer.para14a', type:'boolean', role:'switch', def:false },
-        { id: 'installer.evChargingPoints', type:'number', role:'value', def:1 },
-        { id: 'installer.storageCount', type:'number', role:'value', def:1 },
-        { id: 'installer.storagePower', type:'number', role:'value.power', def:0 },
-        { id: 'installer.emsMode', type:'number', role:'level', def:1 },
-        { id: 'installer.socMin', type:'number', role:'level.min', def:20 },
-        { id: 'installer.socPeakRange', type:'number', role:'level', def:10 },
-        { id: 'installer.chargeLimitMax', type:'number', role:'value.power', def:0 },
-        { id: 'installer.dischargeLimitMax', type:'number', role:'value.power', def:0 }
-      ];
-      for (const d of defs) {
-        const full = `${this.namespace}.${d.id}`;
-        await this.setObjectNotExistsAsync(full, {
-          type: 'state',
-          common: { name: d.id, type: d.type, role: d.role, read: true, write: true, def: d.def, min: d.min, max: d.max },
-          native: {}
-        });
-      }
-    };
-    await ensureLocalStates();
-
-    // login for installer
-    app.post('/api/installer/login', (req, res) => {
-  const provided = String((req.body && req.body.password) || '').trim();
-  const PW = 'install2025!';
-  if (provided === PW) {
-    this._installerToken = Math.random().toString(36).slice(2);
-    return res.json({ ok: true, token: this._installerToken });
-  }
-  res.status(401).json({ ok: false, error: 'unauthorized' });
-});
-if (provided === pw) {
-    this._installerToken = Math.random().toString(36).slice(2);
-    return res.json({ ok: true, token: this._installerToken });
-  }
-  res.status(401).json({ ok: false, error: 'unauthorized' });
-});
-
-    // generic setter for settings/installer datapoints
     
+    // login for installer (fixed password)
+    app.post('/api/installer/login', (req, res) => {
+      try {
+        const provided = String((req.body && req.body.password) || '').trim();
+        const PW = 'install2025!'; // fixed as requested
+        if (provided === PW) {
+          this._installerToken = Math.random().toString(36).slice(2);
+          return res.json({ ok: true, token: this._installerToken });
+        }
+        return res.status(401).json({ ok: false, error: 'unauthorized' });
+      } catch(e) {
+        this.log.warn('login error: ' + e.message);
+        return res.status(500).json({ ok: false, error: 'internal error' });
+      }
+    });
+
+    // generic setter for settings/installer datapoints (hardened)
     app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body && req.body.scope;
-        const key = req.body && req.body.key;
+        const key   = req.body && req.body.key;
         const value = req.body && req.body.value;
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
 
-        let id;
+        // require token for installer
         if (scope === 'installer') {
           const token = req.body && req.body.token;
           if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
+        }
+
+        // resolve target id from config, otherwise fallback to local state
+        let id;
+        if (scope === 'installer') {
           const map = (this.config && this.config.installer) || {};
           id = map[key];
         } else if (scope === 'settings') {
@@ -136,25 +108,39 @@ if (provided === pw) {
         }
         if (!id) id = `${this.namespace}.${scope}.${key}`;
 
+        // create local object if needed
+        if (id.startsWith(this.namespace + '.')) {
+          const parts = id.slice(this.namespace.length + 1).split('.');
+          const localKey = parts.join('.');
+          const isBool = typeof value === 'boolean';
+          const isNum  = typeof value === 'number';
+          const type = isBool ? 'boolean' : (isNum ? 'number' : 'string');
+          const role = isBool ? 'switch' : (isNum ? 'level' : 'text');
+          await this.setObjectNotExistsAsync(id, {
+            type: 'state',
+            common: { name: localKey, type, role, read: true, write: true },
+            native: {}
+          });
+        }
+
         try {
           if (id.startsWith(this.namespace + '.')) {
             await this.setStateAsync(id, { val: value, ack: true });
           } else {
             await this.setForeignStateAsync(id, value);
           }
-        } catch(e) {
-          this.log.warn('set error: ' + e.message);
+        } catch (e) {
+          this.log.warn('set write error: ' + e.message);
           return res.status(500).json({ ok: false, error: 'write failed' });
         }
+
         res.json({ ok: true });
       } catch (e) {
         this.log.warn('set error: ' + e.message);
         res.status(500).json({ ok: false, error: 'internal error' });
       }
     });
-
-    // server-sent events for live updates
-    app.get('/events', (req, res) => {
+app.get('/events', (req, res) => {
       res.set({
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',

@@ -366,8 +366,9 @@ function setupSettings(){
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const form = document.getElementById('installerForm');
-  loginBox.classList.add('hidden');
-  form.classList.remove('hidden');
+  const locked = !!(SERVER_CFG && SERVER_CFG.installerLocked);
+  if (locked && !INSTALLER_TOKEN) { loginBox.classList.remove('hidden'); form.classList.add('hidden'); return; }
+  loginBox.classList.add('hidden'); form.classList.remove('hidden');
     document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
     // admin link
     const a = document.getElementById('openAdminBtn');
