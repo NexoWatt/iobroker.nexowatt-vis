@@ -1,21 +1,20 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.14",
+    "version": "0.3.16",
     "title": "NexoWatt VIS",
-    "news": {},
-    "enabled": true,
+    "type": "visualization",
     "mode": "daemon",
+    "enabled": true,
     "platform": "Javascript/Node.js",
+    "icon": "www/icon.png",
     "localLinks": {
-      "NexoWatt VIS": "http://%ip%:%native%port%"
+      "NexoWatt EMS UI": "%protocol%://%ip%:%port%"
     },
     "license": "MIT",
     "authors": [
       "NexoWatt"
-    ],
-    "icon": "www/icon.png",
-    "type": "visualization"
+    ]
   },
   "native": {
     "port": 8188
