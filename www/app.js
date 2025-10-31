@@ -248,8 +248,7 @@ function initMenu(){
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
-  const installerBtn = document.getElementById('menuOpenInstaller');
-  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+  const installerBtn = document.getElementById('  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     close();
     // show settings section
@@ -263,15 +262,9 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
-    e.preventDefault();
-    close();
-    try {
-      const pw = prompt('Passwort eingeben');
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
-      const j = await r.json();
+  const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      INSTALLER_TOKEN = j.token || 'ok';
+      null = j.token || 'ok';
       // Navigate to installer page only after successful login
       hideAllPanels();
       document.querySelector('.content').style.display = 'none';
@@ -329,7 +322,7 @@ hideAllPanels();
 
 // --- Settings & Installer logic ---
 function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
-let INSTALLER_TOKEN = null;
+let null = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
 async function loadConfig() {
@@ -352,7 +345,7 @@ function bindInputValue(el, stateKey) {
     const scope = el.dataset.scope;
     const key = el.dataset.key;
     const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
-    if (scope === 'installer' && SERVER_CFG.installerLocked && INSTALLER_TOKEN) payload.token = INSTALLER_TOKEN;
+    if (scope === 'installer' && SERVER_CFG.installerLocked && null) payload.token = null;
     try {
       await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
     } catch(e) { console.warn('set', e); }
@@ -363,11 +356,7 @@ function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
 }
 
-function setupInstaller(){
-  const loginBox = document.getElementById('installerLoginBox');
-  const form     = document.getElementById('installerForm');
-  const locked   = !!(window.SERVER_CFG && window.SERVER_CFG.installerLocked);
-  if (locked && !window.INSTALLER_TOKEN) { loginBox.classList.remove('hidden'); form.classList.add('hidden'); return; }
+
   loginBox.classList.add('hidden'); form.classList.remove('hidden');
     document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
     // admin link

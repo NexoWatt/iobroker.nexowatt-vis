@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.14",
+    "version": "0.3.15",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -170,6 +170,10 @@
       "0.3.14": {
         "de": "Fester Installer-Login (install2025!), gehärtete /api/set, responsive Einstellungen/Installateur, Syntaxfehler dauerhaft behoben.",
         "en": "Fixed installer login (install2025!), hardened /api/set, responsive settings/installer UI, permanent syntax fix."
+      },
+      "0.3.15": {
+        "de": "Installer-Bereich vollständig entfernt (Admin + UI + API).",
+        "en": "Removed Installer area completely (Admin + UI + API)."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -267,5 +271,6 @@
       "showGridVoltage": false
     }
   },
-  "instanceObjects": []
+  "instanceObjects": [],
+  "encryptedNative": []
 }
