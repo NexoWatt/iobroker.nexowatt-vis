@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.19",
+    "version": "0.3.21",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -186,6 +186,10 @@
       "0.3.19": {
         "de": "Installer-Bereich wieder aktiviert: Login, Token-Handling & UI. /config meldet installerLocked:true.",
         "en": "Re-enabled Installer area: login, token handling & UI. /config reports installerLocked:true."
+      },
+      "0.3.21": {
+        "de": "Admin jsonConfig fix (title→label) und UI-Aufräumung (stray block entfernt).",
+        "en": "Admin jsonConfig fix (title→label) and UI cleanup (removed stray block)."
       }
     },
     "title": "NexoWatt EMS UI",

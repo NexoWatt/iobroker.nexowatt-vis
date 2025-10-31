@@ -403,17 +403,6 @@ function setupSettings(){
 }
 
 
-  loginBox.classList.add('hidden'); form.classList.remove('hidden');
-    document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
-    // admin link
-    const a = document.getElementById('openAdminBtn');
-    let url = SERVER_CFG.adminUrl;
-    if (!url) {
-      const u = new URL(window.location.href);
-      url = u.origin.replace(/:\d+$/, ':8081');
-    }
-    a.href = url;
-  
 
 // Simple tab switching
 function initTabs(){

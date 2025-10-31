@@ -38,8 +38,7 @@
           "sm": 12
         }
       },
-      "label": "Allgemein",
-      "title": "Allgemein"
+      "label": "Allgemein"
     },
     "datenpunkte": {
       "type": "panel",
@@ -291,8 +290,7 @@
           "placeholder": "optional"
         }
       },
-      "label": "Datenpunkte",
-      "title": "Datenpunkte"
+      "label": "Datenpunkte"
     },
     "smarthome_vorbereitet": {
       "type": "panel",
@@ -375,8 +373,7 @@
           "sm": 12
         }
       },
-      "label": "SmartHome (vorbereitet)",
-      "title": "SmartHome (vorbereitet)"
+      "label": "SmartHome (vorbereitet)"
     },
     "erweitert___zukunft": {
       "type": "panel",
@@ -413,13 +410,11 @@
           "sm": 12
         }
       },
-      "label": "Erweitert / Zukunft",
-      "title": "Erweitert / Zukunft"
+      "label": "Erweitert / Zukunft"
     },
     "graph": {
       "type": "panel",
       "label": "Graph",
-      "title": "Graph",
       "items": {
         "graph.nodes": {
           "type": "table",
