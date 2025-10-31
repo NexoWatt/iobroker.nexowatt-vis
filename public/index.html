@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexoWatt EMS UI</title>
+<style>
+body { background:#0c0f0c; color:#e6eedc; font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif; margin:0; }
+header { display:flex; align-items:center; gap:12px; padding:16px 20px; background:#111711; position:sticky; top:0; }
+.logo { width:28px; height:28px; border-radius:8px; background:#173117; display:flex; align-items:center; justify-content:center; }
+.card { background:#121812; border:1px solid #223522; border-radius:14px; padding:18px; margin:20px; max-width:980px; }
+.row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.item { display:flex; align-items:center; justify-content:space-between; background:#182218; padding:10px 12px; border-radius:10px; }
+label { opacity:.9; }
+button, input[type=number] { background:#101710; color:#e8ffe8; border:1px solid #224422; border-radius:10px; padding:8px 12px; }
+.toggle { width:42px; height:24px; border-radius:24px; background:#374837; position:relative; cursor:pointer; }
+.toggle[data-on="true"] { background:#1f7a1f; }
+.toggle .knob { width:18px; height:18px; background:#fff; border-radius:18px; position:absolute; top:3px; left:3px; transition:all .15s ease; }
+.toggle[data-on="true"] .knob { left:21px; }
+.hidden { display:none; }
+</style></head>
+<body>
+<header>
+  <div class="logo">⚡</div>
+  <h3>NexoWatt EMS</h3>
+  <div style="flex:1"></div>
+  <button id="btnLogout" class="hidden">Logout Installateur</button>
+  <button id="btnLogin">Installateur Login</button>
+</header>
+
+<div class="card">
+  <h3>Einstellungen</h3>
+  <div class="row">
+    <div class="item"><label>Switch A</label><div class="toggle" data-id="settings.switchA"><div class="knob"></div></div></div>
+    <div class="item"><label>Switch B</label><div class="toggle" data-id="settings.switchB"><div class="knob"></div></div></div>
+    <div class="item"><label>Slider 1 (1–2)</label><input data-id="settings.slider1" type="number" min="1" max="2" step="1" value="1"></div>
+    <div class="item"><label>Slider 2 (1–2)</label><input data-id="settings.slider2" type="number" min="1" max="2" step="1" value="1"></div>
+  </div>
+</div>
+
+<div id="installer" class="card hidden">
+  <h3>Installateur</h3>
+  <div class="row">
+    <div class="item"><label>Installer Switch A</label><div class="toggle" data-id="installer.switchA"><div class="knob"></div></div></div>
+    <div class="item"><label>Installer Switch B</label><div class="toggle" data-id="installer.switchB"><div class="knob"></div></div></div>
+    <div class="item"><label>Installer Slider 1 (1–2)</label><input data-id="installer.slider1" type="number" min="1" max="2" step="1" value="1"></div>
+    <div class="item"><label>Installer Slider 2 (1–2)</label><input data-id="installer.slider2" type="number" min="1" max="2" step="1" value="1"></div>
+  </div>
+</div>
+
+<script>
+async function getJSON(url, opts={}) {
+  const token = localStorage.getItem('nw_token');
+  const headers = Object.assign({'Content-Type':'application/json'}, opts.headers || {});
+  if (token) headers['X-Auth-Token'] = token;
+  const res = await fetch(url, Object.assign({}, opts, {headers}));
+  if (!res.ok) throw new Error('HTTP '+res.status);
+  return await res.json();
+}
+async function postJSON(url, body, opts={}) { return getJSON(url, Object.assign({method:'POST', body: JSON.stringify(body||{})}, opts)); }
+function setToggle(el, val){ el.dataset.on = val ? 'true':'false'; }
+async function refreshStates() {
+  const data = await getJSON('/api/states');
+  document.querySelectorAll('[data-id]').forEach(el => {
+    const id = el.getAttribute('data-id'); const v = data[id];
+    if (el.classList.contains('toggle')) setToggle(el, !!v);
+    else if (el.type === 'number') el.value = Number(v ?? el.value);
+  });
+}
+function bindControls() {
+  document.querySelectorAll('.toggle').forEach(el => {
+    el.addEventListener('click', async () => {
+      const id = el.getAttribute('data-id'); const newVal = el.dataset.on !== 'true';
+      setToggle(el, newVal);
+      try { await postJSON('/api/state', {id, val: newVal}); } catch (e) { setToggle(el, !newVal); }
+    });
+  });
+  document.querySelectorAll('input[type=number][data-id]').forEach(el => {
+    el.addEventListener('change', async () => {
+      const id = el.getAttribute('data-id'); const v = Number(el.value);
+      try { await postJSON('/api/state', {id, val: v}); } catch (e) {}
+    });
+  });
+}
+async function ensureAuth() {
+  try {
+    const j = await getJSON('/api/check'); const ok = j && j.ok;
+    document.getElementById('installer').classList.toggle('hidden', !ok);
+    document.getElementById('btnLogout').classList.toggle('hidden', !ok);
+    document.getElementById('btnLogin').classList.toggle('hidden', !!ok);
+  } catch (e) {
+    document.getElementById('installer').classList.add('hidden');
+    document.getElementById('btnLogout').classList.add('hidden');
+    document.getElementById('btnLogin').classList.remove('hidden');
+  }
+}
+async function loginFlow() {
+  const pw = prompt('Passwort eingeben'); if (pw === null) return;
+  try {
+    const r = await postJSON('/api/auth', {password: pw});
+    if (r && r.token) { localStorage.setItem('nw_token', r.token); await ensureAuth(); }
+    else { alert('Falsches Passwort'); }
+  } catch (e) { alert('Falsches Passwort'); }
+}
+async function logoutFlow() { localStorage.removeItem('nw_token'); await ensureAuth(); }
+document.getElementById('btnLogin').addEventListener('click', loginFlow);
+document.getElementById('btnLogout').addEventListener('click', logoutFlow);
+bindControls(); refreshStates(); ensureAuth();
+</script>
+</body></html>
