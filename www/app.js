@@ -470,7 +470,7 @@ render = function(){
 
     const A = { pv: 330, load: 30, bat: 180, grid: 210 };
     const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
-    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const total = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
 
     setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
@@ -541,7 +541,7 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
@@ -572,7 +572,7 @@ render = function(){
 
     const A = { pv: 330, load: 30, bat: 180, grid: 210 };
     const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
-    const total = Math.max(1, pv + buy + load + (chg + dchg));
+    const total = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
 
     setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
@@ -643,7 +643,7 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));

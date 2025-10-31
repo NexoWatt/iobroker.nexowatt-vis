@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.22.2",
+    "version": "0.3.22.3",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -202,6 +202,10 @@
       "0.3.22.2": {
         "de": "initMenu() erweitert: Menüpunkt 'Installateur' öffnet den Installer-Tab und initialisiert Login/Formular.",
         "en": "initMenu() extended: 'Installateur' menu opens installer tab and initializes login/form."
+      },
+      "0.3.22.3": {
+        "de": "Donut-Renderfix: Referenzfehler 'chg is not defined' behoben (verwende chg2/dchg2).",
+        "en": "Donut render fix: 'chg is not defined' resolved (use chg2/dchg2)."
       }
     },
     "title": "NexoWatt EMS UI",
