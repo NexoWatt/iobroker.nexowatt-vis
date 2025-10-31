@@ -1,59 +1,271 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.14",
+    "version": "0.3.13",
     "news": {
-      "0.3.14": {
-        "en": "Adds secure installer password (server-side), blocks access on cancel/wrong password. Creates settings/installer states automatically.",
-        "de": "Sicheres Installateur-Passwort (Server-seitig), sperrt Zugriff bei Abbruch/falschem Passwort. Erstellt automatisch Einstellungen-/Installateur-Objekte."
+      "0.0.1": {
+        "en": "Initial release: Responsive NexoWatt EMS dashboard",
+        "de": "Erste Version: Responsives NexoWatt EMS Dashboard"
+      },
+      "0.0.2": {
+        "de": "Logos hinzugefügt, Standard-Datenpunkte vorbelegt, GitHub-Readme aktualisiert.",
+        "en": "Added logos, default datapoints prefilled, updated GitHub readme."
+      },
+      "0.0.3": {
+        "de": "Fix: Tab-Titel in den Instanzeinstellungen (title→label).",
+        "en": "Fix: Tab titles in instance settings (title→label)."
+      },
+      "0.0.4": {
+        "de": "Fix: jsonConfig validiert wieder; Tabs zeigen Titel & Label.",
+        "en": "Fix: jsonConfig validates again; tabs show title & label."
+      },
+      "0.0.5": {
+        "de": "Datenpunkte jetzt als auswählbare Objekt-IDs mit Suchdialog.",
+        "en": "Datapoints are now selectable object IDs with search dialog."
+      },
+      "0.0.6": {
+        "de": "Fix: jsonConfig mit explizitem 'attr' je Feld; ID-Suchdialog sollte erscheinen.",
+        "en": "Fix: jsonConfig explicit 'attr' for each field; ID search dialog should appear."
+      },
+      "0.0.7": {
+        "de": "Schema-Fix: Root 'tabs.items' jetzt als Objekt statt Array → Admin-Suche für IDs aktiv.",
+        "en": "Schema fix: root 'tabs.items' changed to object instead of array so Admin ID search works."
+      },
+      "0.0.8": {
+        "de": "Eingabefelder auf 'objectId' umgestellt (statt 'id'); Tabs-Struktur korrigiert.",
+        "en": "Switched inputs to 'objectId' (instead of 'id'); fixed tabs structure."
+      },
+      "0.0.9": {
+        "de": "PV-Kreis entfernt, Energiefluss-Monitor hinzugefügt; Oberfläche auf Deutsch.",
+        "en": "Removed PV ring, added energy-flow monitor; UI translated to German."
+      },
+      "0.0.10": {
+        "de": "Runder Energiemonitor mit Icons + SoC-Ring und Lade-/Entladezeit. Neuer Datenpunkt: Speicher Kapazität (kWh).",
+        "en": "Round energy monitor with icons + SoC ring and charge/discharge time. New datapoint: storage capacity (kWh)."
+      },
+      "0.0.11": {
+        "de": "Neuer Energymonitor 1:1 rund (schwarzer Hintergrund), Netz rot.",
+        "en": "New round energy monitor (dark), grid in red."
+      },
+      "0.0.12": {
+        "de": "Donut mit SVG-Icons und Segmentlängen als Anteil am Gesamtfluss.",
+        "en": "Donut uses SVG icons and segment lengths as share of total flow."
+      },
+      "0.0.13": {
+        "de": "Donut: SVG-Icons, Segmente pro Quadrant bündig am Ring, Anteil am Gesamtfluss.",
+        "en": "Donut: SVG icons, quadrant-aligned segments hugging ring, share-of-total."
+      },
+      "0.0.14": {
+        "de": "SVG-Icons dichter am Ring. Anordnung: PV oben, Netz links, Speicher unten, Verbrauch rechts.",
+        "en": "SVG icons tighter to ring. Layout: PV top, Grid left, Storage bottom, Load right."
+      },
+      "0.0.15": {
+        "de": "Energymonitor jetzt responsiv (Größe + Icon-Abstände skalieren).",
+        "en": "Energy monitor responsive."
+      },
+      "0.0.16": {
+        "de": "Header: NexoWatt-Logo links eingefügt. Donut visuell verfeinert (Farben/Strich).",
+        "en": "Header brand logo added left. Donut refined (colors/strokes)."
+      },
+      "0.0.17": {
+        "de": "Donut an Vorlage ausgerichtet (Anker-Winkel), Icons am Ring, neues Logo oben links.",
+        "en": "Donut aligned to reference (anchor angles), icons hug ring, new brand logo top-left."
+      },
+      "0.0.18": {
+        "de": "Neuer Energiefluss als Netz-Graph mit animierten Richtungs-Linien, responsive. Optionale Verbraucher 1/2 in Admin.",
+        "en": "New energy web graph with animated directional lines, responsive. Optional consumers in admin."
+      },
+      "0.0.19": {
+        "en": "Increase donut graph size and layout width",
+        "de": "Donut-Graph vergrößert und Layout-Breite erhöht"
+      },
+      "0.0.20": {
+        "en": "New dynamic Energy Graph: PV, Grid, Load always present; up to 7 extra nodes; optional cascade; topbar tweaks.",
+        "de": "Neuer dynamischer Energie-Graph: PV, Netz, Verbrauch immer sichtbar; bis zu 7 zusätzliche Knoten; optionale Kaskade; Topbar-Anpassungen."
+      },
+      "0.0.21": {
+        "en": "Energy graph visible again and smaller; initial render on load; center readouts restored.",
+        "de": "Energiefluss-Graph wieder sichtbar und kleiner; initiale Darstellung beim Laden; Mittelwerte wiederhergestellt."
+      },
+      "0.0.22": {
+        "en": "Energy flow monitor fixed to always render PV/Grid/Load; graph box made smaller.",
+        "de": "Energiefluss-Monitor repariert (PV/Netz/Verbrauch werden immer gezeichnet); Graph-Box deutlich verkleinert."
+      },
+      "0.0.23": {
+        "en": "Restore Energy Flow Monitor to v0.18 implementation; keep topbar tweaks.",
+        "de": "Energieflussmonitor wieder wie in v0.18 hergestellt; Topbar-Anpassungen beibehalten."
+      },
+      "0.0.24": {
+        "en": "Energy flow arranged: Load center; PV top; Grid left; Wallbox right; Battery bottom. Header logo updated.",
+        "de": "Energiefluss angeordnet: Verbrauch Mitte; PV oben; Netz links; Wallbox rechts; Batterie unten. Header-Logo aktualisiert."
+      },
+      "0.0.25": {
+        "en": "Top-left brand set to NexoWatt logo; battery labels added (SoC, charge, discharge) aligned towards the battery.",
+        "de": "Logo oben links auf NexoWatt gesetzt; Batterie-Beschriftungen (SoC, Laden, Entladen) entlang zur Batterie hinzugefügt."
+      },
+      "0.0.26": {
+        "en": "Top-left brand icon updated to the provided NexoWatt logo (PNG).",
+        "de": "Brand-Icon oben links auf das bereitgestellte NexoWatt-Logo (PNG) aktualisiert."
+      },
+      "0.0.27": {
+        "en": "Removed extra battery texts; moved Full/Empty time next to battery power value.",
+        "de": "Zusatztexte (SoC/Laden/Entladen) entfernt; Voll/Leer-Zeit neben Batterie-Leistung angeordnet."
+      },
+      "0.0.28": {
+        "en": "Node labels and power moved inside circles; battery SoC shown inside battery; icons faded for readability.",
+        "de": "Namen und Leistungen in die Kreise verschoben; Batterie-SoC in der Batterie angezeigt; Icons leicht ausgeblendet."
+      },
+      "0.0.29": {
+        "en": "Icons moved above text inside circles; circles enlarged; labels and values placed inside; battery SoC shown inside battery only.",
+        "de": "Icons über die Texte in den Kreisen; Kreise vergrößert; Namen & Leistungen in den Kreisen; Batterie-SoC nur in der Batterie."
+      },
+      "0.0.30": {
+        "en": "Battery circle enlarged and inner layout tuned. Energy monitor respects existing datapoint settings.",
+        "de": "Batteriekreis vergrößert und Innenlayout angepasst. Energiemonitor berücksichtigt die bestehenden Datenpunkte."
+      },
+      "0.0.32": {
+        "en": "Add hamburger submenu with Settings; add settings panel with SoC badge toggle; minor styles",
+        "de": "Untermenü (Hamburger) mit 'Einstellungen' hinzugefügt; Einstellungsseite inkl. SoC-Badge-Schalter; kleinere Styles"
+      },
+      "0.3.3": {
+        "en": "Fix: LIVE tab switches back to main page (initTabs on startup).",
+        "de": "Fix: LIVE-Tab wechselt wieder zur Hauptseite (initTabs beim Start)."
+      },
+      "0.3.4": {
+        "en": "Removed settings cards (SoC badge & refresh interval) and About panel from both main & settings view.",
+        "de": "Einstellungs-Karten (SoC-Badge & Aktualisierungsintervall) und Über-Panel aus Haupt- und Einstellungsansicht entfernt."
+      },
+      "0.3.5": {
+        "en": "Added Settings and password-protected Installer pages with ioBroker state bindings and admin link.",
+        "de": "Neue Seiten: Einstellungen und passwortgeschützte Installateur-Ansicht inkl. ioBroker-State-Zuordnungen und Admin-Link."
+      },
+      "0.3.6": {
+        "en": "Menu cleanup (removed About), Settings page without Installer button, pre-login before Installer view, improved Installer layout.",
+        "de": "Menü bereinigt (Über entfernt), Einstellungen ohne Installateur-Button, Login vor Installateur-Seite, bessere Installateur-Proportionen."
+      },
+      "0.3.7": {
+        "en": "Menu reliability improvements (submenu toggle hardened).",
+        "de": "Untermenü zuverlässig: Toggle/Schließen robuster (StopPropagation + ESC)."
+      },
+      "0.3.8": {
+        "en": "Fix submenu + live status: DOMContentLoaded init and auto-reconnecting SSE.",
+        "de": "Untermenü + Live-Status gefixt: Initialisierung nach DOM-Load und automatische SSE-Reconnects."
+      },
+      "0.3.9": {
+        "en": "SSE auto-reconnect + DOMContentLoaded init (submenu + live green).",
+        "de": "SSE Auto-Reconnect + DOMContentLoaded-Init (Untermenü + Live grün)."
+      },
+      "0.3.10": {
+        "en": "Fix: JS syntax error (extra '}') prevented menu & live status. Now resolved.",
+        "de": "Fix: JS-Syntaxfehler (extra '}') blockierte Menü & Live-Status. Behoben."
+      },
+      "0.3.11": {
+        "en": "Fix: Installer panel hidden on LIVE; console warning fixed (chg undefined); menu uses hideAllPanels; 'NexoWatt Admin' label; responsive grids.",
+        "de": "Fix: Installateur-Panel auf LIVE verborgen; Konsolen-Warnung (chg undefined) behoben; Menü ruft hideAllPanels; Button heißt 'NexoWatt Admin'; responsive Grids."
+      },
+      "0.3.12": {
+        "en": "Bigger brand logo and improved energy flow monitor proportions (responsive).",
+        "de": "Größeres Logo links oben und bessere Proportionen des Energiefluss-Monitors (responsiv)."
       }
     },
-    "title": "NexoWatt VIS",
+    "title": "NexoWatt EMS UI",
     "titleLang": {
-      "en": "NexoWatt VIS",
-      "de": "NexoWatt VIS"
+      "en": "NexoWatt EMS UI",
+      "de": "NexoWatt EMS UI"
     },
     "desc": {
-      "en": "NexoWatt EMS VIS adapter",
-      "de": "NexoWatt EMS VIS Adapter"
+      "en": "OpenEMS-like responsive dashboard with NexoWatt colors (green/black). All datapoints can be linked in adapter settings.",
+      "de": "OpenEMS-ähnliches responsives Dashboard in NexoWatt-Farben (grün/schwarz). Alle Datenpunkte sind in den Adaptereinstellungen verknüpfbar."
     },
+    "authors": [
+      "Visu Helper"
+    ],
     "platform": "Javascript/Node.js",
     "mode": "daemon",
-    "icon": "admin/nexowatt.png",
-    "messagebox": false,
-    "enabled": true,
     "compact": true,
-    "materialize": true,
-    "type": "visualization",
-    "stopBeforeUpdate": true,
-    "connectionType": "local",
-    "dataSource": "push",
-    "authors": [
-      "NexoWatt"
-    ],
-    "keywords": [
-      "nexowatt",
-      "vis",
-      "ems"
-    ],
-    "license": "MIT",
+    "materialize": false,
+    "enabled": true,
     "loglevel": "info",
-    "plugins": {},
-    "localLinks": {
-      "en": "NexoWatt VIS: http://%ip%:%port%/",
-      "de": "NexoWatt VIS: http://%ip%:%port%/"
+    "type": "visualization",
+    "adminUI": {
+      "config": "json"
     },
-    "restartAdapters": [],
-    "dependencies": [],
-    "globalDependencies": []
+    "keywords": [
+      "visualization",
+      "ems",
+      "nexowatt",
+      "openems",
+      "dashboard"
+    ],
+    "connectionType": "local",
+    "dataSource": "poll",
+    "icon": "admin.png",
+    "logo": "admin_logo_.ico"
   },
   "native": {
     "port": 8188,
+    "bind": "0.0.0.0",
+    "publicPath": "/",
+    "units": {
+      "power": "W",
+      "energy": "kWh"
+    },
+    "datapoints": {
+      "autarky": "0_userdata.0.nexowatt.autarky",
+      "selfConsumption": "0_userdata.0.nexowatt.selfConsumption",
+      "pvPower": "0_userdata.0.nexowatt.pv.power",
+      "productionTotal": "0_userdata.0.nexowatt.pv.energy_total",
+      "consumptionTotal": "0_userdata.0.nexowatt.house.energy_total",
+      "gridBuyPower": "0_userdata.0.nexowatt.grid.buy.power",
+      "gridSellPower": "0_userdata.0.nexowatt.grid.sell.power",
+      "storageChargePower": "",
+      "storageDischargePower": "",
+      "storageSoc": "",
+      "consumptionEvcs": "",
+      "consumptionOther": "",
+      "evcsStatus": "",
+      "evcsLastChargeKwh": "",
+      "gridFrequency": "",
+      "gridVoltage": "0_userdata.0.nexowatt.grid.voltage",
+      "gridBuyEnergy": "0_userdata.0.nexowatt.grid.buy.energy_total",
+      "gridSellEnergy": "0_userdata.0.nexowatt.grid.sell.energy_total",
+      "batteryPower": "0_userdata.0.nexowatt.battery.power",
+      "batterySOC": "0_userdata.0.nexowatt.battery.soc",
+      "batteryEnergyTotal": "0_userdata.0.nexowatt.battery.energy_total",
+      "housePower": "0_userdata.0.nexowatt.house.power",
+      "houseTemp": "0_userdata.0.nexowatt.house.temperature",
+      "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
+      "storageCapacityKwh": "",
+      "consumer1Power": "",
+      "consumer2Power": ""
+    },
+    "sections": {
+      "tabs": [
+        "live",
+        "history",
+        "settings",
+        "smarthome"
+      ]
+    },
+    "smartHome": {
+      "enabled": false,
+      "datapoints": {
+        "heatPumpOn": "",
+        "roomTemp": "",
+        "wallboxLock": "",
+        "gridLimit": "",
+        "pvCurtailment": ""
+      }
+    },
+    "futureOptions": {
+      "theme": "nexowatt-dark",
+      "enableAnimations": true,
+      "showGridVoltage": false
+    },
     "installerPassword": ""
   },
+  "instanceObjects": [],
   "encryptedNative": [
     "installerPassword"
-  ],
-  "objects": [],
-  "instanceObjects": []
+  ]
 }
