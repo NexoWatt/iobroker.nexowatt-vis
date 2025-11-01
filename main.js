@@ -49,10 +49,58 @@ class NexoWattVis extends utils.Adapter {
     this.on('unload', this.onUnload.bind(this));
   }
 
+
+  // Returns adapter-local id for installer key
+  getInstallerStateId(key){
+    return `${this.namespace}.installer.${key}`;
+  }
+
+  // Ensure adapter-owned states for installer config exist, and write initial values from native.installerConfig
+  async ensureInstallerStates(){
+    try{
+      const cfg = (this.config && this.config.installerConfig) || {};
+      const schema = {
+        gridConnectionPower: 'number',
+        para14a: 'boolean',
+        chargepoints: 'number',
+        storageCount: 'number',
+        storagePower: 'number',
+        emsMode: 'number',
+        socMin: 'number',
+        socPeakRange: 'number',
+        chargePowerMax: 'number',
+        dischargePowerMax: 'number',
+        chargeLimitMax: 'number',
+        dischargeLimitMax: 'number',
+      };
+
+      for (const [key, type] of Object.entries(schema)) {
+        const id = this.getInstallerStateId(key);
+        await this.setObjectNotExistsAsync(id, {
+          type: 'state',
+          common: { name: `Installer: ${key}`, type, role: 'value', read: true, write: true },
+          native: {},
+        });
+        if (cfg[key] !== undefined){
+          // write initial value from config to state
+          await this.setStateAsync(id, { val: cfg[key], ack: true });
+          // also reflect in cache for initial UI
+          this.updateValue('installer.'+key, cfg[key], Date.now());
+        }
+      }
+    } catch(e){
+      this.log.warn('ensureInstallerStates error: ' + e.message);
+    }
+  }
+
   async onReady() {
     try {
       // start web server
       await this.startServer();
+
+      // ensure installer states exist and preload values
+      await this.ensureInstallerStates();
+
 
       // subscribe to all configured datapoints and get initial values
       await this.subscribeConfiguredStates();
@@ -130,21 +178,23 @@ app.get('/config', (req, res) => {
 
 
     // generic setter for settings/installer datapoints
-    app.post('/api/set', async (req, res) => {
+    
+app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body && req.body.scope;
         const key = req.body && req.body.key;
         const value = req.body && req.body.value;
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
-        let map = {};
+        let id = null;
         if (scope === 'installer') {
           if (!isInstallerAuthed(req)) return res.status(403).json({ ok: false, error: 'forbidden' });
-          map = (this.config && this.config.installer) || {};
-        
+          const map = (this.config && this.config.installer) || {};
+          id = map && map[key];
+          if (!id) id = this.getInstallerStateId(key); // fallback to our own state
         } else {
-          map = (this.config && this.config.settings) || {};
+          const map = (this.config && this.config.settings) || {};
+          id = map && map[key];
         }
-        const id = map[key];
         if (!id) return res.status(404).json({ ok: false, error: 'id not configured' });
         await this.setForeignStateAsync(id, value);
         res.json({ ok: true });
@@ -185,21 +235,33 @@ app.get('/config', (req, res) => {
     });
   }
 
-  async subscribeConfiguredStates() {
+  
+async subscribeConfiguredStates() {
     const dps = (this.config && this.config.datapoints) || {};
     const settings = (this.config && this.config.settings) || {};
-    const installer = (this.config && this.config.installer) || {};
+    const installerMap = (this.config && this.config.installer) || {};
+    const installerCfg = (this.config && this.config.installerConfig) || {};
+
     const keys = [
       ...Object.keys(dps),
       ...Object.keys(settings).map(k => 'settings.' + k),
-      ...Object.keys(installer).map(k => 'installer.' + k),
+      // map-configured installer target states
+      ...Object.keys(installerMap).map(k => 'installer.' + k),
+      // plus our own adapter-owned installer keys
+      ...Object.keys(installerCfg).map(k => 'installer.' + k),
     ];
 
     for (const key of keys) {
-      let id;
-      if (key.startsWith('settings.')) id = settings[key.slice(9)];
-      else if (key.startsWith('installer.')) id = installer[key.slice(10)];
-      else id = dps[key];
+      let id = null;
+      if (key.startsWith('settings.')) {
+        id = settings[key.slice(9)];
+      } else if (key.startsWith('installer.')) {
+        // prefer explicit mapping, otherwise use our own namespace state
+        const k = key.slice(10);
+        id = installerMap[k] || this.getInstallerStateId(k);
+      } else {
+        id = dps[key];
+      }
       if (!id) continue;
 
       // subscribe
@@ -217,6 +279,7 @@ app.get('/config', (req, res) => {
     }
   }
 
+
   onStateChange(id, state) {
     if (!state) return;
     try {
@@ -229,6 +292,7 @@ app.get('/config', (req, res) => {
     }
   }
 
+  
   keyFromId(id) {
     const dps = (this.config && this.config.datapoints) || {};
     for (const [key, dpId] of Object.entries(dps)) { if (dpId === id) return key; }
@@ -236,8 +300,14 @@ app.get('/config', (req, res) => {
     for (const [k, dpId] of Object.entries(settings)) { if (dpId === id) return 'settings.' + k; }
     const installer = (this.config && this.config.installer) || {};
     for (const [k, dpId] of Object.entries(installer)) { if (dpId === id) return 'installer.' + k; }
+    // fallback: our own adapter installer states
+    const prefix = `${this.namespace}.installer.`;
+    if (id && id.startsWith(prefix)) {
+      return 'installer.' + id.slice(prefix.length);
+    }
     return null;
   }
+
 
   updateValue(key, value, ts) {
     this.stateCache[key] = { value, ts };

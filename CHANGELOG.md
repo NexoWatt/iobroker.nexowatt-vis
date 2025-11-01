@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.43 – 2025-11-01
+- Fix: Admin‑Felder (Reiter „Installateur“) sind wieder mit echten Datenpunkten verknüpft. Der Adapter legt `nexowatt-vis.0.installer.*` automatisch an, spiegelt die Admin‑Werte hinein und die VIS schreibt/liest dieselben States → kein `NaN` mehr.
+- Fix: Doppelter SOC an der Batterie entfernt (zweites Text‑Element entfernt).
+- Intern: `/api/set` fällt für `scope=installer` automatisch auf die lokalen Installer‑States zurück.
+- Intern: Live‑Updates abonnieren jetzt zusätzlich die lokalen Installer‑States.
 ## 0.0.1
 - Initial preview release.
 
