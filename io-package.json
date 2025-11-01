@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.23",
+    "version": "0.3.24",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -170,6 +170,10 @@
       "0.3.23": {
         "de": "Installer (Login+Token) ergänzt, /api/set mit Tokenpflicht; Donut-Render chg/dchg fix.",
         "en": "Added installer (login+token), token-protected /api/set; donut render chg/dchg fix."
+      },
+      "0.3.24": {
+        "de": "Installer-Schutz gehärtet: kein prompt(); Formular bleibt gesperrt bis erfolgreichem Login; Panel-Init abgesichert.",
+        "en": "Hardened installer lock: removed prompt(); form stays locked until successful login; guarded panel init."
       }
     },
     "title": "NexoWatt EMS UI",

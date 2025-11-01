@@ -267,7 +267,7 @@ function initMenu(){
     e.preventDefault();
     close();
     try {
-      const pw = prompt('Passwort eingeben');
+      const pw = null /*prompt removed*/;
       const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
       const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
@@ -275,8 +275,7 @@ function initMenu(){
       // Navigate to installer page only after successful login
       hideAllPanels();
       document.querySelector('.content').style.display = 'none';
-      const sec = document.querySelector('[data-tab-content="installer"]');
-      if (sec) sec.classList.remove('hidden');
+      const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
       document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
       loadConfig();
       setupInstaller();
@@ -365,17 +364,39 @@ function setupSettings(){
 
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
-  const form = document.getElementById('installerForm');
-  loginBox.classList.add('hidden');
-  form.classList.remove('hidden');
-    document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
-    // admin link
-    const a = document.getElementById('openAdminBtn');
-    let url = SERVER_CFG.adminUrl;
-    if (!url) {
-      const u = new URL(window.location.href);
-      url = u.origin.replace(/:\d+$/, ':8081');
-    }
+  const form     = document.getElementById('installerForm');
+  const locked   = !!(SERVER_CFG && SERVER_CFG.installerLocked);
+  if (locked && !INSTALLER_TOKEN) {
+    if (loginBox) loginBox.classList.remove('hidden');
+    if (form)     form.classList.add('hidden');
+  } else {
+    if (loginBox) loginBox.classList.add('hidden');
+    if (form)     form.classList.remove('hidden');
+  }
+  // bind login button
+  const pw  = document.getElementById('inst_pw');
+  const btn = document.getElementById('inst_login');
+  if (btn && pw && !btn.dataset.bound){
+    btn.dataset.bound='1';
+    btn.addEventListener('click', async ()=>{
+      try{
+        const pass = String(pw.value || '');
+        if (!pass) { alert('Bitte Passwort eingeben'); return; }
+        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+        const j = await r.json();
+        if (j && j.ok && j.token){
+          INSTALLER_TOKEN = j.token;
+          if (loginBox) loginBox.classList.add('hidden');
+          if (form)     form.classList.remove('hidden');
+        } else {
+          alert('Passwort falsch');
+          if (loginBox) loginBox.classList.remove('hidden');
+          if (form)     form.classList.add('hidden');
+        }
+      }catch(e){ alert('Login fehlgeschlagen'); }
+    });
+  }
+}
     a.href = url;
   }
 
