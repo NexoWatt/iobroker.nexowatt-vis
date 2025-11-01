@@ -28,3 +28,6 @@
 
 ## 0.3.32 – 2025-11-01
 - Fix: Doppelte else-/Klammern in main.js entfernt (Login-Route).
+
+## 0.3.33 – 2025-11-01
+- Fix: Stray top-level await in app.js entfernt.

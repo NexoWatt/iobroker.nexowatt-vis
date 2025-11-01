@@ -272,7 +272,6 @@ function initMenu(){
     loadConfig();
     setupInstaller();
   });
-const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
       /* no-token */ null = j.token || 'ok';
       // Navigate to installer page only after successful login

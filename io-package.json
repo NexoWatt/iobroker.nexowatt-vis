@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.32",
+    "version": "0.3.33",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -214,6 +214,10 @@
       "0.3.32": {
         "en": "Fix: remove duplicated else/closing braces in main.js login route causing SyntaxError around line 131.",
         "de": "Fix: doppelte else-/Schlussklammern in main.js Login-Route entfernt (SyntaxError um Zeile 131)."
+      },
+      "0.3.33": {
+        "en": "Fix: removed stray top-level 'await' in www/app.js (line ~275) that caused SyntaxError in browsers.",
+        "de": "Fix: überflüssiges Top-Level-`await` in www/app.js (~Zeile 275) entfernt (Browser-SyntaxError)."
       }
     },
     "title": "NexoWatt EMS UI",
