@@ -349,3 +349,24 @@ body {
 .web .node.center .ico image{filter:invert(1) brightness(1.8) drop-shadow(0 0 2px rgba(255,255,255,.8))}
 /* a bit more gap under icons is already added via label y=28 */
 
+
+
+/* --- EVCS modal --- */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal.hidden{display:none}
+.dialog{background:#121416;border:1px solid rgba(255,255,255,.08);border-radius:12px;min-width:420px;max-width:92vw;padding:16px}
+.dialog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dialog .btn.small{background:#1f2328;border:none;border-radius:8px;padding:4px 8px;cursor:pointer}
+.evcs-gauge{width:180px;height:180px;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;background:radial-gradient(closest-side,#0c0e10 72%, transparent 73% 100%), conic-gradient(#6c5ce7 0% 0%)}
+.evcs-gauge .gauge-value{font-size:28px;font-weight:700;color:#ff6bd6}
+#evcsCard.clickable{cursor:pointer}
+
+.switch{position:relative;display:inline-block;width:46px;height:24px}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#333;border-radius:24px;transition:.2s}
+.switch span:before{position:absolute;content:"";height:18px;width:18px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s}
+.switch input:checked + span{background:#2ecc71}
+.switch input:checked + span:before{transform:translateX(22px)}
+
+.mode-labels{display:flex;justify-content:space-between;font-size:12px;opacity:.8}
+#evcsModeSlider{width:100%}

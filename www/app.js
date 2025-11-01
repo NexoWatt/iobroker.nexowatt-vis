@@ -201,6 +201,7 @@ function render() {
 
   setText('evcsStatus', (d('evcsStatus') ?? '--'));
   setText('evcsLastChargeKwh', d('evcsLastChargeKwh') != null ? d('evcsLastChargeKwh').toFixed(2) + ' kWh' : '--');
+  if (window.__evcsApply) window.__evcsApply(d, state);
 }
 
 async function bootstrap() {
@@ -774,4 +775,53 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
       }
     }
   }catch(e){}
+})();
+
+// --- EVCS modal ---
+(function(){
+  function qs(id){ return document.getElementById(id); }
+  const card = qs('evcsCard');
+  const modal = qs('evcsModal');
+  const close = qs('evcsClose');
+  const toggle = qs('evcsActiveToggle');
+  const slider = qs('evcsModeSlider');
+
+  if (card && modal){
+    card.addEventListener('click', ()=> modal.classList.remove('hidden'));
+  }
+  if (close){
+    close.addEventListener('click', ()=> modal.classList.add('hidden'));
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') modal.classList.add('hidden'); });
+  }
+  if (toggle){
+    toggle.addEventListener('change', async ()=>{
+      try{ await fetch('/api/set', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scope:'settings', key:'evcsActive', value: toggle.checked})}); }catch(e){}
+    });
+  }
+  if (slider){
+    const clamp = (v)=> Math.max(1, Math.min(3, Math.round(Number(v)||1)));
+    slider.addEventListener('input', ()=> slider.value = clamp(slider.value));
+    slider.addEventListener('change', async ()=>{
+      slider.value = clamp(slider.value);
+      try{ await fetch('/api/set', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scope:'settings', key:'evcsMode', value: Number(slider.value)})}); }catch(e){}
+    });
+  }
+
+  // Update values from state inside global render()
+  window.__evcsApply = function(d, s){
+    const p = d('consumptionEvcs') ?? 0;
+    const st = d('evcsStatus') ?? '--';
+    const active = s['settings.evcsActive']?.value ?? false;
+    const mode = s['settings.evcsMode']?.value ?? 1;
+    const fmtP = (val)=> {
+      const u = (window.units && window.units.power) || 'W';
+      const n = Number(val)||0;
+      if (Math.abs(n) >= 1000) return (n/1000).toFixed(1) + ' kW';
+      return n.toFixed(0) + ' ' + u;
+    };
+    const pb = qs('evcsPowerBig'); if (pb) pb.textContent = fmtP(p);
+    const sm = qs('evcsStatusModal'); if (sm) sm.textContent = st;
+    if (toggle != null) toggle.checked = !!active;
+    if (slider != null) slider.value = String(Math.max(1, Math.min(3, Math.round(Number(mode)||1))));
+  };
 })();

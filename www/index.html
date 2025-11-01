@@ -148,6 +148,37 @@
 <div><small>Letzte Ladung</small><b id="evcsLastChargeKwh">--</b></div>
 </div>
 </div>
+
+<div class="card kpi clickable" id="evcsCard">
+  <div class="card-header"><span>Ladestation</span></div>
+  <div class="row two">
+    <div><small>Status</small><b id="evcsStatus">--</b></div>
+    <div><small>Letzte Ladung</small><b id="evcsLastChargeKwh">--</b></div>
+  </div>
+</div>
+
+<div id="evcsModal" class="modal hidden">
+  <div class="dialog">
+    <div class="dialog-header">
+      <span>Ladestation</span>
+      <button id="evcsClose" class="btn small">×</button>
+    </div>
+    <div class="evcs-body">
+      <div class="evcs-gauge"><div class="gauge-value" id="evcsPowerBig">0 W</div></div>
+      <div class="row two">
+        <div><small>Status</small><b id="evcsStatusModal">--</b></div>
+        <div><small>Ladestation</small><label class="switch"><input type="checkbox" id="evcsActiveToggle"><span></span></label></div>
+      </div>
+      <div class="row one">
+        <div style="width:100%"><small>Modus</small>
+          <input type="range" id="evcsModeSlider" min="1" max="3" step="1">
+          <div class="mode-labels"><span>1</span><span>2</span><span>3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </section>
 </main>
 <script src="/static/app.js"></script>

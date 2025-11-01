@@ -797,6 +797,36 @@
           "md": 6
         }
       }
+    },
+    "evcs": {
+      "type": "panel",
+      "label": "EVCS",
+      "items": {
+        "datapoints.consumptionEvcs": {
+          "type": "objectId",
+          "label": "Leistung (W)",
+          "tooltip": "Wert für aktuelle Ladeleistung der Ladestation",
+          "newLine": false
+        },
+        "datapoints.evcsStatus": {
+          "type": "objectId",
+          "label": "Status",
+          "tooltip": "Status der Ladestation (Text/Enum)",
+          "newLine": false
+        },
+        "settings.evcsActive": {
+          "type": "objectId",
+          "label": "Ladestation aktiv (bool)",
+          "tooltip": "Schalt-Objekt zum Aktivieren/Deaktivieren der Ladestation. Leer lassen, wenn Adapter-eigenen Datenpunkt verwenden soll.",
+          "newLine": true
+        },
+        "settings.evcsMode": {
+          "type": "objectId",
+          "label": "Betriebsmodus (1-3)",
+          "tooltip": "Schieberegler 1…3 (z. B. 1=Netz-Min, 2=Min+PV, 3=PV). Leer lassen, wenn Adapter-eigenen Datenpunkt verwenden soll.",
+          "newLine": false
+        }
+      }
     }
   }
 }
