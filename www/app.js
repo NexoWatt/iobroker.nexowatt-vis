@@ -263,7 +263,8 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
+  
+if (installerBtn) installerBtn.addEventListener('click', (e)=>{
   e.preventDefault();
   close();
   hideAllPanels();
@@ -272,9 +273,14 @@ function initMenu(){
   const sec = document.querySelector('[data-tab-content="installer"]');
   if (sec) sec.classList.remove('hidden');
   document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-  // Load server config and show correct panel (login vs form)
-  loadConfig().then(setupInstaller).catch(()=>setupInstaller());
+  if (typeof loadConfig === 'function') {
+    loadConfig().then(()=>{ if (typeof setupInstaller==='function') setupInstaller(); })
+                .catch(()=>{ if (typeof setupInstaller==='function') setupInstaller(); });
+  } else {
+    if (typeof setupInstaller==='function') setupInstaller();
+  }
 });
+
 }
 
 
@@ -328,8 +334,34 @@ let SERVER_CFG = { adminUrl: null, installerLocked: false };
 async function loadConfig() {
   try {
     const r = await fetch('/config');
+    const j = await r.json();
+    SERVER_CFG = j || {};
+  } catch(e) { console.warn('cfg', e); }
+}
 
-// Build/restore the Installer UI: toggles login vs form and binds login actions
+function bindInputValue(el, stateKey) {
+  // set initial value from state cache
+  const st = (window.latestState || {});
+  const info = st[stateKey] || st['settings.'+el.dataset.key] || st['installer.'+el.dataset.key];
+  if (info && info.value !== undefined) {
+    if (el.type === 'checkbox') el.checked = !!info.value;
+    else el.value = info.value;
+  }
+  el.addEventListener('change', async ()=>{
+    const scope = el.dataset.scope;
+    const key = el.dataset.key;
+    const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
+    if (scope === 'installer' && SERVER_CFG.installerLocked && INSTALLER_TOKEN) payload.token = INSTALLER_TOKEN;
+    try {
+      await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    } catch(e) { console.warn('set', e); }
+  });
+}
+
+function setupSettings(){
+  document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
+}
+
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const formBox  = document.getElementById('installerForm');
@@ -347,13 +379,10 @@ function setupInstaller(){
   const form = document.getElementById('installerLoginForm');
 
   async function doLogin(){
-    const pwd = (pw && pw.value) || '';
-    try {
-      const r = await fetch('/api/installer/login', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ password: pwd })
-      });
+    try{
+      const pass = String((pw && pw.value) || '');
+      if (!pass) { alert('Bitte Passwort eingeben'); return; }
+
       const j = await r.json();
       if (j && j.ok && j.token){
         INSTALLER_TOKEN = j.token;
@@ -365,15 +394,27 @@ function setupInstaller(){
         if (loginBox) loginBox.classList.remove('hidden');
         if (formBox)  formBox.classList.add('hidden');
       }
-    } catch(e){
-      alert('Login fehlgeschlagen');
-    }
+    }catch(e){ alert('Login fehlgeschlagen'); }
   }
 
   if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
-  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', async (e)=>{ e.preventDefault(); await doLogin(); }); }
+  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
 }
 
+        const j = await r.json();
+        if (j && j.ok && j.token){
+          INSTALLER_TOKEN = j.token;
+          if (loginBox) loginBox.classList.add('hidden');
+          if (formBox)  formBox.classList.remove('hidden');
+        } else {
+          alert('Passwort falsch');
+          if (loginBox) loginBox.classList.remove('hidden');
+          if (formBox)  formBox.classList.add('hidden');
+        }
+      }catch(e){ alert('Login fehlgeschlagen'); }
+    });
+  }
+}
 
 function initInstallerPanel(){
   if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;
@@ -691,3 +732,5 @@ if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFi
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
+;
+\n
