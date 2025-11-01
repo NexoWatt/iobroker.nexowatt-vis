@@ -263,8 +263,13 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{ e.preventDefault(); close(); hideAllPanels(); const content=document.querySelector('.content'); if (content) content.style.display='none'; const sec=document.querySelector('[data-tab-content="installer"]'); if (sec) sec.classList.remove('hidden'); document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active')); if (typeof loadConfig==='function'){ loadConfig().then(()=>{ if (typeof setupInstaller==='function') setupInstaller(); }).catch(()=>{ if (typeof setupInstaller==='function') setupInstaller(); }); } else { if (typeof setupInstaller==='function') setupInstaller(); }});
-const j = await r.json();
+  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    close();
+    try {
+      const pw = null /*prompt removed*/;
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
+      const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
       INSTALLER_TOKEN = j.token || 'ok';
       // Navigate to installer page only after successful login
@@ -376,7 +381,27 @@ function setupInstaller(){
   async function doLogin(){
     try{
       const pass = String((pw && pw.value) || '');
-      if (!pass) { alert('Bitte Passwort eingeben'); return; \1function initInstallerPanel(){
+      if (!pass) { alert('Bitte Passwort eingeben'); return; }
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+      const j = await r.json();
+      if (j && j.ok && j.token){
+        INSTALLER_TOKEN = j.token;
+        if (loginBox) loginBox.classList.add('hidden');
+        if (formBox)  formBox.classList.remove('hidden');
+        if (typeof initInstallerPanel === 'function') initInstallerPanel();
+      } else {
+        alert('Passwort falsch');
+        if (loginBox) loginBox.classList.remove('hidden');
+        if (formBox)  formBox.classList.add('hidden');
+      }
+    }catch(e){ alert('Login fehlgeschlagen'); }
+  }
+
+  if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
+  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
+}
+
+function initInstallerPanel(){
   if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
     const key = el.dataset.key; bindInputValue(el, 'installer.' + key);
