@@ -64,3 +64,7 @@
 
 ### 0.3.52 (2025-11-01)
 - Fix: History-Route und API in startServer(app) korrekt registriert (404 beseitigt).
+
+### 0.3.53 (2025-11-01)
+- Responsives Layout: Energiefluss proportioniert (kleiner), SVG-Ring reduziert, Breakpoints angepasst.
+- Admin: alle Reiter als 2-Spalten-Layout ab md, mobil 1-Spalte; `newLine` entfernt wo sinnvoll.
