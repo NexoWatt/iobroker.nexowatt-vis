@@ -128,14 +128,6 @@ app.get('/config', (req, res) => {
       res.json({ ok: true });
     });
 
-      } else {
-        return res.status(401).json({ ok: false, error: 'Unauthorized' });
-      }
-    });
-      } else {
-        res.status(401).json({ ok: false, error: 'Unauthorized' });
-      }
-    });
 
     // generic setter for settings/installer datapoints
     app.post('/api/set', async (req, res) => {

@@ -25,3 +25,6 @@
 
 ## 0.3.31 – 2025-11-01
 - Fix: Syntaxfehler im Login-Endpoint behoben; /api/set prüft jetzt sauber die Session.
+
+## 0.3.32 – 2025-11-01
+- Fix: Doppelte else-/Klammern in main.js entfernt (Login-Route).

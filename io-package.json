@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.31",
+    "version": "0.3.32",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -210,6 +210,10 @@
       "0.3.31": {
         "en": "Fix: stabilize cookie-based login route and guard; remove stray partial insertion causing SyntaxError in main.js; default password 'install2025!'.",
         "de": "Fix: Cookie-Login/Guard bereinigt; fehlerhafte Teil-Einfügung in main.js behoben (SyntaxError); Standard-Passwort 'install2025!'."
+      },
+      "0.3.32": {
+        "en": "Fix: remove duplicated else/closing braces in main.js login route causing SyntaxError around line 131.",
+        "de": "Fix: doppelte else-/Schlussklammern in main.js Login-Route entfernt (SyntaxError um Zeile 131)."
       }
     },
     "title": "NexoWatt EMS UI",
