@@ -255,9 +255,9 @@ body {
 .card.energy-web .web-wrap{width:100%;display:flex;justify-content:center;align-items:center;min-height:clamp(360px, 40vw, 600px)}
 .web{width:min(640px,86vw);height:auto}
 .web .ring{fill:#0e1216;stroke-width:3}
-.web .ring.pv{stroke:#27ae60}
+.web .ring.pv{stroke:#f1c40f}
 .web .ring.grid{stroke:#e74c3c}
-.web .ring.consumer{stroke:#f0c24b}
+.web .ring.consumer{stroke:#9b59b6}
 .web .node .ico{fill:#e6e6e6;filter:url(#soft)}
 .web text{fill:#e6e6e6;font-size:14px}
 .web text.big{font-size:18px;font-weight:700}
@@ -335,3 +335,17 @@ body {
 .form .row input[type="password"]{
   width: 260px;
 }
+
+.web .ring.battery{stroke:#27ae60}
+
+.web .ring.center{stroke:#3498db}
+
+
+/* stronger icon colors */
+.web .node.pv .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #f1c40f)}
+.web .node.grid .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #e74c3c)}
+.web .node.consumer.charger .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #9b59b6)}
+.web .node.consumer.battery .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #27ae60)}
+.web .node.center .ico image{filter:invert(1) brightness(1.8) drop-shadow(0 0 2px rgba(255,255,255,.8))}
+/* a bit more gap under icons is already added via label y=28 */
+

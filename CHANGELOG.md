@@ -75,3 +75,9 @@
 ### 0.3.56 (2025-11-01)
 - Live: ?settings=1 öffnet die Einstellungen zuverlässig (DOM-ready).
 - Energiefluss: Icons durch hochgeladene PNGs ersetzt (PV, Netz, Wallbox, Batterie, Gebäude).
+
+### 0.3.57 (2025-11-01)
+- UI: 'Wallbox' → 'Ladestation'.
+- Farbschema Ringe: PV gelb, Batterie grün, Ladestation lila, Gebäude blau.
+- Icons kräftiger (Sättigung/Glühen); Gebäude-Icon weiß.
+- Mehr Luft unter den Icon-Beschriftungen (Label y=28).
