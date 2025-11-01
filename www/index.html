@@ -206,11 +206,16 @@
   <section class="card">
     <div class="card-header"><span>Installateur</span></div>
     <div class="form" id="installerLoginBox">
-      <label class="row"><span>Passwort</span>
-        <input type="password" id="inst_pw">
-      </label>
-      <button class="btn" id="inst_login">Freischalten</button>
+  <form id="installerLoginForm" autocomplete="off">
+    <label class="row"><span>Passwort</span>
+      <input type="password" id="inst_pw" required autocomplete="current-password">
+    </label>
+    <div class="row" style="gap:.5rem">
+      <button class="btn" id="inst_login" type="submit">Freischalten</button>
+      <button class="btn" id="inst_cancel" type="button">Abbrechen</button>
     </div>
+  </form>
+</div>
     <div class="form hidden" id="installerForm">
       <div class="grid-inst">
         <label class="row"><span>Leistung Netzanschluss (W)</span>

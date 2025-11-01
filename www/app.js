@@ -398,20 +398,23 @@ function setupInstaller(){
   }
 
   if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
+  const cancel = document.getElementById('inst_cancel');
+  if (cancel && !cancel.dataset.bound){
+    cancel.dataset.bound = '1';
+    cancel.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // Close installer panel and go back to live view
+      const installerSec = document.querySelector('[data-tab-content="installer"]');
+      if (installerSec) installerSec.classList.add('hidden');
+      const live = document.querySelector('.content');
+      if (live) live.style.display = 'grid';
+      document.querySelectorAll('.tabs .tab').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-tab') === 'live');
+      });
+    });
+  }
   if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
 }
-        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
-        const j = await r.json();
-        if (j && j.ok && j.token){
-          INSTALLER_TOKEN = j.token;
-          if (loginBox) loginBox.classList.add('hidden');
-          if (formBox)  formBox.classList.remove('hidden');
-        } else {
-          alert('Passwort falsch');
-          if (loginBox) loginBox.classList.remove('hidden');
-          if (formBox)  formBox.classList.add('hidden');
-        }
-      }catch(e){ alert('Login fehlgeschlagen'); }
     });
   }
 }
