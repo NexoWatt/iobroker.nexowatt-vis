@@ -263,15 +263,7 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    const proto = (location.protocol === 'https:') ? 'https:' : 'http:';
-    const host  = location.hostname || 'localhost';
-    const url   = proto + '//' + host + ':8081/';
-    window.open(url, '_blank');
-  });
-}
+  }
 
 
 function initSettingsPanel(){
@@ -287,6 +279,15 @@ function initSettingsPanel(){
       window.open(url, '_blank');
     });
   }
+  // Force sliders to emit only 1 or 2
+  const p = document.getElementById('s_priority');
+  const t = document.getElementById('s_tariffMode');
+  [p,t].forEach(el => {
+    if (!el) return;
+    el.min = 1; el.max = 2; el.step = 1;
+    el.addEventListener('input', ()=>{ if (el.value < 1.5) el.value = 1; else el.value = 2; });
+    el.addEventListener('change', ()=>{ if (el.value < 1.5) el.value = 1; else el.value = 2; });
+  });
 
   const LS_KEY = 'nexowatt.settings';
   let opts;
@@ -363,7 +364,7 @@ function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
 }
 
-function setupInstaller(){ /* disabled */ return;
+function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const formBox  = document.getElementById('installerForm');
   const form     = document.getElementById('installerLoginForm');
@@ -424,7 +425,7 @@ function setupInstaller(){ /* disabled */ return;
   refreshLock();
 }
 
-function initInstallerPanel(){ /* disabled */ return;
+function initInstallerPanel(){
   if (SERVER_CFG && SERVER_CFG.installerLocked && !null) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
     const key = el.dataset.key; bindInputValue(el, 'installer.' + key);

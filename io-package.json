@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.37",
+    "version": "0.3.38",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -323,23 +323,7 @@
       "showGridVoltage": false
     },
     "installerPassword": "",
-    "installerConfig": {
-      "gridConnectionPower": 0,
-      "para14a": false,
-      "chargepoints": 0,
-      "evChargingPoints": 0,
-      "storageCount": 0,
-      "storageCountMode": 0,
-      "storagePower": 0,
-      "emsMode": 1,
-      "socMin": 10,
-      "socPeakRange": 20,
-      "chargePowerMax": 0,
-      "dischargePowerMax": 0,
-      "chargeLimitMax": 0,
-      "dischargeLimitMax": 0,
-      "adminUrl": ""
-    }
+    "installerConfig": {}
   },
   "instanceObjects": []
 }

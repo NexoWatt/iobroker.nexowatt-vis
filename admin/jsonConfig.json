@@ -541,27 +541,11 @@
           "xs": 12,
           "sm": 6
         },
-        "installerConfig.evChargingPoints": {
-          "type": "number",
-          "label": "EV-Ladepunkte (optional)",
-          "min": 0,
-          "attr": "installerConfig.evChargingPoints",
-          "xs": 12,
-          "sm": 6
-        },
         "installerConfig.storageCount": {
           "type": "number",
           "label": "Anzahl Speicher (Module)",
           "min": 0,
           "attr": "installerConfig.storageCount",
-          "xs": 12,
-          "sm": 6
-        },
-        "installerConfig.storageCountMode": {
-          "type": "number",
-          "label": "Speicher Zählmodus",
-          "min": 0,
-          "attr": "installerConfig.storageCountMode",
           "xs": 12,
           "sm": 6
         },

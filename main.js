@@ -56,9 +56,7 @@ class NexoWattVis extends utils.Adapter {
       gridConnectionPower: { type: 'number', role: 'value.power', def: 0 },
       para14a:      { type: 'boolean', role: 'state', def: false },
       chargepoints: { type: 'number', role: 'state', def: 0 },
-      evChargingPoints: { type: 'number', role: 'state', def: 0 },
       storageCount: { type: 'number', role: 'state', def: 0 },
-      storageCountMode: { type: 'number', role: 'state', def: 0 },
       storagePower: { type: 'number', role: 'value.power', def: 0 },
       emsMode:      { type: 'number', role: 'state', def: 1 },
       socMin:       { type: 'number', role: 'value', def: 10 },
@@ -71,21 +69,9 @@ class NexoWattVis extends utils.Adapter {
     };
     for (const [key, c] of Object.entries(defs)) {
       const id = `installer.${key}`;
-      await this.setObjectNotExistsAsync(id, {
-        type: 'state',
-        common: {
-          name: id,
-          type: c.type,
-          role: c.role,
-          read: true,
-          write: true,
-          def: c.def
-        },
-        native: {}
-      });
+      await this.setObjectNotExistsAsync(id, { type:'state', common:{ name:id, type:c.type, role:c.role, read:true, write:true, def:c.def }, native:{} });
     }
   }
-
   async syncInstallerConfigToStates() {
     const cfg = (this.config && this.config.installerConfig) || {};
     const toSet = {
@@ -93,9 +79,7 @@ class NexoWattVis extends utils.Adapter {
       gridConnectionPower: Number(cfg.gridConnectionPower || 0),
       para14a: !!cfg.para14a,
       chargepoints: Number(cfg.chargepoints || 0),
-      evChargingPoints: Number(cfg.evChargingPoints || 0),
       storageCount: Number(cfg.storageCount || 0),
-      storageCountMode: Number(cfg.storageCountMode || 0),
       storagePower: Number(cfg.storagePower || 0),
       emsMode: Number(cfg.emsMode || 1),
       socMin: Number(cfg.socMin || 0),
@@ -110,7 +94,6 @@ class NexoWattVis extends utils.Adapter {
       await this.setStateAsync(`installer.${k}`, { val: v, ack: true });
     }
   }
-
   async onReady() {
     try {
       // start web server
