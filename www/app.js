@@ -405,11 +405,11 @@ function setupInstaller(){
         if (j && j.ok && j.token){
           INSTALLER_TOKEN = j.token;
           if (loginBox) loginBox.classList.add('hidden');
-          if (form)     form.classList.remove('hidden');
+          if (formBox)  formBox.classList.remove('hidden');
         } else {
           alert('Passwort falsch');
           if (loginBox) loginBox.classList.remove('hidden');
-          if (form)     form.classList.add('hidden');
+          if (formBox)  formBox.classList.add('hidden');
         }
       }catch(e){ alert('Login fehlgeschlagen'); }
     });
@@ -554,13 +554,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg + dchg));
+    setDonut('storage', pct(chg2 + dchg2));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderOrig();
@@ -656,13 +656,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
+    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg + dchg));
+    setDonut('storage', pct(chg2 + dchg2));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderEF();

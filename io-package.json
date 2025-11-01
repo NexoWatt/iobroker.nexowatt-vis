@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.24.2",
+    "version": "0.3.25",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -182,6 +182,10 @@
       "0.3.24.2": {
         "de": "Installer-Login in <form> verlegt, Submit-Handler mit preventDefault; Syntax-Guards verbessert.",
         "en": "Installer login uses a form with submit handler; improved syntax guards."
+      },
+      "0.3.25": {
+        "de": "Semver-Fix (3-stellig), Installer-Login/Token und Syntax-Fixes enthalten.",
+        "en": "Semver fix (three-part); contains installer login/token and syntax fixes."
       }
     },
     "title": "NexoWatt EMS UI",
