@@ -690,54 +690,71 @@ render = function(){
 function setSideValue(id, val){ const el=document.getElementById(id); if(el) el.textContent = val; }
 
 // ---- Energy Web update ----
+
+function getSigned(signedKey, posKey, negKey){
+  const d = (k) => state[k]?.value;
+  const s = d(signedKey);
+  if (typeof s === 'number' && !isNaN(s)) return Number(s);
+  const pos = +(d(posKey) ?? 0);
+  const neg = +(d(negKey) ?? 0);
+  return pos - neg;
+}
+function splitSigned(v){ return {pos: Math.max(0, v), neg: Math.max(0, -v)}; }
+
 function updateEnergyWeb() {
   const d = (k) => state[k]?.value;
   const pv = +(d('pvPower') ?? 0);
-  const buy = +(d('gridBuyPower') ?? 0);
-  const sell = +(d('gridSellPower') ?? 0);
+
+  const gridSigned = getSigned('gridPower', 'gridBuyPower', 'gridSellPower'); // +Bezug / -Einspeisung
+  const batSigned  = getSigned('batteryPower', 'storageDischargePower', 'storageChargePower'); // +Entladen / -Laden
+
+  const buy = Math.max(0, gridSigned);
+  const sell = Math.max(0, -gridSigned);
+  const charge = Math.max(0, -batSigned);
+  const discharge = Math.max(0, batSigned);
+
   const load = Math.max(0, +(d('consumptionTotal') ?? 0));
   const c1 = +(d('consumer1Power') ?? 0);
   const c2 = +(d('consumptionEvcs') ?? 0); // Wallbox
   const soc = d('storageSoc');
   const cap = +(d('storageCapacityKwh') ?? 0);
-  const charge = +(d('storageChargePower') ?? 0);
-  const discharge = +(d('storageDischargePower') ?? 0);
-
-  // Rest = load - c1 - c2 (>=0)
-  const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
   T('pvVal', formatPower(pv));
-  T('gridVal', formatPower(buy));
+  T('gridVal', formatPower(Math.abs(gridSigned)));
   T('c1Val', formatPower(c1));
   T('c2Val', formatPower(c2));
-  T('restVal', formatPower(rest));
-  // set default battery soc
-  T('centerPower', formatPower(load));
-  if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
-  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); /* centerSoc removed */ }
-  if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
-  else T('batterySoc', '-- %');
-  T('batteryCharge', 'Laden ' + formatPower(charge));
-  T('batteryDischarge', 'Entladen ' + formatPower(discharge));
-if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFixed(0)+' %');
+  T('restVal', formatPower(Math.abs(batSigned)));
 
-  if (cap && soc !== undefined) {
-    const socPct = Number(soc)/100;
-    const tFull = charge>0 ? ((cap*(1-socPct))*1000)/charge : null;
-    const tEmpty= discharge>0 ? ((cap*socPct)*1000)/discharge : null;
-    T('batteryTime', 'Voll ' + (tFull?formatHours(tFull):'--') + ' • Leer ' + (tEmpty?formatHours(tEmpty):'--')); T('centerTime','');
+  // battery info
+  if (soc != null) {
+    const bar = document.getElementById('storageSocBar');
+    if (bar) bar.style.width = Math.max(0, Math.min(100, soc)) + '%';
+    const socTxt = document.getElementById('storageSocValue');
+    if (socTxt) socTxt.textContent = soc.toFixed ? soc.toFixed(0) + ' %' : (soc + ' %');
   }
 
-  // Show/hide lines based on values
+  // charge/discharge cards
+  setSideValue('storageLadenPower', formatPower(charge));
+  setSideValue('storageEntladenPower', formatPower(discharge));
+
+  // Show/hide lines
   const show = (id, on)=>{ const el=document.getElementById(id); if(el) el.style.opacity = on ? 1 : 0.15; };
-  show('linePV', pv>1);
-  show('lineGrid', buy>1);
+  show('linePV', Math.abs(pv)>1);
+  show('lineGrid', Math.abs(gridSigned)>1);
   show('lineC1', false);
   show('lineC2', c2>1);
-  show('lineRest', rest>1);
-}
+  show('lineRest', Math.abs(batSigned)>1);
 
+  // Direction: swap endpoints depending on sign
+  const setLine = (id, x1,y1,x2,y2)=>{ const el=document.getElementById(id); if (el){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }};
+
+  // Grid: + Bezug (Grid -> Center), - Einspeisung (Center -> Grid)
+  if (gridSigned >= 0) setLine('lineGrid',160,300,300,300); else setLine('lineGrid',300,300,160,300);
+
+  // Battery: + Entladen (Center -> Battery), - Laden (Battery -> Center)
+  if (batSigned >= 0) setLine('lineRest',300,300,300,460); else setLine('lineRest',300,460,300,300);
+}
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
