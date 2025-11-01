@@ -643,23 +643,6 @@
           "attr": "installerConfig.dischargeLimitMax",
           "xs": 12,
           "sm": 6
-        },
-        "installerPassword": {
-          "type": "text",
-          "label": "Installer-Passwort",
-          "help": "Schützt die Installer-Funktionen im Frontend",
-          "password": true,
-          "attr": "installerPassword",
-          "xs": 12,
-          "sm": 6
-        },
-        "installerConfig.adminUrl": {
-          "type": "text",
-          "label": "Admin URL (optional)",
-          "help": "Falls leer, wird beim Start automatisch ermittelt (http://<host>:8081).",
-          "attr": "installerConfig.adminUrl",
-          "xs": 12,
-          "sm": 6
         }
       }
     }

@@ -42,3 +42,8 @@
 - NEU: Tab **Installateur** in den Instanz-Einstellungen.
 - Werte aus dem Tab werden automatisch in die Datenpunkte `nexowatt-vis.0.installer.*` geschrieben.
 - Adapter erzeugt fehlende Installer-Datenpunkte bei Start.
+
+## 0.3.37 - 2025-11-01
+- Entfernt: Installer-Panel im Frontend.
+- Entfernt: Felder 'Installer‑Passwort' und 'Admin URL' im Admin-Tab.
+- Neu: Menüpunkt 'Installateur' öffnet automatisch den ioBroker Admin unter http(s)://<IP>:8081.

@@ -266,16 +266,28 @@ function initMenu(){
   if (installerBtn) installerBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     close();
-    hideAllPanels();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-    loadConfig();
-    setupInstaller();
+    const proto = (location.protocol === 'https:') ? 'https:' : 'http:';
+    const host  = location.hostname || 'localhost';
+    const url   = proto + '//' + host + ':8081/';
+    window.open(url, '_blank');
   });
 }
 
 
 function initSettingsPanel(){
+  // Button inside settings to open ioBroker Admin (auto host:8081)
+  const openInstallerAdmin = document.getElementById('openInstallerAdmin');
+  if (openInstallerAdmin && !openInstallerAdmin.dataset.bound) {
+    openInstallerAdmin.dataset.bound='1';
+    openInstallerAdmin.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const proto = (location.protocol === 'https:') ? 'https:' : 'http:';
+      const host  = location.hostname || 'localhost';
+      const url   = proto + '//' + host + ':8081/';
+      window.open(url, '_blank');
+    });
+  }
+
   const LS_KEY = 'nexowatt.settings';
   let opts;
   try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
@@ -351,7 +363,7 @@ function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
 }
 
-function setupInstaller(){
+function setupInstaller(){ /* disabled */ return;
   const loginBox = document.getElementById('installerLoginBox');
   const formBox  = document.getElementById('installerForm');
   const form     = document.getElementById('installerLoginForm');
@@ -412,7 +424,7 @@ function setupInstaller(){
   refreshLock();
 }
 
-function initInstallerPanel(){
+function initInstallerPanel(){ /* disabled */ return;
   if (SERVER_CFG && SERVER_CFG.installerLocked && !null) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
     const key = el.dataset.key; bindInputValue(el, 'installer.' + key);
