@@ -841,6 +841,11 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
 
 // --- chargepoints visibility ---
 function getChargepointsFromState(state){
+  // prefer exact key
+  if (state && state['installer.chargepoints'] && state['installer.chargepoints'].value != null){
+    const v = Number(state['installer.chargepoints'].value);
+    return isNaN(v) ? 0 : (v|0);
+  }
   let n = 0;
   try{
     for (const k in state){
@@ -864,3 +869,22 @@ function applyChargepointsVisibility(state){
 }
 
 try{ applyChargepointsVisibility(window.latestState||{}); }catch(_){}
+
+
+async function pollChargepoints(){
+  try{
+    const res = await fetch('/api/state?mask=installer.chargepoints');
+    if (!res.ok) return;
+    const data = await res.json();
+    const st = data && data.states ? data.states : data; // backend returns {states:{...}} or map
+    if (st && (st['installer.chargepoints'] || st['installer.chargepoints.val'])){
+      const entry = st['installer.chargepoints'] || st['installer.chargepoints.val'] || st['installer.chargepoints.id'];
+      const v = (entry && entry.value != null) ? Number(entry.value) : Number(entry);
+      const fake = Object.create(null);
+      fake['installer.chargepoints'] = { value: v };
+      applyChargepointsVisibility(fake);
+    }
+  }catch(_){}
+}
+setInterval(pollChargepoints, 5000);
+pollChargepoints();

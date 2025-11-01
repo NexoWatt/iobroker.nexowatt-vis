@@ -90,4 +90,4 @@
 - Gebäude-Icon wirklich weiß (stärkerer Filter).
 - Ladestation-Modul: Modal öffnet jetzt auch beim Klick auf den **Knoten** im Energiefluss (ID `nodeEvcs`).
 - Klickbarer Cursor für Nodes.
-\n### 0.3.62 (2025-11-01)\n- Sichtbarkeit Ladestation: richtet sich nach *Installer → Anzahl Ladepunkte*. Bei 0 werden Knoten, Linie und Karten ausgeblendet.\n
+\n### 0.3.62 (2025-11-01)\n- Sichtbarkeit Ladestation: richtet sich nach *Installer → Anzahl Ladepunkte*. Bei 0 werden Knoten, Linie und Karten ausgeblendet.\n\n### 0.3.63 (2025-11-01)\n- Sichtbarkeit Ladestation: robust — liest `installer.chargepoints` direkt via API & per Live-States; Intervall-Polling alle 5s.\n
