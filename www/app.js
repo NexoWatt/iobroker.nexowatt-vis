@@ -841,20 +841,39 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
 
 // --- chargepoints visibility ---
 
+
 function getChargepointsFromState(state){
-  // try several likely keys + fuzzy fallback
-  const keys = Object.keys(state||{});
-  const candidates = [
+  const s = state || {};
+  // Prefer explicit keys
+  const keysTry = [
     'installer.chargepoints','installer.chargePoints','installer.charge_points',
     'installer.evcs.count','installer.evcsCount'
   ];
-  for (const k of candidates){
-    if (k in state){
-      const entry = state[k];
-      const v = (entry && typeof entry === 'object') ? (('value' in entry)? entry.value : (('val' in entry)? entry.val : entry.v)) : entry;
+  for (const k of keysTry){
+    if (k in s){
+      const entry = s[k];
+      const v = (entry && typeof entry === 'object')
+        ? (('value' in entry) ? entry.value : (('val' in entry) ? entry.val : entry.v))
+        : entry;
       const n = Number(v);
       if (!isNaN(n)) return n|0;
     }
+  }
+  // Fuzzy: any installer.* with charge+point in key
+  for (const k of Object.keys(s)){
+    const lk = k.toLowerCase();
+    if (lk.startsWith('installer') && lk.includes('charge') && lk.includes('point')){
+      const entry = s[k];
+      const v = (entry && typeof entry === 'object')
+        ? (('value' in entry) ? entry.value : (('val' in entry) ? entry.val : entry.v))
+        : entry;
+      const n = Number(v);
+      if (!isNaN(n)) return n|0;
+    }
+  }
+  return 0;
+}
+
   }
   // fuzzy: any installer.* key containing "charge" and "point"
   for (const k of keys){
