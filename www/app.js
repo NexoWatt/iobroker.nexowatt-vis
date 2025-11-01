@@ -510,7 +510,9 @@ render = function(){
     const sell = +(d('gridSellPower') ?? 0);
     const charge = +(d('storageChargePower') ?? 0);
     const discharge = +(d('storageDischargePower') ?? 0);
-    const soc = d('storageSoc');
+    const chg2 = charge;
+const dchg2 = discharge;
+const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
     // Values
@@ -527,10 +529,7 @@ render = function(){
     if (cap && soc !== undefined) {
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
-      const remToEmpty_kWh = cap * (socPct);
-      const chg2 = +(d('storageChargePower') ?? 0);
-      const dchg2 = +(d('storageDischargePower') ?? 0);
-      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const remToEmpty_kWh = cap * (socPct);const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
       const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
@@ -612,7 +611,9 @@ render = function(){
     const sell = +(d('gridSellPower') ?? 0);
     const charge = +(d('storageChargePower') ?? 0);
     const discharge = +(d('storageDischargePower') ?? 0);
-    const soc = d('storageSoc');
+    const chg2 = charge;
+const dchg2 = discharge;
+const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
     // Values
@@ -629,10 +630,7 @@ render = function(){
     if (cap && soc !== undefined) {
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
-      const remToEmpty_kWh = cap * (socPct);
-      const chg2 = +(d('storageChargePower') ?? 0);
-      const dchg2 = +(d('storageDischargePower') ?? 0);
-      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const remToEmpty_kWh = cap * (socPct);const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
       const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
@@ -679,7 +677,9 @@ function updateEnergyWeb() {
   const charge = +(d('storageChargePower') ?? 0);
   const discharge = +(d('storageDischargePower') ?? 0);
 
-  // Rest = load - c1 - c2 (>=0)
+  const chg2 = charge;
+const dchg2 = discharge;
+// Rest = load - c1 - c2 (>=0)
   const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
