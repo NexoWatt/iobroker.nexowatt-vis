@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.40",
+    "version": "0.3.41",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -297,7 +297,8 @@
       "inverterTemp": "0_userdata.0.nexowatt.inverter.temperature",
       "storageCapacityKwh": "",
       "consumer1Power": "",
-      "consumer2Power": ""
+      "consumer2Power": "",
+      "gridPower": ""
     },
     "sections": {
       "tabs": [
@@ -322,8 +323,7 @@
       "enableAnimations": true,
       "showGridVoltage": false
     },
-    "installerPassword": "",
-    "installerConfig": {}
+    "installerPassword": ""
   },
   "instanceObjects": []
 }

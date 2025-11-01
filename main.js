@@ -49,71 +49,6 @@ class NexoWattVis extends utils.Adapter {
     this.on('unload', this.onUnload.bind(this));
   }
 
-  
-  async ensureInstallerStates() {
-    const defs = {
-      adminUrl:     { type: 'string', role: 'state', def: '' },
-      gridConnectionPower: { type: 'number', role: 'value.power', def: 0 },
-      para14a:      { type: 'boolean', role: 'state', def: false },
-      chargepoints: { type: 'number', role: 'state', def: 0 },
-      storageCount: { type: 'number', role: 'state', def: 0 },
-      storagePower: { type: 'number', role: 'value.power', def: 0 },
-      emsMode:      { type: 'number', role: 'state', def: 1 },
-      socMin:       { type: 'number', role: 'value', def: 10 },
-      socPeakRange: { type: 'number', role: 'value', def: 20 },
-      chargePowerMax: { type: 'number', role: 'value.power', def: 0 },
-      dischargePowerMax: { type: 'number', role: 'value.power', def: 0 },
-      chargeLimitMax: { type: 'number', role: 'value.power', def: 0 },
-      dischargeLimitMax: { type: 'number', role: 'value.power', def: 0 },
-      password:     { type: 'string', role: 'state', def: '' }
-    };
-    for (const [key, c] of Object.entries(defs)) {
-      const id = `installer.${key}`;
-      await this.setObjectNotExistsAsync(id, { type:'state', common:{ name:id, type:c.type, role:c.role, read:true, write:true, def:c.def }, native:{} });
-    }
-  }
-  
-  async ensureSettingsStates() {
-    const defs = {
-      notifyEnabled: { type:'boolean', role:'state', def:false },
-      email:         { type:'string',  role:'state', def:'' },
-      dynamicTariff: { type:'boolean', role:'state', def:false },
-      storagePower:  { type:'number',  role:'value.power', def:0 },
-      price:         { type:'number',  role:'value', def:0 },
-      priority:      { type:'number',  role:'value', def:1 },
-      tariffMode:    { type:'number',  role:'value', def:1 },
-    };
-    for (const [key, c] of Object.entries(defs)) {
-      const id = `settings.${key}`;
-      await this.setObjectNotExistsAsync(id, {
-        type: 'state',
-        common: { name:id, type:c.type, role:c.role, read:true, write:true, def:c.def },
-        native: {}
-      });
-    }
-  }
-async syncInstallerConfigToStates() {
-    const cfg = (this.config && this.config.installerConfig) || {};
-    const toSet = {
-      adminUrl: cfg.adminUrl || '',
-      gridConnectionPower: Number(cfg.gridConnectionPower || 0),
-      para14a: !!cfg.para14a,
-      chargepoints: Number(cfg.chargepoints || 0),
-      storageCount: Number(cfg.storageCount || 0),
-      storagePower: Number(cfg.storagePower || 0),
-      emsMode: Number(cfg.emsMode || 1),
-      socMin: Number(cfg.socMin || 0),
-      socPeakRange: Number(cfg.socPeakRange || 0),
-      chargePowerMax: Number(cfg.chargePowerMax || 0),
-      dischargePowerMax: Number(cfg.dischargePowerMax || 0),
-      chargeLimitMax: Number(cfg.chargeLimitMax || 0),
-      dischargeLimitMax: Number(cfg.dischargeLimitMax || 0),
-      password: getInstallerPassword(this) || ''
-    };
-    for (const [k, v] of Object.entries(toSet)) {
-      await this.setStateAsync(`installer.${k}`, { val: v, ack: true });
-    }
-  }
   async onReady() {
     try {
       // start web server
@@ -121,9 +56,6 @@ async syncInstallerConfigToStates() {
 
       // subscribe to all configured datapoints and get initial values
       await this.subscribeConfiguredStates();
-      await this.ensureSettingsStates();
-      await this.ensureInstallerStates();
-      await this.syncInstallerConfigToStates();
 
       this.log.info('NexoWatt VIS adapter ready.');
     } catch (e) {
@@ -213,12 +145,8 @@ app.get('/config', (req, res) => {
           map = (this.config && this.config.settings) || {};
         }
         const id = map[key];
-        if (id) {
-          await this.setForeignStateAsync(id, value);
-        } else {
-          const localId = (scope === 'installer' ? 'installer.'+key : 'settings.'+key);
-          await this.setStateAsync(localId, { val: value, ack: false });
-        }
+        if (!id) return res.status(404).json({ ok: false, error: 'id not configured' });
+        await this.setForeignStateAsync(id, value);
         res.json({ ok: true });
       } catch (e) {
         this.log.warn('set error: ' + e.message);
@@ -261,8 +189,6 @@ app.get('/config', (req, res) => {
     const dps = (this.config && this.config.datapoints) || {};
     const settings = (this.config && this.config.settings) || {};
     const installer = (this.config && this.config.installer) || {};
-        const namespace = this.namespace + '.';
-    const settingsLocalKeys = ['notifyEnabled','email','dynamicTariff','storagePower','price','priority','tariffMode'];
     const keys = [
       ...Object.keys(dps),
       ...Object.keys(settings).map(k => 'settings.' + k),
@@ -274,7 +200,6 @@ app.get('/config', (req, res) => {
       if (key.startsWith('settings.')) id = settings[key.slice(9)];
       else if (key.startsWith('installer.')) id = installer[key.slice(10)];
       else id = dps[key];
-      if (!id && key.startsWith('settings.')) id = namespace + key;
       if (!id) continue;
 
       // subscribe
@@ -311,12 +236,6 @@ app.get('/config', (req, res) => {
     for (const [k, dpId] of Object.entries(settings)) { if (dpId === id) return 'settings.' + k; }
     const installer = (this.config && this.config.installer) || {};
     for (const [k, dpId] of Object.entries(installer)) { if (dpId === id) return 'installer.' + k; }
-    
-    // direct mapping for local states
-    const prefS = this.namespace + '.settings.';
-    const prefI = this.namespace + '.installer.';
-    if (id && id.startsWith(prefS)) return 'settings.' + id.slice(prefS.length);
-    if (id && id.startsWith(prefI)) return 'installer.' + id.slice(prefI.length);
     return null;
   }
 
