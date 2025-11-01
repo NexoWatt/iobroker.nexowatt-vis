@@ -74,6 +74,29 @@ function formatHours(h) {
 }
 
 let state = {};
+
+// === Installer auth helpers (frontend only) ===
+window.INSTALLER_TOKEN = sessionStorage.getItem('nxw_installer_token') || null;
+
+async function verifyInstallerToken(){
+  const t = window.INSTALLER_TOKEN || sessionStorage.getItem('nxw_installer_token');
+  if (!t) return false;
+  try{
+    // optional endpoint; if not available, treat as valid for UI but keep backend auth strict
+    const r = await fetch('/api/installer/verify', { headers: { 'Authorization': 'Bearer ' + t } });
+    if (r.ok){
+      const j = await r.json().catch(()=>({ok:true}));
+      if (j && (j.ok || j.valid !== false)) return true;
+    }
+  }catch(_){}
+  return false;
+}
+function setInstallerToken(tok){
+  window.INSTALLER_TOKEN = tok;
+  if (tok) sessionStorage.setItem('nxw_installer_token', tok);
+  else sessionStorage.removeItem('nxw_installer_token');
+}
+
 let units = { power: 'W', energy: 'kWh' };
 
 function formatPower(v) {
@@ -263,13 +286,22 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
-    e.preventDefault();
-    close();
-    try {
-      const pw = null /*prompt removed*/;
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
-      const j = await r.json();
+  
+if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
+  e.preventDefault();
+  close();
+  hideAllPanels();
+  const content = document.querySelector('.content');
+  if (content) content.style.display = 'none';
+  const sec = document.querySelector('[data-tab-content="installer"]');
+  if (sec) sec.classList.remove('hidden');
+  document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+  // Always load config (optional) then setup UI; locked state is handled inside
+  try { if (typeof loadConfig==='function') await loadConfig(); } catch(_){}
+  if (typeof setupInstaller==='function') setupInstaller();
+});
+
+const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
       INSTALLER_TOKEN = j.token || 'ok';
       // Navigate to installer page only after successful login
@@ -360,6 +392,29 @@ function bindInputValue(el, stateKey) {
 
 function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
+}
+
+
+function updateInstallerLockUI(locked){
+  const formBox = document.getElementById('installerForm');
+  const loginBox = document.getElementById('installerLoginBox');
+  if (locked){
+    if (loginBox) loginBox.classList.remove('hidden');
+    if (formBox)  formBox.classList.add('locked');
+    if (formBox){
+      formBox.querySelectorAll('input, select, textarea, button').forEach(el=>{
+        if (!el.closest('#installerLoginBox')) el.setAttribute('disabled','disabled');
+      });
+    }
+  } else {
+    if (loginBox) loginBox.classList.add('hidden');
+    if (formBox)  formBox.classList.remove('locked');
+    if (formBox){
+      formBox.querySelectorAll('input, select, textarea, button').forEach(el=>{
+        el.removeAttribute('disabled');
+      });
+    }
+  }
 }
 
 function setupInstaller(){
