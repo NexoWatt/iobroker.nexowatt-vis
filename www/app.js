@@ -300,19 +300,6 @@ if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
   try { if (typeof loadConfig==='function') await loadConfig(); } catch(_){}
   if (typeof setupInstaller==='function') setupInstaller();
 });
-
-const j = await r.json();
-      if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      INSTALLER_TOKEN = j.token || 'ok';
-      // Navigate to installer page only after successful login
-      hideAllPanels();
-      document.querySelector('.content').style.display = 'none';
-      const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-      loadConfig();
-      setupInstaller();
-    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
-  });
 }
 
 
@@ -366,9 +353,6 @@ let SERVER_CFG = { adminUrl: null, installerLocked: false };
 async function loadConfig() {
   try {
     const r = await fetch('/config');
-    const j = await r.json();
-    SERVER_CFG = j || {};
-  } catch(e) { console.warn('cfg', e); }
 }
 
 function bindInputValue(el, stateKey) {
@@ -438,22 +422,6 @@ function setupInstaller(){
       const pass = String((pw && pw.value) || '');
       if (!pass) { alert('Bitte Passwort eingeben'); return; }
       const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
-      const j = await r.json();
-      if (j && j.ok && j.token){
-        INSTALLER_TOKEN = j.token;
-        if (loginBox) loginBox.classList.add('hidden');
-        if (formBox)  formBox.classList.remove('hidden');
-        if (typeof initInstallerPanel === 'function') initInstallerPanel();
-      } else {
-        alert('Passwort falsch');
-        if (loginBox) loginBox.classList.remove('hidden');
-        if (formBox)  formBox.classList.add('hidden');
-      }
-    }catch(e){ alert('Login fehlgeschlagen'); }
-  }
-
-  if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
-  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
 }
 
 function initInstallerPanel(){
