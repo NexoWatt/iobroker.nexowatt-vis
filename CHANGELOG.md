@@ -37,3 +37,8 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
+
+## 0.3.36 - 2025-11-01
+- NEU: Tab **Installateur** in den Instanz-Einstellungen.
+- Werte aus dem Tab werden automatisch in die Datenpunkte `nexowatt-vis.0.installer.*` geschrieben.
+- Adapter erzeugt fehlende Installer-Datenpunkte bei Start.

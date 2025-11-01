@@ -508,6 +508,160 @@
           "sm": 12
         }
       }
+    },
+    "installateur": {
+      "type": "panel",
+      "label": "Installateur",
+      "title": "Installateur",
+      "items": {
+        "installerInfo": {
+          "type": "header",
+          "text": "Einstellungen nur für Installateure – werden in die Datenpunkte unter nexowatt-vis.0.installer.* geschrieben."
+        },
+        "installerConfig.gridConnectionPower": {
+          "type": "number",
+          "label": "Leistung Netzanschluss (W)",
+          "min": 0,
+          "attr": "installerConfig.gridConnectionPower",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.para14a": {
+          "type": "checkbox",
+          "label": "§14a aktiv",
+          "attr": "installerConfig.para14a",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.chargepoints": {
+          "type": "number",
+          "label": "Anzahl Ladepunkte",
+          "min": 0,
+          "attr": "installerConfig.chargepoints",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.evChargingPoints": {
+          "type": "number",
+          "label": "EV-Ladepunkte (optional)",
+          "min": 0,
+          "attr": "installerConfig.evChargingPoints",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.storageCount": {
+          "type": "number",
+          "label": "Anzahl Speicher (Module)",
+          "min": 0,
+          "attr": "installerConfig.storageCount",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.storageCountMode": {
+          "type": "number",
+          "label": "Speicher Zählmodus",
+          "min": 0,
+          "attr": "installerConfig.storageCountMode",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.storagePower": {
+          "type": "number",
+          "label": "Leistung Speicher (W)",
+          "min": 0,
+          "attr": "installerConfig.storagePower",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.emsMode": {
+          "type": "select",
+          "label": "Betriebsmodus EMS",
+          "options": [
+            {
+              "label": "1 = Normal",
+              "value": 1
+            },
+            {
+              "label": "2 = Lastspitze",
+              "value": 2
+            },
+            {
+              "label": "3 = Multi‑Use",
+              "value": 3
+            }
+          ],
+          "attr": "installerConfig.emsMode",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.socMin": {
+          "type": "number",
+          "label": "SOC Min (%)",
+          "min": 0,
+          "max": 100,
+          "attr": "installerConfig.socMin",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.socPeakRange": {
+          "type": "number",
+          "label": "SOC Bereich Lastspitze (%)",
+          "min": 0,
+          "max": 100,
+          "attr": "installerConfig.socPeakRange",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.chargePowerMax": {
+          "type": "number",
+          "label": "Beladeleistung max (W)",
+          "min": 0,
+          "attr": "installerConfig.chargePowerMax",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.dischargePowerMax": {
+          "type": "number",
+          "label": "Entladeleistung max (W)",
+          "min": 0,
+          "attr": "installerConfig.dischargePowerMax",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.chargeLimitMax": {
+          "type": "number",
+          "label": "Ladebegrenzung max (W)",
+          "min": 0,
+          "attr": "installerConfig.chargeLimitMax",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.dischargeLimitMax": {
+          "type": "number",
+          "label": "Entladebegrenzung max (W)",
+          "min": 0,
+          "attr": "installerConfig.dischargeLimitMax",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerPassword": {
+          "type": "text",
+          "label": "Installer-Passwort",
+          "help": "Schützt die Installer-Funktionen im Frontend",
+          "password": true,
+          "attr": "installerPassword",
+          "xs": 12,
+          "sm": 6
+        },
+        "installerConfig.adminUrl": {
+          "type": "text",
+          "label": "Admin URL (optional)",
+          "help": "Falls leer, wird beim Start automatisch ermittelt (http://<host>:8081).",
+          "attr": "installerConfig.adminUrl",
+          "xs": 12,
+          "sm": 6
+        }
+      }
     }
   }
 }
