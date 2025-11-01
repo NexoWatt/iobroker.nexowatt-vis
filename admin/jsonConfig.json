@@ -46,13 +46,13 @@
       "items": {
         "datapoints.autarky": {
           "type": "objectId",
-          "label": "Autarkie (%)",
+          "label": "KPI – Autarkie (%)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. 0_userdata.0.nexowatt.autarky",
-          "help": "Autarkie in %",
+          "help": "Autarkie in %. Falls leer, wird aus PV/Verbrauch geschätzt.",
           "newLine": true,
           "attr": "datapoints.autarky",
           "xs": 12,
@@ -60,13 +60,13 @@
         },
         "datapoints.selfConsumption": {
           "type": "objectId",
-          "label": "Eigenverbrauch (%)",
+          "label": "KPI – Eigenverbrauch (%)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. 0_userdata.0.nexowatt.selfConsumption",
-          "help": "Eigenverbrauch in %",
+          "help": "Eigenverbrauch in %. Falls leer, wird geschätzt.",
           "newLine": true,
           "attr": "datapoints.selfConsumption",
           "xs": 12,
@@ -74,13 +74,13 @@
         },
         "datapoints.pvPower": {
           "type": "objectId",
-          "label": "PV-Leistung",
+          "label": "PV / Produktion – Leistung (W)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. fronius.0.powerflow.P_PV",
-          "help": "PV Leistung in W",
+          "help": "Aktuelle PV-Leistung in W. Empfohlen: fenecon.0._sum.ProductionAcActivePower",
           "newLine": true,
           "attr": "datapoints.pvPower",
           "xs": 12,
@@ -88,13 +88,13 @@
         },
         "datapoints.productionTotal": {
           "type": "objectId",
-          "label": "Produktion Gesamt (Leistung)",
+          "label": "PV / Produktion – Gesamt (kWh)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. fronius.0.energy.total",
-          "help": "Gesamtproduktion kWh",
+          "help": "Gesamtproduktion PV in kWh (optional für Karten).",
           "newLine": true,
           "attr": "datapoints.productionTotal",
           "xs": 12,
@@ -102,13 +102,13 @@
         },
         "datapoints.consumptionTotal": {
           "type": "objectId",
-          "label": "Verbrauch Gesamt (Leistung)",
+          "label": "Verbrauch / Gebäude – Gesamtleistung (W)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. smartmeter.0.energy.total",
-          "help": "Gesamtverbrauch kWh",
+          "help": "Aktueller Hausverbrauch in W. Empfohlen: fenecon.0._sum.ConsumptionAcActivePower",
           "newLine": true,
           "attr": "datapoints.consumptionTotal",
           "xs": 12,
@@ -116,13 +116,13 @@
         },
         "datapoints.gridBuyPower": {
           "type": "objectId",
-          "label": "Netzbezug (Leistung)",
+          "label": "Netz – Bezug (W)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. smartmeter.0.power.import",
-          "help": "Netzbezug W",
+          "help": "Positive Leistung Bezug. Alias: 0_userdata.0.nexowatt.grid.buy.power",
           "newLine": true,
           "attr": "datapoints.gridBuyPower",
           "xs": 12,
@@ -130,13 +130,13 @@
         },
         "datapoints.gridSellPower": {
           "type": "objectId",
-          "label": "Einspeisung (Leistung)",
+          "label": "Netz – Einspeisung (W)",
           "types": [
             "state"
           ],
           "button": true,
           "placeholder": "z.B. smartmeter.0.power.export",
-          "help": "Einspeisung W",
+          "help": "Positive Leistung Einspeisung. Alias: 0_userdata.0.nexowatt.grid.sell.power",
           "newLine": true,
           "attr": "datapoints.gridSellPower",
           "xs": 12,
@@ -144,7 +144,7 @@
         },
         "datapoints.storageChargePower": {
           "type": "objectId",
-          "label": "Batterie Ladeleistung",
+          "label": "Batterie – Ladeleistung (W)",
           "types": [
             "state"
           ],
@@ -152,11 +152,12 @@
           "newLine": true,
           "attr": "datapoints.storageChargePower",
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "help": "Positive Ladeleistung. Alias: 0_userdata.0.nexowatt.battery.charge.power"
         },
         "datapoints.storageDischargePower": {
           "type": "objectId",
-          "label": "Batterie Entladeleistung",
+          "label": "Batterie – Entladeleistung (W)",
           "types": [
             "state"
           ],
@@ -164,11 +165,12 @@
           "newLine": true,
           "attr": "datapoints.storageDischargePower",
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "help": "Positive Entladeleistung. Alias: 0_userdata.0.nexowatt.battery.discharge.power"
         },
         "datapoints.storageSoc": {
           "type": "objectId",
-          "label": "Batterie SoC (%)",
+          "label": "Batterie – SoC (%)",
           "types": [
             "state"
           ],
@@ -176,11 +178,12 @@
           "newLine": true,
           "attr": "datapoints.storageSoc",
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "help": "State of Charge in %. Empfohlen: fenecon.0._sum.EssSoc"
         },
         "datapoints.consumptionEvcs": {
           "type": "objectId",
-          "label": "Ladestation Verbrauch (Leistung)",
+          "label": "Wallbox (EVCS) – Leistung (W)",
           "types": [
             "state"
           ],
@@ -188,11 +191,12 @@
           "newLine": true,
           "attr": "datapoints.consumptionEvcs",
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "help": "Ladeleistung der Wallbox/EVCS in W (z. B. go-e/openWB/KEBA)."
         },
         "datapoints.consumptionOther": {
           "type": "objectId",
-          "label": "Sonstiger Verbrauch (Leistung)",
+          "label": "Verbrauch – Sonstiges (W) (optional)",
           "types": [
             "state"
           ],
@@ -200,7 +204,8 @@
           "newLine": true,
           "attr": "datapoints.consumptionOther",
           "xs": 12,
-          "sm": 12
+          "sm": 12,
+          "help": "Optionaler Restverbrauch in W."
         },
         "datapoints.evcsStatus": {
           "type": "objectId",

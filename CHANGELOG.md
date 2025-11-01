@@ -50,3 +50,6 @@
 
 ### 0.3.42 (2025-11-01)
 - Admin: welcomeScreen (legacy) + welcomeScreenPro mit RELATIVEM Link `/adapter/nexowatt-vis/tab.html` – Kachel wird klickbar.
+
+### 0.3.43 (2025-11-01)
+- Admin: Datapoint-Beschriftungen nach UI-Kategorien + Default-IDs für FENECON/OpenEMS ergänzt.

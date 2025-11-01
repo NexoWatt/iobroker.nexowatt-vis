@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.42",
+    "version": "0.3.43",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -296,18 +296,18 @@
       "energy": "kWh"
     },
     "datapoints": {
-      "autarky": "0_userdata.0.nexowatt.autarky",
-      "selfConsumption": "0_userdata.0.nexowatt.selfConsumption",
-      "pvPower": "0_userdata.0.nexowatt.pv.power",
+      "autarky": "fenecon.0._sum.Autarchy",
+      "selfConsumption": "fenecon.0._sum.SelfConsumption",
+      "pvPower": "fenecon.0._sum.ProductionAcActivePower",
       "productionTotal": "0_userdata.0.nexowatt.pv.energy_total",
-      "consumptionTotal": "0_userdata.0.nexowatt.house.energy_total",
+      "consumptionTotal": "fenecon.0._sum.ConsumptionAcActivePower",
       "gridBuyPower": "0_userdata.0.nexowatt.grid.buy.power",
       "gridSellPower": "0_userdata.0.nexowatt.grid.sell.power",
-      "storageChargePower": "",
-      "storageDischargePower": "",
-      "storageSoc": "",
-      "consumptionEvcs": "",
-      "consumptionOther": "",
+      "storageChargePower": "0_userdata.0.nexowatt.battery.charge.power",
+      "storageDischargePower": "0_userdata.0.nexowatt.battery.discharge.power",
+      "storageSoc": "fenecon.0._sum.EssSoc",
+      "consumptionEvcs": "0_userdata.0.nexowatt.evcs.power",
+      "consumptionOther": "0_userdata.0.nexowatt.house.other.power",
       "evcsStatus": "",
       "evcsLastChargeKwh": "",
       "gridFrequency": "",
