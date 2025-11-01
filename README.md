@@ -60,9 +60,3 @@ cd /opt/iobroker
 iobroker url "https://github.com/USER/iobroker.nexowatt-vis" --debug
 iobroker add nexowatt-vis
 ```
-
-## 0.3.14 (cleanfix for GitHub)
-- Fixed installer login using **install2025!** (instance field ignored)
-- Hardened `/api/set` (installer writes require token)
-- Auto-create local states if no mapping is configured
-- Responsive Settings/Installer pages for smartphones

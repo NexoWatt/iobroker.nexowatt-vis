@@ -54,7 +54,7 @@ class NexoWattVis extends utils.Adapter {
         settings: this.config.settings || {},
         installer: this.config.installer || {},
         adminUrl: this.config.adminUrl || null,
-        installerLocked: true
+        installerLocked: !!(this.config.installerPassword)
       });
     });
 
@@ -63,76 +63,50 @@ class NexoWattVis extends utils.Adapter {
       res.json(this.stateCache);
     });
 
-    // generic setter for settings/installer datapoints (hardened)
-    
-    // login for installer (fixed password)
+    // login for installer
     app.post('/api/installer/login', (req, res) => {
-      try {
-        const provided = String((req.body && req.body.password) || '').trim();
-        const PW = 'install2025!'; // fixed password
-        if (provided === PW) {
-          this._installerToken = Math.random().toString(36).slice(2);
-          return res.json({ ok: true, token: this._installerToken });
-        }
-        return res.status(401).json({ ok: false, error: 'unauthorized' });
-      } catch(e) {
-        this.log.warn('login error: ' + e.message);
-        return res.status(500).json({ ok: false, error: 'internal error' });
+      const pw = (this.config && this.config.installerPassword) || '';
+      const provided = (req.body && req.body.password) || '';
+      if (!pw || provided === pw) {
+        // generate volatile token
+        this._installerToken = Math.random().toString(36).slice(2);
+        res.json({ ok: true, token: this._installerToken });
+      } else {
+        res.status(401).json({ ok: false, error: 'Unauthorized' });
       }
     });
 
-    // generic setter (settings/installer/datapoints)
-    
-    // generic setter (settings/installer/datapoints)
+    // generic setter for settings/installer datapoints
     app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body && req.body.scope;
-        const key   = req.body && req.body.key;
+        const key = req.body && req.body.key;
         const value = req.body && req.body.value;
-        if (!scope || !key) {
-          return res.status(400).json({ ok:false, error:'bad request' });
-        }
-
+        if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
+        let map = {};
         if (scope === 'installer') {
-          const token = req.body && req.body.token;
-          if (!token || token !== this._installerToken) {
-            return res.status(403).json({ ok:false, error:'forbidden' });
+          // verify token if password configured
+          const pw = (this.config && this.config.installerPassword) || '';
+          if (pw) {
+            const token = req.body && req.body.token;
+            if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
           }
-        }
-
-        let id;
-        if (scope === 'installer') {
-          id = this.config && this.config.installer && this.config.installer[key];
-        } else if (scope === 'settings') {
-          id = this.config && this.config.settings && this.config.settings[key];
+          map = (this.config && this.config.installer) || {};
         } else {
-          id = this.config && this.config.datapoints && this.config.datapoints[key];
+          map = (this.config && this.config.settings) || {};
         }
-        if (!id) id = `${this.namespace}.${scope}.${key}`;
-
-        if (id.startsWith(this.namespace + '.')) {
-          const isBool = typeof value === 'boolean';
-          const isNum  = typeof value === 'number';
-          const type = isBool ? 'boolean' : (isNum ? 'number' : 'string');
-          const role = isBool ? 'switch'   : (isNum ? 'level'   : 'text');
-          await this.setObjectNotExistsAsync(id, {
-            type: 'state',
-            common: { name: id.slice(this.namespace.length + 1), type, role, read: true, write: true },
-            native: {}
-          });
-          await this.setStateAsync(id, { val: value, ack: true });
-        } else {
-          await this.setForeignStateAsync(id, value);
-        }
-
-        return res.json({ ok: true });
+        const id = map[key];
+        if (!id) return res.status(404).json({ ok: false, error: 'id not configured' });
+        await this.setForeignStateAsync(id, value);
+        res.json({ ok: true });
       } catch (e) {
         this.log.warn('set error: ' + e.message);
-        return res.status(500).json({ ok: false, error: 'internal error' });
+        res.status(500).json({ ok: false, error: 'internal error' });
       }
     });
 
-app.get('/events', (req, res) => {
+    // server-sent events for live updates
+    app.get('/events', (req, res) => {
       res.set({
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',

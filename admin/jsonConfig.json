@@ -38,7 +38,8 @@
           "sm": 12
         }
       },
-      "label": "Allgemein"
+      "label": "Allgemein",
+      "title": "Allgemein"
     },
     "datenpunkte": {
       "type": "panel",
@@ -290,7 +291,8 @@
           "placeholder": "optional"
         }
       },
-      "label": "Datenpunkte"
+      "label": "Datenpunkte",
+      "title": "Datenpunkte"
     },
     "smarthome_vorbereitet": {
       "type": "panel",
@@ -373,7 +375,8 @@
           "sm": 12
         }
       },
-      "label": "SmartHome (vorbereitet)"
+      "label": "SmartHome (vorbereitet)",
+      "title": "SmartHome (vorbereitet)"
     },
     "erweitert___zukunft": {
       "type": "panel",
@@ -410,11 +413,13 @@
           "sm": 12
         }
       },
-      "label": "Erweitert / Zukunft"
+      "label": "Erweitert / Zukunft",
+      "title": "Erweitert / Zukunft"
     },
     "graph": {
       "type": "panel",
       "label": "Graph",
+      "title": "Graph",
       "items": {
         "graph.nodes": {
           "type": "table",
@@ -499,6 +504,221 @@
           ],
           "button": true,
           "attr": "graph.cascade.pvPowerId",
+          "xs": 12,
+          "sm": 12
+        }
+      }
+    },
+    "einstellungen": {
+      "type": "panel",
+      "label": "Einstellungen",
+      "title": "Einstellungen",
+      "items": {
+        "settings.notifyEnabled": {
+          "type": "objectId",
+          "label": "Benachrichtigungen (bool)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.notifyEnabled",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.email": {
+          "type": "objectId",
+          "label": "E-Mail (string)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.email",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.dynamicTariff": {
+          "type": "objectId",
+          "label": "Dynamischer Zeittarif (bool)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.dynamicTariff",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.storagePower": {
+          "type": "objectId",
+          "label": "Speicher Leistung (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.storagePower",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.price": {
+          "type": "objectId",
+          "label": "Strompreis (€)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.price",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.priority": {
+          "type": "objectId",
+          "label": "Priorität 0–100",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.priority",
+          "xs": 12,
+          "sm": 12
+        },
+        "settings.tariffMode": {
+          "type": "objectId",
+          "label": "Modus Tarif (0=manuell,1=auto)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "settings.tariffMode",
+          "xs": 12,
+          "sm": 12
+        }
+      }
+    },
+    "installateur": {
+      "type": "panel",
+      "label": "Installateur",
+      "title": "Installateur",
+      "items": {
+        "installer.password": {
+          "type": "password",
+          "label": "Passwort für Installateur-Seite",
+          "attr": "installerPassword",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.adminUrl": {
+          "type": "text",
+          "label": "ioBroker Admin URL (optional)",
+          "attr": "adminUrl",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.gridConnectionPower": {
+          "type": "objectId",
+          "label": "Leistung Netzanschluss (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.gridConnectionPower",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.para14a": {
+          "type": "objectId",
+          "label": "§14a (bool)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.para14a",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.evChargingPoints": {
+          "type": "objectId",
+          "label": "Anzahl Ladepunkte",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.evChargingPoints",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.storageCount": {
+          "type": "objectId",
+          "label": "Anzahl Speicher (Modus)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.storageCount",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.storagePower": {
+          "type": "objectId",
+          "label": "Leistung Speicher (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.storagePower",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.emsMode": {
+          "type": "objectId",
+          "label": "Betriebsmodus EMS",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.emsMode",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.socMin": {
+          "type": "objectId",
+          "label": "SOC Min (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.socMin",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.socPeakRange": {
+          "type": "objectId",
+          "label": "SOC Bereich Lastspitze (%)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.socPeakRange",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.chargeLimitMax": {
+          "type": "objectId",
+          "label": "Beladeleistung max (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.chargeLimitMax",
+          "xs": 12,
+          "sm": 12
+        },
+        "installer.dischargeLimitMax": {
+          "type": "objectId",
+          "label": "Entladeleistung max (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "installer.dischargeLimitMax",
           "xs": 12,
           "sm": 12
         }

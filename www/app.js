@@ -237,92 +237,54 @@ startEvents();
 
 
 // --- Menu & Settings ---
-
-
 function initMenu(){
-  const btn  = document.getElementById('menuBtn');
+  const btn = document.getElementById('menuBtn');
   const menu = document.getElementById('menuDropdown');
   if (!btn || !menu) return;
-  const open  = ()=> menu.classList.toggle('hidden');
+  const open = ()=> menu.classList.toggle('hidden');
   const close = ()=> menu.classList.add('hidden');
   btn.addEventListener('click', (e)=>{ e.stopPropagation(); open(); });
   menu.addEventListener('click', (e)=> e.stopPropagation());
-  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
-
-  // Einstellungen
   const settingsBtn = document.getElementById('menuOpenSettings');
+  const installerBtn = document.getElementById('menuOpenInstaller');
   if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
-    e.preventDefault(); close();
+    e.preventDefault();
+    close();
+    // show settings section
     hideAllPanels();
-    const content = document.querySelector('.content'); if (content) content.style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="settings"]'); if (sec) sec.classList.remove('hidden');
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="settings"]');
+    if (sec) sec.classList.remove('hidden');
+    // deactivate tab buttons
     document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-    initSettingsPanel(); setupSettings();
+    // initialize settings UI
+    initSettingsPanel();
+    setupSettings();
   });
-
-  // Installateur
-  const instBtn = document.getElementById('menuOpenInstaller');
-  if (instBtn) instBtn.addEventListener('click', (e)=>{
-    e.preventDefault(); close();
-    hideAllPanels();
-    const content = document.querySelector('.content'); if (content) content.style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) sec.classList.remove('hidden');
-    if (typeof setupInstaller === 'function') setupInstaller();
-    if (typeof initInstallerPanel === 'function') initInstallerPanel();
+  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    close();
+    try {
+      const pw = prompt('Passwort eingeben');
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
+      const j = await r.json();
+      if (!j || !j.ok) { alert('Passwort falsch'); return; }
+      INSTALLER_TOKEN = j.token || 'ok';
+      // Navigate to installer page only after successful login
+      hideAllPanels();
+      document.querySelector('.content').style.display = 'none';
+      const sec = document.querySelector('[data-tab-content="installer"]');
+      if (sec) sec.classList.remove('hidden');
+      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+      loadConfig();
+      setupInstaller();
+    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
   });
 }
 
 
-function setupInstaller(){
-  const loginBox = document.getElementById('installerLoginBox');
-  const form = document.getElementById('installerForm');
-  if (!loginBox || !form) return;
-  const locked = !!(SERVER_CFG && SERVER_CFG.installerLocked);
-  if (locked && !INSTALLER_TOKEN) {
-    loginBox.classList.remove('hidden');
-    form.classList.add('hidden');
-  } else {
-    loginBox.classList.add('hidden');
-    form.classList.remove('hidden');
-  }
-  const btn = document.getElementById('inst_login');
-  const pwInput = document.getElementById('inst_pw');
-  if (btn && pwInput && !btn.dataset.bound){
-    btn.dataset.bound = '1';
-    btn.addEventListener('click', async ()=>{
-      const pw = String(pwInput.value || '');
-      try{
-        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw }) });
-        const j = await r.json();
-        if (j && j.ok && j.token) {
-          INSTALLER_TOKEN = j.token;
-          loginBox.classList.add('hidden');
-          form.classList.remove('hidden');
-        } else {
-          alert('Passwort falsch');
-        }
-      }catch(e){ alert('Login fehlgeschlagen'); }
-    });
-  }
-}
-
-function initInstallerPanel(){
-  // bind inputs inside the installer form to states
-  document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
-    const key = el.dataset.key;
-    const stateKey = 'installer.' + key;
-    bindInputValue(el, stateKey);
-  });
-  // admin link
-  const btn = document.getElementById('openAdminBtn');
-  if (btn){
-    btn.addEventListener('click', ()=>{
-      const url = (SERVER_CFG && SERVER_CFG.adminUrl) || '/';
-      btn.href = url || '/';
-    });
-  }
-}
 function initSettingsPanel(){
   const LS_KEY = 'nexowatt.settings';
   let opts;
@@ -366,14 +328,7 @@ hideAllPanels();
 
 
 // --- Settings & Installer logic ---
-function hideAllPanels(){
-  try {
-    document.querySelectorAll('[data-tab-content]')?.forEach(el => el.classList.add('hidden'));
-    const content = document.querySelector('.content');
-    if (content) content.style.display = 'block';
-  } catch(e){ console.warn('hideAllPanels', e); }
-}
-
+function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
 let INSTALLER_TOKEN = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
@@ -382,9 +337,7 @@ async function loadConfig() {
     const r = await fetch('/config');
     const j = await r.json();
     SERVER_CFG = j || {};
-  } catch (e) {
-    console.warn('cfg', e);
-  }
+  } catch(e) { console.warn('cfg', e); }
 }
 
 function bindInputValue(el, stateKey) {
@@ -410,7 +363,21 @@ function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
 }
 
-
+function setupInstaller(){
+  const loginBox = document.getElementById('installerLoginBox');
+  const form = document.getElementById('installerForm');
+  loginBox.classList.add('hidden');
+  form.classList.remove('hidden');
+    document.querySelectorAll('[data-scope="installer"]').forEach(el=> bindInputValue(el, 'installer.'+el.dataset.key));
+    // admin link
+    const a = document.getElementById('openAdminBtn');
+    let url = SERVER_CFG.adminUrl;
+    if (!url) {
+      const u = new URL(window.location.href);
+      url = u.origin.replace(/:\d+$/, ':8081');
+    }
+    a.href = url;
+  }
 
 // Simple tab switching
 function initTabs(){
@@ -470,7 +437,7 @@ render = function(){
 
     const A = { pv: 330, load: 30, bat: 180, grid: 210 };
     const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
-    const total = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
     const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
 
     setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
@@ -541,13 +508,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg2 + dchg2));
+    setDonut('storage', pct(chg + dchg));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderOrig();
@@ -572,7 +539,7 @@ render = function(){
 
     const A = { pv: 330, load: 30, bat: 180, grid: 210 };
     const MAX = { pv: 110, load: 45, bat: 60, grid: 45 };
-    const total = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const total = Math.max(1, pv + buy + load + (chg + dchg));
     const pctDeg = (val, maxDeg) => Math.max(2, Math.min(maxDeg, (val/total) * maxDeg));
 
     setArcAtAngle('.donut .arc.pv',   42, A.pv,   pctDeg(pv,   MAX.pv));
@@ -643,13 +610,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const totalFlow = Math.max(1, pv + buy + load + (chg + dchg));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg2 + dchg2));
+    setDonut('storage', pct(chg + dchg));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderEF();
