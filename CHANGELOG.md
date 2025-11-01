@@ -44,3 +44,6 @@
 
 ### 0.3.40 (2025-11-01)
 - Energy Flow Monitor: labels moved under icons, centered battery icon, battery SOC above icon, building power shown above icon inside the circle.
+
+### 0.3.41 (2025-11-01)
+- Admin: Übersichtskachel + Admin-Tab mit Auto-Weiterleitung auf `http://<ioBroker-IP>:<VIS-Port>/`.

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <title>NexoWatt – Weiterleitung</title>
+  <style>body{background:#0b0d0f;color:#e7edf2;font-family:system-ui,Segoe UI,Roboto,Ubuntu,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0} .box{opacity:.8;text-align:center}</style>
+</head>
+<body>
+  <div class="box">
+    <h2>Öffne NexoWatt VIS…</h2>
+    <div id="msg">Weiterleitung läuft</div>
+  </div>
+  <script>
+  (function(){
+    function getQuery(key){ const m = new URLSearchParams(window.location.search); return m.get(key); }
+    var inst = getQuery('instance') || '0';
+    function go(port){
+      var host = window.location.hostname;
+      var proto = window.location.protocol;
+      var target = proto + '//' + host + ':' + port + '/';
+      document.getElementById('msg').textContent = '→ ' + target;
+      // use top to fully leave admin iframe
+      window.top.location.href = target;
+    }
+    try {
+      if (window.parent && window.parent.servConn) {
+        // Admin provides a convenient helper
+        window.parent.servConn.getObject('system.adapter.nexowatt-vis.' + inst, function(err, obj){
+          var port = (obj && obj.native && obj.native.port) || 8188;
+          go(port);
+        });
+      } else {
+        go(8188);
+      }
+    } catch(e) {
+      go(8188);
+    }
+  })();
+  </script>
+</body>
+</html>
