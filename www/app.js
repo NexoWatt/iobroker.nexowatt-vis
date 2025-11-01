@@ -415,9 +415,6 @@ function setupInstaller(){
   }
   if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
 }
-    });
-  }
-}
 
 function initInstallerPanel(){
   if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;

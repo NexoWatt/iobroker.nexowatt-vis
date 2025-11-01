@@ -7,3 +7,7 @@
 - Fix: Installer-Login in Formular gehüllt; ENTER/Submit funktioniert zuverlässig.
 - Fix: Doppelter Top‑Level-Block mit `await` entfernt (SyntaxError app.js:403).
 - Neu: Abbrechen-Button schließt Installer und verhindert unbefugten Zugriff auf Form.
+
+## 0.3.27 – 2025-11-01
+- Fix: Unerwartete '}' in app.js entfernt.
+- Chore: verborgenes Username-Feld für Passwort-Form (Barrierefreiheit).
