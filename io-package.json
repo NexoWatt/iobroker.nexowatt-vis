@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.41",
+    "version": "0.3.42",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -323,7 +323,8 @@
       "enableAnimations": true,
       "showGridVoltage": false
     },
-    "installerPassword": ""
+    "installerPassword": "",
+    "installerConfig": {}
   },
   "instanceObjects": []
 }

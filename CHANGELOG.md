@@ -37,3 +37,8 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
+
+## 0.3.42 - 2025-11-01
+- VIS: **Installateur**-Untermenü/Seite entfernt (wie v0.3.36). Nur noch Button „Installer“ im Tab Einstellungen öffnet Admin auf <host>:8081.
+- Admin: Tab **Datenpunkte** → **Energiefluss**; **Graph**-Tab entfernt.
+- Energiefluss-Layout: Gebäudename unter Icon, SoC im Zentrum entfernt; Batterie‑Icon mittig, Name tiefer, SoC über dem Icon im Kreis.

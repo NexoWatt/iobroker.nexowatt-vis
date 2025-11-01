@@ -178,13 +178,13 @@ function render() {
   const selfc = d('selfConsumption') ?? derived.selfConsumption;
 
   setWidth('autarkyBar', autarky || 0);
-  setText('autarkyValue', (autarky != null ? autarky.toFixed(0) : '--'));
+  setText('autarkyValue', (autarky != null ? autarky.toFixed(0) : '--') + ' %');
 
   setWidth('selfConsumptionBar', selfc || 0);
-  setText('selfConsumptionValue', (selfc != null ? selfc.toFixed(0) : '--'));
+  setText('selfConsumptionValue', (selfc != null ? selfc.toFixed(0) : '--') + ' %');
 
   setWidth('storageSocBar', soc || 0);
-  setText('storageSocValue', (soc != null ? soc.toFixed(0) : '--'));
+  setText('storageSocValue', (soc != null ? soc.toFixed(0) : '--') + ' %');
 
   setText('storageChargePower', formatPower(charge ?? 0));
   setText('storageDischargePower', formatPower(discharge ?? 0));
@@ -263,19 +263,21 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    hideAllPanels();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-    loadConfig();
-    setupInstaller();
-  });
-}
+  }
 
 
 function initSettingsPanel(){
+  const openInstallerAdmin = document.getElementById('openInstallerAdmin');
+  if (openInstallerAdmin && !openInstallerAdmin.dataset.bound) {
+    openInstallerAdmin.dataset.bound = '1';
+    openInstallerAdmin.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const proto = (location.protocol === 'https:') ? 'https:' : 'http:';
+      const host  = location.hostname || 'localhost';
+      window.open(proto + '//' + host + ':8081/', '_blank');
+    });
+  }
+
   const LS_KEY = 'nexowatt.settings';
   let opts;
   try { opts = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(_) { opts = {}; }
@@ -532,7 +534,7 @@ render = function(){
     setText('chargeVal', formatPower(charge));
     setText('dischargeVal', formatPower(discharge));
     setText('centerLoad', formatPower(load));
-    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0));
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0) + ' %');
 
     // Times
     if (cap && soc !== undefined) {
@@ -634,7 +636,7 @@ render = function(){
     setText('chargeVal', formatPower(charge));
     setText('dischargeVal', formatPower(discharge));
     setText('centerLoad', formatPower(load));
-    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0));
+    if (soc !== undefined && !isNaN(Number(soc))) setText('socText', 'SoC ' + Number(soc).toFixed(0) + ' %');
 
     // Times
     if (cap && soc !== undefined) {
@@ -677,49 +679,54 @@ render = function(){
 function setSideValue(id, val){ const el=document.getElementById(id); if(el) el.textContent = val; }
 
 // ---- Energy Web update ----
-
-function getSigned(signedKey, posKey, negKey){
-  const d = (k) => state[k]?.value;
-  const s = d(signedKey);
-  if (typeof s === 'number' && !isNaN(s)) return Number(s);
-  const pos = +(d(posKey) ?? 0);
-  const neg = +(d(negKey) ?? 0);
-  return pos - neg;
-}
 function updateEnergyWeb() {
   const d = (k) => state[k]?.value;
   const pv = +(d('pvPower') ?? 0);
-
-  const gridSigned = getSigned('gridPower', 'gridBuyPower', 'gridSellPower'); // +Bezug / -Einspeisung
-  const batSigned  = getSigned('batteryPower', 'storageDischargePower', 'storageChargePower'); // +Entladen / -Laden
-
+  const buy = +(d('gridBuyPower') ?? 0);
+  const sell = +(d('gridSellPower') ?? 0);
+  const load = Math.max(0, +(d('consumptionTotal') ?? 0));
+  const c1 = +(d('consumer1Power') ?? 0);
   const c2 = +(d('consumptionEvcs') ?? 0); // Wallbox
+  const soc = d('storageSoc');
+  const cap = +(d('storageCapacityKwh') ?? 0);
+  const charge = +(d('storageChargePower') ?? 0);
+  const discharge = +(d('storageDischargePower') ?? 0);
+
+  // Rest = load - c1 - c2 (>=0)
+  const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
   T('pvVal', formatPower(pv));
-  T('gridVal', formatPower(Math.abs(gridSigned)));
+  T('gridVal', formatPower(buy));
+  T('c1Val', formatPower(c1));
   T('c2Val', formatPower(c2));
-  T('restVal', formatPower(Math.abs(batSigned)));
+  T('restVal', formatPower(rest));
+  // set default battery soc
+  T('centerPower', formatPower(load));
+  if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
+  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); /* centerSoc_removed removed */ }
+  if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
+  else T('batterySoc', '-- %');
+  T('batteryCharge', 'Laden ' + formatPower(charge));
+  T('batteryDischarge', 'Entladen ' + formatPower(discharge));
+if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFixed(0)+' %');
 
-  // Battery SoC inside node
-  const soc = d('storageSoc');
-  if (soc != null) {
-    const el = document.getElementById('batterySocInNode');
-    if (el) el.textContent = (Number(soc).toFixed ? Number(soc).toFixed(0) : soc);
+  if (cap && soc !== undefined) {
+    const socPct = Number(soc)/100;
+    const tFull = charge>0 ? ((cap*(1-socPct))*1000)/charge : null;
+    const tEmpty= discharge>0 ? ((cap*socPct)*1000)/discharge : null;
+    T('batteryTime', 'Voll ' + (tFull?formatHours(tFull):'--') + ' • Leer ' + (tEmpty?formatHours(tEmpty):'--')); T('centerTime','');
   }
 
-  // Show/hide lines and set direction
+  // Show/hide lines based on values
   const show = (id, on)=>{ const el=document.getElementById(id); if(el) el.style.opacity = on ? 1 : 0.15; };
-  show('linePV', Math.abs(pv)>1);
-  show('lineGrid', Math.abs(gridSigned)>1);
+  show('linePV', pv>1);
+  show('lineGrid', buy>1);
+  show('lineC1', false);
   show('lineC2', c2>1);
-  show('lineRest', Math.abs(batSigned)>1);
-
-  const setLine = (id, x1,y1,x2,y2)=>{ const el=document.getElementById(id); if (el){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }};
-
-  if (gridSigned >= 0) setLine('lineGrid',160,300,300,300); else setLine('lineGrid',300,300,160,300);
-  if (batSigned >= 0) setLine('lineRest',300,300,300,460); else setLine('lineRest',300,460,300,300);
+  show('lineRest', rest>1);
 }
+
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }

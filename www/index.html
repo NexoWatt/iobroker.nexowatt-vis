@@ -18,7 +18,7 @@
 <button class="tab" data-tab="history" disabled="">HISTORY</button>
 </nav>
 <div class="status-dot" id="liveDot" title="Live Verbindung"></div>
-<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button><button class="menu-item" id="menuOpenInstaller">Installateur</button></div></header>
+<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button></div></header>
 <main class="content">
 <section class="card energy-web">
 <div class="card-header">
@@ -74,15 +74,15 @@
 <!-- Batterie bottom -->
 <g class="node consumer" transform="translate(300,460)">
 <circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,-10)">
-<text class="val" id="batterySocInNode" text-anchor="middle" y="-28">-- %</text>
+<g class="ico" transform="translate(0,0)">
+<text class="val" id="batterySocInNode" text-anchor="middle" y="-24">-- %</text>
 <rect height="16" rx="3" width="28" x="-14" y="-8"></rect>
 <rect height="6" rx="1" width="4" x="14" y="-3"></rect>
 </g>
 <text class="minor" id="batterySocIn" text-anchor="middle" y="-12">-- %</text>
 <text class="minor" id="batteryTime" text-anchor="middle" x="300" y="480"></text>
 <text class="val" id="restVal" text-anchor="middle" y="58">--</text>
-<text class="lbl" text-anchor="middle" y="14">Batterie</text>
+<text class="lbl" text-anchor="middle" y="20">Batterie</text>
 </g>
 <!-- center node -->
 <g class="node center" transform="translate(300,300)">
@@ -90,24 +90,22 @@
 <g class="ico" transform="translate(0,-14)">
 <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
 </g>
-<text class="lbl" text-anchor="middle" y="14">Gebäude</text>
+<text class="lbl" text-anchor="middle" y="20">Gebäude</text>
 </g>
 <!-- battery labels along vertical line -->
 <!-- center readouts -->
 <!-- center node -->
 <g class="node center" transform="translate(300,300)">
 <circle class="ring consumer" r="44"></circle>
-<g class="ico">
+<g class="ico" transform="translate(0,0)">
 <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
 </g>
-<text class="lbl" text-anchor="middle" y="14">Gebäude</text>
+<text class="lbl" text-anchor="middle" y="20">Gebäude</text>
 </g>
 <!-- battery labels along vertical line -->
 <!-- center readouts -->
 <g class="center" transform="translate(300,300)">
-<text class="big" id="centerPower" text-anchor="middle" y="-10">0 W</text>
-<text class="minor" id="centerSoc" text-anchor="middle" y="8">--</text>
-<text class="minor" id="centerTime" text-anchor="middle" y="34"></text>
+  <text class="big" id="centerPower" text-anchor="middle" y="-12">0 W</text>
 </g>
 </svg>
 </div>
@@ -196,67 +194,15 @@
         <input type="range" min="0" max="1" id="s_tariffMode" data-scope="settings" data-key="tariffMode">
         <small>0 = Manuell, 1 = Automatisch</small>
       </div>
+    
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="openInstallerAdmin">Installer</button>
+      </div>
     </div>
   </section>
 
   
 </section>
-
-
-<section class="hidden settings-wrap" data-tab-content="installer">
-  <section class="card">
-    <div class="card-header"><span>Installateur</span></div>
-    <div class="form" id="installerLoginBox">
-  <form id="installerLoginForm" autocomplete="off">
-    <input type="text" id="inst_user" name="username" autocomplete="username" aria-hidden="true" tabindex="-1" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0">
-    <label class="row"><span>Passwort</span>
-      <input type="password" id="inst_pw" required autocomplete="current-password">
-    </label>
-    <div class="row" style="gap:.5rem">
-      <button class="btn" id="inst_login" type="submit">Freischalten</button>
-      <button class="btn" id="inst_cancel" type="button">Abbrechen</button>
-    </div>
-  </form>
-</div>
-    <div class="form hidden" id="installerForm">
-      <div class="grid-inst">
-        <label class="row"><span>Leistung Netzanschluss (W)</span>
-          <input type="number" data-scope="installer" data-key="gridConnectionPower">
-        </label>
-        <label class="row"><span>§14a</span>
-          <input type="checkbox" data-scope="installer" data-key="para14a">
-        </label>
-        <label class="row"><span>Anzahl Ladepunkte</span>
-          <input type="number" data-scope="installer" data-key="evChargingPoints">
-        </label>
-        <label class="row"><span>Anzahl Speicher (Modus)</span>
-          <input type="number" data-scope="installer" data-key="storageCount">
-        </label>
-        <label class="row"><span>Leistung Speicher (W)</span>
-          <input type="number" data-scope="installer" data-key="storagePower">
-        </label>
-        <label class="row"><span>Betriebsmodus EMS</span>
-          <input type="number" data-scope="installer" data-key="emsMode">
-          <small>1=Normal 2=Lastspitze 3=Multi-Use</small>
-        </label>
-        <label class="row"><span>SOC Min (%)</span>
-          <input type="number" data-scope="installer" data-key="socMin">
-        </label>
-        <label class="row"><span>SOC Bereich Lastspitze (%)</span>
-          <input type="number" data-scope="installer" data-key="socPeakRange">
-        </label>
-        <label class="row"><span>Beladeleistung max (W)</span>
-          <input type="number" data-scope="installer" data-key="chargeLimitMax">
-        </label>
-        <label class="row"><span>Entladeleistung max (W)</span>
-          <input type="number" data-scope="installer" data-key="dischargeLimitMax">
-        </label>
-      </div>
-      <div class="center mtop">
-        <a class="btn" id="openAdminBtn" target="_blank" rel="noopener">NexoWatt Admin öffnen</a>
-      </div>
-    </div>
-  </section>
 </section>
 
 </body>
