@@ -91,7 +91,7 @@ class NexoWattVis extends utils.Adapter {
                     Date.now() < this._installerTokenExp);
       return ok;
     };
-app.get('/config', (_req, res) => {
+app.get('/config', (req, res) => {
       res.json({
         units: this.config.units || { power: 'W', energy: 'kWh' },
         settings: this.config.settings || {},
@@ -114,10 +114,13 @@ app.get('/config', (_req, res) => {
       if (!pw || provided === pw) {
         this._installerToken = createToken();
         this._installerTokenExp = Date.now() + 2*60*60*1000; // 2h
-        res.setHeader('Set-Cookie',
-          `installer_session=${encodeURIComponent(this._installerToken)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200`);
+        res.setHeader('Set-Cookie', `installer_session=${encodeURIComponent(this._installerToken)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200`);
         return res.json({ ok: true });
-    // logout for installer
+      } else {
+        return res.status(401).json({ ok: false, error: 'Unauthorized' });
+      }
+    });
+// logout for installer
     app.post('/api/installer/logout', (_req, res) => {
       this._installerToken = null;
       this._installerTokenExp = 0;
@@ -143,13 +146,9 @@ app.get('/config', (_req, res) => {
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
         let map = {};
         if (scope === 'installer') {
-          // verify token if password configured
-          const pw = (this.config && this.config.installerPassword) || '';
-          if (pw) {
-            const token = req.body && req.body.token;
-            if (!token || token !== this._installerToken) return res.status(403).json({ ok: false, error: 'forbidden' });
-          }
+          if (!isInstallerAuthed(req)) return res.status(403).json({ ok: false, error: 'forbidden' });
           map = (this.config && this.config.installer) || {};
+        
         } else {
           map = (this.config && this.config.settings) || {};
         }

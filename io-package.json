@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.30",
+    "version": "0.3.31",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -206,6 +206,10 @@
       "0.3.30": {
         "en": "Default installer password = 'install2025!' if none configured; lock active by default.",
         "de": "Standard-Installer-Passwort = 'install2025!' falls nicht konfiguriert; Bereich standardmäßig gesperrt."
+      },
+      "0.3.31": {
+        "en": "Fix: stabilize cookie-based login route and guard; remove stray partial insertion causing SyntaxError in main.js; default password 'install2025!'.",
+        "de": "Fix: Cookie-Login/Guard bereinigt; fehlerhafte Teil-Einfügung in main.js behoben (SyntaxError); Standard-Passwort 'install2025!'."
       }
     },
     "title": "NexoWatt EMS UI",
