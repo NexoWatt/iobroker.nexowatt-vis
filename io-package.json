@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.44",
+    "version": "0.3.50",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -348,7 +348,19 @@
       "showGridVoltage": false
     },
     "installerPassword": "",
-    "installerConfig": {}
+    "installerConfig": {},
+    "history": {
+      "instance": "influxdb.0",
+      "datapoints": {
+        "pvPower": "fenecon.0._sum.ProductionAcActivePower",
+        "consumptionTotal": "fenecon.0._sum.ConsumptionAcActivePower",
+        "gridBuyPower": "0_userdata.0.nexowatt.grid.buy.power",
+        "gridSellPower": "0_userdata.0.nexowatt.grid.sell.power",
+        "storageChargePower": "0_userdata.0.nexowatt.battery.charge.power",
+        "storageDischargePower": "0_userdata.0.nexowatt.battery.discharge.power",
+        "storageSoc": "fenecon.0._sum.EssSoc"
+      }
+    }
   },
   "instanceObjects": []
 }

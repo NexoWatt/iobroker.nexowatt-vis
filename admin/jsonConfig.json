@@ -634,6 +634,91 @@
           "sm": 6
         }
       }
+    },
+    "historie": {
+      "type": "panel",
+      "title": "Historie",
+      "label": "Historie",
+      "items": {
+        "history.instance": {
+          "type": "text",
+          "label": "History-Instanz (InfluxDB)",
+          "attr": "history.instance",
+          "xs": 12,
+          "sm": 12,
+          "help": "z. B. influxdb.0"
+        },
+        "history.dp.pvPower": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "PV / Produktion – Leistung (W)",
+          "attr": "history.datapoints.pvPower"
+        },
+        "history.dp.consumptionTotal": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Verbrauch / Gebäude – Leistung (W)",
+          "attr": "history.datapoints.consumptionTotal"
+        },
+        "history.dp.gridBuyPower": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Netz – Bezug (W)",
+          "attr": "history.datapoints.gridBuyPower"
+        },
+        "history.dp.gridSellPower": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Netz – Einspeisung (W)",
+          "attr": "history.datapoints.gridSellPower"
+        },
+        "history.dp.storageChargePower": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Batterie – Ladeleistung (W)",
+          "attr": "history.datapoints.storageChargePower"
+        },
+        "history.dp.storageDischargePower": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Batterie – Entladeleistung (W)",
+          "attr": "history.datapoints.storageDischargePower"
+        },
+        "history.dp.storageSoc": {
+          "type": "objectId",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "newLine": true,
+          "label": "Batterie – SoC (%)",
+          "attr": "history.datapoints.storageSoc"
+        }
+      }
     }
   }
 }
