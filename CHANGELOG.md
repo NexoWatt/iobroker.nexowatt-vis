@@ -91,3 +91,6 @@
 - Ladestation-Modul: Modal öffnet jetzt auch beim Klick auf den **Knoten** im Energiefluss (ID `nodeEvcs`).
 - Klickbarer Cursor für Nodes.
 \n### 0.3.62 (2025-11-01)\n- Sichtbarkeit Ladestation: richtet sich nach *Installer → Anzahl Ladepunkte*. Bei 0 werden Knoten, Linie und Karten ausgeblendet.\n\n### 0.3.63 (2025-11-01)\n- Sichtbarkeit Ladestation: robust — liest `installer.chargepoints` direkt via API & per Live-States; Intervall-Polling alle 5s.\n\n### 0.3.64 (2025-11-01)\n- Ladestations-Sichtbarkeit: robustere Erkennung verschiedenster Key-/Shapes; Anlauf-Polling 1 min.\n\n### 0.3.65 (2025-11-01)\n- Fix: SyntaxError in app.js (getChargepointsFromState) behoben.\n
+### 0.3.66 (2025-11-01)
+- Fix: SyntaxError in app.js beseitigt (bereinigte Funktion + Header wiederhergestellt).
+- Gebäude-Icon im Energiefluss durch neues weißes Icon ersetzt (/static/icons/building.png).

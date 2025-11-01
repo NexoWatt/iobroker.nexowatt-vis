@@ -860,7 +860,8 @@ function getChargepointsFromState(state){
     }
   }
   // Fuzzy: any installer.* with charge+point in key
-  for (const k of Object.keys(s)){
+  const allKeys = Object.keys(s);
+  for (const k of allKeys){
     const lk = k.toLowerCase();
     if (lk.startsWith('installer') && lk.includes('charge') && lk.includes('point')){
       const entry = s[k];
@@ -872,32 +873,6 @@ function getChargepointsFromState(state){
     }
   }
   return 0;
-}
-
-  }
-  // fuzzy: any installer.* key containing "charge" and "point"
-  for (const k of keys){
-    const lk = k.toLowerCase();
-    if (lk.startsWith('installer') && lk.includes('charge') && lk.includes('point')){
-      const entry = state[k];
-      const v = (entry && typeof entry === 'object') ? (('value' in entry)? entry.value : (('val' in entry)? entry.val : entry.v)) : entry;
-      const n = Number(v);
-      if (!isNaN(n)) return n|0;
-    }
-  }
-  return 0;
-}
-
-  let n = 0;
-  try{
-    for (const k in state){
-      if (k.startsWith('installer') && k.toLowerCase().includes('chargepoints')){
-        const v = Number(state[k].value);
-        if (!isNaN(v)) { n = v; break; }
-      }
-    }
-  }catch(_){}
-  return Math.max(0, n|0);
 }
 function applyChargepointsVisibility(state){
   const n = getChargepointsFromState(state||window.latestState||{});
