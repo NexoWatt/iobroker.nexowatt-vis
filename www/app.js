@@ -263,24 +263,18 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
-    e.preventDefault();
-    close();
-    try {
-      const pw = null /*prompt removed*/;
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
-      const j = await r.json();
-      if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      INSTALLER_TOKEN = j.token || 'ok';
-      // Navigate to installer page only after successful login
-      hideAllPanels();
-      document.querySelector('.content').style.display = 'none';
-      const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-      loadConfig();
-      setupInstaller();
-    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
-  });
+  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
+  e.preventDefault();
+  close();
+  hideAllPanels();
+  const content = document.querySelector('.content');
+  if (content) content.style.display = 'none';
+  const sec = document.querySelector('[data-tab-content="installer"]');
+  if (sec) sec.classList.remove('hidden');
+  document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+  // Load server config and show correct panel (login vs form)
+  loadConfig().then(setupInstaller).catch(()=>setupInstaller());
+});
 }
 
 
@@ -382,7 +376,6 @@ function setupInstaller(){
     try{
       const pass = String((pw && pw.value) || '');
       if (!pass) { alert('Bitte Passwort eingeben'); return; }
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
       const j = await r.json();
       if (j && j.ok && j.token){
         INSTALLER_TOKEN = j.token;
@@ -400,7 +393,6 @@ function setupInstaller(){
   if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
   if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
 }
-        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
         const j = await r.json();
         if (j && j.ok && j.token){
           INSTALLER_TOKEN = j.token;
@@ -414,8 +406,6 @@ function setupInstaller(){
       }catch(e){ alert('Login fehlgeschlagen'); }
     });
   }
-}
-
 function initInstallerPanel(){
   if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
