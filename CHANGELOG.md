@@ -34,3 +34,6 @@
 
 ## 0.3.34 – 2025-11-01
 - Fix: Reste der alten Token-Logik entfernt (SyntaxError in Zeile ~276 beseitigt).
+
+## 0.3.35 – 2025-11-01
+- Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).

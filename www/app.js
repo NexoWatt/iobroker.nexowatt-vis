@@ -272,6 +272,7 @@ function initMenu(){
     loadConfig();
     setupInstaller();
   });
+}
 
 
 function initSettingsPanel(){

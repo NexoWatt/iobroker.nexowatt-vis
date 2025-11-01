@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.34",
+    "version": "0.3.35",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -222,6 +222,10 @@
       "0.3.34": {
         "en": "Fix: removed leftover token code in app.js (invalid 'let null=null' and invalid assignment).",
         "de": "Fix: verbliebenen Token-Code in app.js entfernt (ungültiges 'let null=null' und fehlerhafte Zuweisung)."
+      },
+      "0.3.35": {
+        "en": "Fix: add missing closing brace to end of initMenu() in app.js; resolves 'Unexpected end of input'.",
+        "de": "Fix: fehlende schließende Klammer am Ende von initMenu() in app.js ergänzt; behebt 'Unexpected end of input'."
       }
     },
     "title": "NexoWatt EMS UI",
