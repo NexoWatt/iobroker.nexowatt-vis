@@ -94,3 +94,6 @@
 ### 0.3.66 (2025-11-01)
 - Fix: SyntaxError in app.js beseitigt (bereinigte Funktion + Header wiederhergestellt).
 - Gebäude-Icon im Energiefluss durch neues weißes Icon ersetzt (/static/icons/building.png).
+
+### 0.3.67 (2025-11-01)
+- SSE: onerror Reconnect gefixt, Heartbeat alle 15s; sauberes Schließen.
