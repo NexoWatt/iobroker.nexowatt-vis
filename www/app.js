@@ -267,16 +267,27 @@ function initMenu(){
 
 
 function initSettingsPanel(){
+  // Button inside settings to open ioBroker Admin (auto host:8081)
   const openInstallerAdmin = document.getElementById('openInstallerAdmin');
   if (openInstallerAdmin && !openInstallerAdmin.dataset.bound) {
-    openInstallerAdmin.dataset.bound = '1';
+    openInstallerAdmin.dataset.bound='1';
     openInstallerAdmin.addEventListener('click', (e)=>{
       e.preventDefault();
       const proto = (location.protocol === 'https:') ? 'https:' : 'http:';
       const host  = location.hostname || 'localhost';
-      window.open(proto + '//' + host + ':8081/', '_blank');
+      const url   = proto + '//' + host + ':8081/';
+      window.open(url, '_blank');
     });
   }
+  // Force sliders to emit only 1 or 2
+  const p = document.getElementById('s_priority');
+  const t = document.getElementById('s_tariffMode');
+  [p,t].forEach(el => {
+    if (!el) return;
+    el.min = 1; el.max = 2; el.step = 1;
+    el.addEventListener('input', ()=>{ if (el.value < 1.5) el.value = 1; else el.value = 2; });
+    el.addEventListener('change', ()=>{ if (el.value < 1.5) el.value = 1; else el.value = 2; });
+  });
 
   const LS_KEY = 'nexowatt.settings';
   let opts;
@@ -704,7 +715,7 @@ function updateEnergyWeb() {
   // set default battery soc
   T('centerPower', formatPower(load));
   if (soc==null || isNaN(Number(soc))) { T('batterySocIn','-- %'); }
-  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); /* centerSoc_removed removed */ }
+  if (soc === undefined || isNaN(Number(soc))) { T('batterySocIn','-- %'); /* centerSoc removed */ }
   if (soc !== undefined && !isNaN(Number(soc))) T('batterySoc', Number(soc).toFixed(0)+' %');
   else T('batterySoc', '-- %');
   T('batteryCharge', 'Laden ' + formatPower(charge));

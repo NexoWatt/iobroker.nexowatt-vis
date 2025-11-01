@@ -1,10 +1,5 @@
 # Changelog
 
-## 0.3.43 – 2025-11-01
-- Fix: Admin‑Felder (Reiter „Installateur“) sind wieder mit echten Datenpunkten verknüpft. Der Adapter legt `nexowatt-vis.0.installer.*` automatisch an, spiegelt die Admin‑Werte hinein und die VIS schreibt/liest dieselben States → kein `NaN` mehr.
-- Fix: Doppelter SOC an der Batterie entfernt (zweites Text‑Element entfernt).
-- Intern: `/api/set` fällt für `scope=installer` automatisch auf die lokalen Installer‑States zurück.
-- Intern: Live‑Updates abonnieren jetzt zusätzlich die lokalen Installer‑States.
 ## 0.0.1
 - Initial preview release.
 
@@ -42,8 +37,3 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
-
-## 0.3.42 - 2025-11-01
-- VIS: **Installateur**-Untermenü/Seite entfernt (wie v0.3.36). Nur noch Button „Installer“ im Tab Einstellungen öffnet Admin auf <host>:8081.
-- Admin: Tab **Datenpunkte** → **Energiefluss**; **Graph**-Tab entfernt.
-- Energiefluss-Layout: Gebäudename unter Icon, SoC im Zentrum entfernt; Batterie‑Icon mittig, Name tiefer, SoC über dem Icon im Kreis.

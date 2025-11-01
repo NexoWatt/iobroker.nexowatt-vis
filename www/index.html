@@ -50,7 +50,7 @@
 <path d="M-6,12 L-2,2 L-5,2 L1,-14 L1,0 L5,0 L-1,12 Z"></path>
 </g>
 <text class="val" id="gridVal" text-anchor="middle" y="-48">--</text>
-<text class="lbl" text-anchor="middle" y="14">Netz</text>
+<text class="lbl" text-anchor="middle" y="6">Netz</text>
 </g>
 <!-- PV node (top) -->
 <g class="node pv" transform="translate(300,160)">
@@ -60,7 +60,7 @@
 <rect height="4" rx="1" width="20" x="-10" y="6"></rect>
 </g>
 <text class="val" id="pvVal" text-anchor="middle" y="-48">--</text>
-<text class="lbl" text-anchor="middle" y="14">PV</text>
+<text class="lbl" text-anchor="middle" y="6">PV</text>
 </g>
 <!-- Wallbox right -->
 <g class="node consumer" transform="translate(440,300)">
@@ -69,19 +69,19 @@
 <path d="M-12,6 h24 v6 h-24 z M-10,-2 h20 a8,8 0 0 0 -20,0 z"></path>
 </g>
 <text class="val" id="c2Val" text-anchor="middle" y="58">--</text>
-<text class="lbl" text-anchor="middle" y="14">Wallbox</text>
+<text class="lbl" text-anchor="middle" y="6">Wallbox</text>
 </g>
 <!-- Batterie bottom -->
 <g class="node consumer" transform="translate(300,460)">
 <circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,0)">
+<g class="ico" transform="translate(0,-10)">
 <rect height="16" rx="3" width="28" x="-14" y="-8"></rect>
 <rect height="6" rx="1" width="4" x="14" y="-3"></rect>
 </g>
 <text class="minor" id="batterySocIn" text-anchor="middle" y="-12">-- %</text>
 <text class="minor" id="batteryTime" text-anchor="middle" x="300" y="480"></text>
 <text class="val" id="restVal" text-anchor="middle" y="58">--</text>
-<text class="lbl" text-anchor="middle" y="20">Batterie</text>
+<text class="lbl" text-anchor="middle" y="6">Batterie</text>
 </g>
 <!-- center node -->
 <g class="node center" transform="translate(300,300)">
@@ -89,22 +89,24 @@
 <g class="ico" transform="translate(0,-14)">
 <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
 </g>
-<text class="lbl" text-anchor="middle" y="20">Gebäude</text>
+<text class="lbl" text-anchor="middle" y="6">Gebäude</text>
 </g>
 <!-- battery labels along vertical line -->
 <!-- center readouts -->
 <!-- center node -->
 <g class="node center" transform="translate(300,300)">
 <circle class="ring consumer" r="44"></circle>
-<g class="ico" transform="translate(0,0)">
+<g class="ico">
 <path d="M-10,2 v8 h20 v-8 h-4 v6 h-12 v-6 z M-14,2 l14,-12 l14,12 h-4 l-10,-9 l-10,9 z"></path>
 </g>
-<text class="lbl" text-anchor="middle" y="20">Gebäude</text>
+<text class="lbl" text-anchor="middle" y="6">Gebäude</text>
 </g>
 <!-- battery labels along vertical line -->
 <!-- center readouts -->
 <g class="center" transform="translate(300,300)">
-  <text class="big" id="centerPower" text-anchor="middle" y="-12">0 W</text>
+<text class="big" id="centerPower" text-anchor="middle" y="0">0 W</text>
+<text class="minor" id="centerSoc" text-anchor="middle" y="18">-- %</text>
+<text class="minor" id="centerTime" text-anchor="middle" y="34"></text>
 </g>
 </svg>
 </div>
@@ -187,10 +189,10 @@
         <input type="number" id="s_price" step="0.01" data-scope="settings" data-key="price">
       </label>
       <div class="row"><span>Priorität (Speicher ↔ Ladestation)</span>
-        <input type="range" min="0" max="100" id="s_priority" data-scope="settings" data-key="priority">
+        <input type="range" min="0" max="100" id="s_priority" min="1" max="2" step="1" data-scope="settings" data-key="priority">
       </div>
       <div class="row"><span>Modus Tarif</span>
-        <input type="range" min="0" max="1" id="s_tariffMode" data-scope="settings" data-key="tariffMode">
+        <input type="range" min="0" max="1" id="s_tariffMode" min="1" max="2" step="1" data-scope="settings" data-key="tariffMode">
         <small>0 = Manuell, 1 = Automatisch</small>
       </div>
     

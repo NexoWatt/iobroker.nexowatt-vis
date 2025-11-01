@@ -49,61 +49,60 @@ class NexoWattVis extends utils.Adapter {
     this.on('unload', this.onUnload.bind(this));
   }
 
-
-  // Returns adapter-local id for installer key
-  getInstallerStateId(key){
-    return `${this.namespace}.installer.${key}`;
-  }
-
-  // Ensure adapter-owned states for installer config exist, and write initial values from native.installerConfig
-  async ensureInstallerStates(){
-    try{
-      const cfg = (this.config && this.config.installerConfig) || {};
-      const schema = {
-        gridConnectionPower: 'number',
-        para14a: 'boolean',
-        chargepoints: 'number',
-        storageCount: 'number',
-        storagePower: 'number',
-        emsMode: 'number',
-        socMin: 'number',
-        socPeakRange: 'number',
-        chargePowerMax: 'number',
-        dischargePowerMax: 'number',
-        chargeLimitMax: 'number',
-        dischargeLimitMax: 'number',
-      };
-
-      for (const [key, type] of Object.entries(schema)) {
-        const id = this.getInstallerStateId(key);
-        await this.setObjectNotExistsAsync(id, {
-          type: 'state',
-          common: { name: `Installer: ${key}`, type, role: 'value', read: true, write: true },
-          native: {},
-        });
-        if (cfg[key] !== undefined){
-          // write initial value from config to state
-          await this.setStateAsync(id, { val: cfg[key], ack: true });
-          // also reflect in cache for initial UI
-          this.updateValue('installer.'+key, cfg[key], Date.now());
-        }
-      }
-    } catch(e){
-      this.log.warn('ensureInstallerStates error: ' + e.message);
+  
+  async ensureInstallerStates() {
+    const defs = {
+      adminUrl:     { type: 'string', role: 'state', def: '' },
+      gridConnectionPower: { type: 'number', role: 'value.power', def: 0 },
+      para14a:      { type: 'boolean', role: 'state', def: false },
+      chargepoints: { type: 'number', role: 'state', def: 0 },
+      storageCount: { type: 'number', role: 'state', def: 0 },
+      storagePower: { type: 'number', role: 'value.power', def: 0 },
+      emsMode:      { type: 'number', role: 'state', def: 1 },
+      socMin:       { type: 'number', role: 'value', def: 10 },
+      socPeakRange: { type: 'number', role: 'value', def: 20 },
+      chargePowerMax: { type: 'number', role: 'value.power', def: 0 },
+      dischargePowerMax: { type: 'number', role: 'value.power', def: 0 },
+      chargeLimitMax: { type: 'number', role: 'value.power', def: 0 },
+      dischargeLimitMax: { type: 'number', role: 'value.power', def: 0 },
+      password:     { type: 'string', role: 'state', def: '' }
+    };
+    for (const [key, c] of Object.entries(defs)) {
+      const id = `installer.${key}`;
+      await this.setObjectNotExistsAsync(id, { type:'state', common:{ name:id, type:c.type, role:c.role, read:true, write:true, def:c.def }, native:{} });
     }
   }
-
+  async syncInstallerConfigToStates() {
+    const cfg = (this.config && this.config.installerConfig) || {};
+    const toSet = {
+      adminUrl: cfg.adminUrl || '',
+      gridConnectionPower: Number(cfg.gridConnectionPower || 0),
+      para14a: !!cfg.para14a,
+      chargepoints: Number(cfg.chargepoints || 0),
+      storageCount: Number(cfg.storageCount || 0),
+      storagePower: Number(cfg.storagePower || 0),
+      emsMode: Number(cfg.emsMode || 1),
+      socMin: Number(cfg.socMin || 0),
+      socPeakRange: Number(cfg.socPeakRange || 0),
+      chargePowerMax: Number(cfg.chargePowerMax || 0),
+      dischargePowerMax: Number(cfg.dischargePowerMax || 0),
+      chargeLimitMax: Number(cfg.chargeLimitMax || 0),
+      dischargeLimitMax: Number(cfg.dischargeLimitMax || 0),
+      password: getInstallerPassword(this) || ''
+    };
+    for (const [k, v] of Object.entries(toSet)) {
+      await this.setStateAsync(`installer.${k}`, { val: v, ack: true });
+    }
+  }
   async onReady() {
     try {
       // start web server
       await this.startServer();
 
-      // ensure installer states exist and preload values
-      await this.ensureInstallerStates();
-
-
       // subscribe to all configured datapoints and get initial values
       await this.subscribeConfiguredStates();
+      await this.ensureInstallerStates();
+      await this.syncInstallerConfigToStates();
 
       this.log.info('NexoWatt VIS adapter ready.');
     } catch (e) {
@@ -178,23 +177,21 @@ app.get('/config', (req, res) => {
 
 
     // generic setter for settings/installer datapoints
-    
-app.post('/api/set', async (req, res) => {
+    app.post('/api/set', async (req, res) => {
       try {
         const scope = req.body && req.body.scope;
         const key = req.body && req.body.key;
         const value = req.body && req.body.value;
         if (!scope || !key) return res.status(400).json({ ok: false, error: 'bad request' });
-        let id = null;
+        let map = {};
         if (scope === 'installer') {
           if (!isInstallerAuthed(req)) return res.status(403).json({ ok: false, error: 'forbidden' });
-          const map = (this.config && this.config.installer) || {};
-          id = map && map[key];
-          if (!id) id = this.getInstallerStateId(key); // fallback to our own state
+          map = (this.config && this.config.installer) || {};
+        
         } else {
-          const map = (this.config && this.config.settings) || {};
-          id = map && map[key];
+          map = (this.config && this.config.settings) || {};
         }
+        const id = map[key];
         if (!id) return res.status(404).json({ ok: false, error: 'id not configured' });
         await this.setForeignStateAsync(id, value);
         res.json({ ok: true });
@@ -235,33 +232,21 @@ app.post('/api/set', async (req, res) => {
     });
   }
 
-  
-async subscribeConfiguredStates() {
+  async subscribeConfiguredStates() {
     const dps = (this.config && this.config.datapoints) || {};
     const settings = (this.config && this.config.settings) || {};
-    const installerMap = (this.config && this.config.installer) || {};
-    const installerCfg = (this.config && this.config.installerConfig) || {};
-
+    const installer = (this.config && this.config.installer) || {};
     const keys = [
       ...Object.keys(dps),
       ...Object.keys(settings).map(k => 'settings.' + k),
-      // map-configured installer target states
-      ...Object.keys(installerMap).map(k => 'installer.' + k),
-      // plus our own adapter-owned installer keys
-      ...Object.keys(installerCfg).map(k => 'installer.' + k),
+      ...Object.keys(installer).map(k => 'installer.' + k),
     ];
 
     for (const key of keys) {
-      let id = null;
-      if (key.startsWith('settings.')) {
-        id = settings[key.slice(9)];
-      } else if (key.startsWith('installer.')) {
-        // prefer explicit mapping, otherwise use our own namespace state
-        const k = key.slice(10);
-        id = installerMap[k] || this.getInstallerStateId(k);
-      } else {
-        id = dps[key];
-      }
+      let id;
+      if (key.startsWith('settings.')) id = settings[key.slice(9)];
+      else if (key.startsWith('installer.')) id = installer[key.slice(10)];
+      else id = dps[key];
       if (!id) continue;
 
       // subscribe
@@ -279,7 +264,6 @@ async subscribeConfiguredStates() {
     }
   }
 
-
   onStateChange(id, state) {
     if (!state) return;
     try {
@@ -292,7 +276,6 @@ async subscribeConfiguredStates() {
     }
   }
 
-  
   keyFromId(id) {
     const dps = (this.config && this.config.datapoints) || {};
     for (const [key, dpId] of Object.entries(dps)) { if (dpId === id) return key; }
@@ -300,14 +283,8 @@ async subscribeConfiguredStates() {
     for (const [k, dpId] of Object.entries(settings)) { if (dpId === id) return 'settings.' + k; }
     const installer = (this.config && this.config.installer) || {};
     for (const [k, dpId] of Object.entries(installer)) { if (dpId === id) return 'installer.' + k; }
-    // fallback: our own adapter installer states
-    const prefix = `${this.namespace}.installer.`;
-    if (id && id.startsWith(prefix)) {
-      return 'installer.' + id.slice(prefix.length);
-    }
     return null;
   }
-
 
   updateValue(key, value, ts) {
     this.stateCache[key] = { value, ts };

@@ -416,6 +416,99 @@
       "label": "Erweitert / Zukunft",
       "title": "Erweitert / Zukunft"
     },
+    "graph": {
+      "type": "panel",
+      "label": "Graph",
+      "title": "Graph",
+      "items": {
+        "graph.nodes": {
+          "type": "table",
+          "label": "Zusätzliche Knoten (max. 7)",
+          "columns": [
+            {
+              "name": "label",
+              "title": "Label",
+              "type": "text"
+            },
+            {
+              "name": "role",
+              "title": "Rolle",
+              "type": "select",
+              "options": [
+                [
+                  "producer",
+                  "Erzeuger"
+                ],
+                [
+                  "consumer",
+                  "Verbraucher"
+                ]
+              ]
+            },
+            {
+              "name": "icon",
+              "title": "Icon",
+              "type": "select",
+              "options": [
+                [
+                  "gen",
+                  "Generator"
+                ],
+                [
+                  "load",
+                  "Verbrauch"
+                ],
+                [
+                  "pv",
+                  "PV"
+                ],
+                [
+                  "grid",
+                  "Netz"
+                ]
+              ]
+            },
+            {
+              "name": "id",
+              "title": "Datenpunkt-ID (W)",
+              "type": "objectId",
+              "types": [
+                "state"
+              ],
+              "button": true
+            }
+          ],
+          "attr": "graph.nodes",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.enabled": {
+          "type": "checkbox",
+          "label": "Kaskade aktivieren",
+          "attr": "graph.cascade.enabled",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.label": {
+          "type": "text",
+          "label": "Kaskade Label",
+          "attr": "graph.cascade.label",
+          "xs": 12,
+          "sm": 12
+        },
+        "graph.cascade.pvPowerId": {
+          "type": "objectId",
+          "label": "PV an Kaskade (W)",
+          "types": [
+            "state"
+          ],
+          "button": true,
+          "attr": "graph.cascade.pvPowerId",
+          "xs": 12,
+          "sm": 12
+        }
+      }
+    },
     "installateur": {
       "type": "panel",
       "label": "Installateur",
@@ -423,11 +516,12 @@
       "items": {
         "installerInfo": {
           "type": "header",
-          "text": "Einstellungen nur für Installateure – werden in nexowatt-vis.0.installer.* geschrieben."
+          "text": "Einstellungen nur für Installateure – werden in die Datenpunkte unter nexowatt-vis.0.installer.* geschrieben."
         },
         "installerConfig.gridConnectionPower": {
           "type": "number",
           "label": "Leistung Netzanschluss (W)",
+          "min": 0,
           "attr": "installerConfig.gridConnectionPower",
           "xs": 12,
           "sm": 6
@@ -442,6 +536,7 @@
         "installerConfig.chargepoints": {
           "type": "number",
           "label": "Anzahl Ladepunkte",
+          "min": 0,
           "attr": "installerConfig.chargepoints",
           "xs": 12,
           "sm": 6
@@ -449,6 +544,7 @@
         "installerConfig.storageCount": {
           "type": "number",
           "label": "Anzahl Speicher (Module)",
+          "min": 0,
           "attr": "installerConfig.storageCount",
           "xs": 12,
           "sm": 6
@@ -456,6 +552,7 @@
         "installerConfig.storagePower": {
           "type": "number",
           "label": "Leistung Speicher (W)",
+          "min": 0,
           "attr": "installerConfig.storagePower",
           "xs": 12,
           "sm": 6
@@ -484,6 +581,8 @@
         "installerConfig.socMin": {
           "type": "number",
           "label": "SOC Min (%)",
+          "min": 0,
+          "max": 100,
           "attr": "installerConfig.socMin",
           "xs": 12,
           "sm": 6
@@ -491,6 +590,8 @@
         "installerConfig.socPeakRange": {
           "type": "number",
           "label": "SOC Bereich Lastspitze (%)",
+          "min": 0,
+          "max": 100,
           "attr": "installerConfig.socPeakRange",
           "xs": 12,
           "sm": 6
@@ -498,6 +599,7 @@
         "installerConfig.chargePowerMax": {
           "type": "number",
           "label": "Beladeleistung max (W)",
+          "min": 0,
           "attr": "installerConfig.chargePowerMax",
           "xs": 12,
           "sm": 6
@@ -505,6 +607,7 @@
         "installerConfig.dischargePowerMax": {
           "type": "number",
           "label": "Entladeleistung max (W)",
+          "min": 0,
           "attr": "installerConfig.dischargePowerMax",
           "xs": 12,
           "sm": 6
@@ -512,6 +615,7 @@
         "installerConfig.chargeLimitMax": {
           "type": "number",
           "label": "Ladebegrenzung max (W)",
+          "min": 0,
           "attr": "installerConfig.chargeLimitMax",
           "xs": 12,
           "sm": 6
@@ -519,6 +623,7 @@
         "installerConfig.dischargeLimitMax": {
           "type": "number",
           "label": "Entladebegrenzung max (W)",
+          "min": 0,
           "attr": "installerConfig.dischargeLimitMax",
           "xs": 12,
           "sm": 6
