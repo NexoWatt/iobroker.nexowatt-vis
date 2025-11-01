@@ -746,3 +746,32 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
   // open history page via header tab
   const hbtn = document.getElementById('historyTabBtn');
   if (hbtn) hbtn.addEventListener('click', ()=>{ window.location.href = '/history.html'; });
+
+
+// open settings automatically if '?settings=1' is present
+(function(){
+  function openSettings(){
+    try{
+      const sbtn = document.getElementById('menuOpenSettings');
+      if (sbtn) {
+        sbtn.click();
+        return;
+      }
+      // fallback: show settings section explicitly
+      const content = document.querySelector('.content');
+      if (content) content.style.display = 'none';
+      const sec = document.querySelector('[data-tab-content="settings"]');
+      if (sec) sec.classList.remove('hidden');
+    } catch(e){}
+  }
+  try{
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('settings') === '1') {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', openSettings);
+      } else {
+        openSettings();
+      }
+    }
+  }catch(e){}
+})();
