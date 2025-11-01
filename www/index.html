@@ -107,6 +107,20 @@
 <g class="center" transform="translate(300,300)">
   <text class="big" id="centerPower" text-anchor="middle" y="-12">0 W</text>
 </g>
+
+  <!-- Cascade meter (optional) -->
+  <g class="node cascade" transform="translate(240,300)" style="display:none">
+    <circle class="ring consumer" r="32"></circle>
+    <g class="ico" transform="translate(0,0)">
+      <text class="val" id="cascadeVal" text-anchor="middle" y="-34">0 W</text>
+      <svg width="26" height="26" viewBox="0 0 24 24" x="-13" y="-12">
+        <path fill="#bdbdbd" d="M3 3h18v3H3V3m0 15h18v3H3v-3M3 8h18v8H3V8z"/>
+      </svg>
+      <text class="lbl" text-anchor="middle" y="20">Zähler</text>
+    </g>
+  </g>
+  <line id="lineCascadeL" x1="160" y1="300" x2="240" y2="300" stroke="#8b6f39" stroke-dasharray="6,6" stroke-width="6" opacity="0.15"></line>
+  <line id="lineCascadeR" x1="240" y1="300" x2="300" y2="300" stroke="#8b6f39" stroke-dasharray="6,6" stroke-width="6" opacity="0.15"></line>
 </svg>
 </div>
 </section>

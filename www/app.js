@@ -729,4 +729,26 @@ if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFi
 
 // Patch render to also update energy web
 const _renderOld = render;
-render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
+render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } 
+  // Cascade support
+  const cascadeEnabled = !!cfgGet('config.datapoints.cascadeEnabled');
+  const cascadeSigned = cascadeEnabled ? getSigned('cascadePower','cascadeBuyPower','cascadeSellPower') : 0;
+  if (cascadeEnabled){
+    // show node + lines
+    const cs = document.querySelector('.node.cascade'); if (cs) cs.style.display = '';
+    const show = (id,on)=>{const el=document.getElementById(id); if(el) el.style.opacity= on?1:0.15;};
+    show('lineCascadeL', Math.abs(cascadeSigned)>1);
+    show('lineCascadeR', Math.abs(cascadeSigned)>1);
+    // value
+    const cv = document.getElementById('cascadeVal'); if (cv) cv.textContent = formatPower(Math.abs(cascadeSigned));
+    // direction: + to center, - to grid
+    const setLine=(id,x1,y1,x2,y2)=>{const el=document.getElementById(id); if(el){el.setAttribute('x1',x1);el.setAttribute('y1',y1);el.setAttribute('x2',x2);el.setAttribute('y2',y2);}};
+    if (cascadeSigned >= 0){ setLine('lineCascadeL',160,300,240,300); setLine('lineCascadeR',240,300,300,300);} 
+    else { setLine('lineCascadeL',240,300,160,300); setLine('lineCascadeR',300,300,240,300); }
+    // hide direct grid line
+    const lg=document.getElementById('lineGrid'); if (lg) lg.style.opacity=0.15;
+  } else {
+    const cs = document.querySelector('.node.cascade'); if (cs) cs.style.display = 'none';
+    const lg=document.getElementById('lineGrid'); if (lg) lg.style.opacity=1;
+  }
+}

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.42",
+    "version": "0.3.43",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -298,7 +298,11 @@
       "storageCapacityKwh": "",
       "consumer1Power": "",
       "consumer2Power": "",
-      "gridPower": ""
+      "gridPower": "",
+      "cascadeEnabled": false,
+      "cascadePower": "",
+      "cascadeBuyPower": "",
+      "cascadeSellPower": ""
     },
     "sections": {
       "tabs": [
