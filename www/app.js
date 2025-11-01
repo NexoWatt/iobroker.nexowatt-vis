@@ -837,3 +837,30 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     n.addEventListener('click', ()=> modal.classList.remove('hidden'));
   }
 })();
+
+
+// --- chargepoints visibility ---
+function getChargepointsFromState(state){
+  let n = 0;
+  try{
+    for (const k in state){
+      if (k.startsWith('installer') && k.toLowerCase().includes('chargepoints')){
+        const v = Number(state[k].value);
+        if (!isNaN(v)) { n = v; break; }
+      }
+    }
+  }catch(_){}
+  return Math.max(0, n|0);
+}
+function applyChargepointsVisibility(state){
+  const n = getChargepointsFromState(state||window.latestState||{});
+  const show = n > 0;
+  const byId = (id)=> document.getElementById(id);
+  const setVis = (el, on)=> { if (!el) return; el.style.display = on? '' : 'none'; };
+  setVis(byId('nodeEvcs'), show);
+  setVis(byId('evcsCard'), show);
+  setVis(byId('evcsSummaryCard'), show);
+  const lineRight = byId('lineC2'); if (lineRight){ lineRight.style.display = show ? '' : 'none'; }
+}
+
+try{ applyChargepointsVisibility(window.latestState||{}); }catch(_){}
