@@ -383,3 +383,56 @@ body {
 .web .ring.charger{stroke:#3498db}
 
 .web g.node.clickable{cursor:pointer}
+
+
+/* --- FIX: Proper modal overlay and EVCS popup --- */
+.modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.hidden{ display:none; }
+.dialog{
+  background:#121416;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  min-width:420px;
+  max-width:92vw;
+  padding:16px;
+}
+.dialog-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.dialog .btn.small{
+  background:#1f2328;
+  border:none;
+  border-radius:8px;
+  padding:4px 8px;
+  cursor:pointer;
+}
+#evcsCard.clickable{ cursor:pointer; }
+
+.evcs-gauge{
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  margin:8px auto 16px;
+  background:
+    radial-gradient(closest-side, #121416 60%, transparent 61% 100%),
+    conic-gradient(#6c5ce7 var(--evcs-deg, 0%), #2a2f36 0);
+  display:grid;
+  place-items:center;
+}
+.evcs-gauge .gauge-value{
+  font-size:28px;
+  font-weight:700;
+  color:#ff6bd6;
+}
+/* --- END FIX --- */
