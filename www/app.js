@@ -397,8 +397,15 @@ function setupInstaller(){
     });
   }
 }
-    a.href = url;
-  }
+
+function initInstallerPanel(){
+  if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;
+  document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
+    const key = el.dataset.key; bindInputValue(el, 'installer.' + key);
+  });
+  const a = document.getElementById('openAdminBtn');
+  if (a){ const url = (SERVER_CFG && SERVER_CFG.adminUrl) || '/'; a.href = url || '/'; }
+}
 
 // Simple tab switching
 function initTabs(){
