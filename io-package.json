@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.36",
+    "version": "0.3.37",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -230,6 +230,10 @@
       "0.3.36": {
         "en": "Settings: add 'Installateur' button that opens ioBroker Admin (uses SERVER_CFG.adminUrl or /admin/).",
         "de": "Einstellungen: Button „Installateur“ öffnet ioBroker Admin (nutzt SERVER_CFG.adminUrl oder /admin/)."
+      },
+      "0.3.37": {
+        "en": "Installateur button now always opens Admin at http://<host>:8081/ (auto-detect host, supports IPv6 brackets).",
+        "de": "Installateur-Button öffnet nun immer Admin unter http://<host>:8081/ (Host automatisch, IPv6 in Klammern)."
       }
     },
     "title": "NexoWatt EMS UI",

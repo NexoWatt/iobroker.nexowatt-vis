@@ -40,3 +40,6 @@
 
 ## 0.3.36 – 2025-11-01
 - Button „Installateur“ in Einstellungen: öffnet ioBroker Admin in neuem Tab.
+
+## 0.3.37 – 2025-11-01
+- "Installateur" öffnet fest http://<host>:8081/.

@@ -355,15 +355,12 @@ function setupSettings(){
     adminBtn.dataset.bound = '1';
     adminBtn.addEventListener('click', (e)=>{
       e.preventDefault();
-      let target = null;
-      if (window.SERVER_CFG && window.SERVER_CFG.adminUrl) {
-        target = window.SERVER_CFG.adminUrl;
-      } else if (location && location.origin) {
-        target = location.origin + '/admin/'; // reverse-proxy default
-      } else {
-        target = '/admin/';
-      }
-      try { window.open(target, '_blank', 'noopener'); } catch(_){ location.href = target; }
+      let target = (function(){
+        const host = (location && location.hostname) ? location.hostname : 'localhost';
+        const h = host.includes(':') ? `[${host}]` : host; // IPv6 brackets
+        return `http://${h}:8081/`;
+      })();
+      try { window.open(target, '_blank', 'noopener'); } catch(_) { location.href = target; }
     });
   }
 
