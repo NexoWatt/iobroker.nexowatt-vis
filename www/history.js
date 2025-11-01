@@ -136,3 +136,25 @@
       });
     }
   })();
+
+
+  // --- live dot via SSE (same as live) ---
+  (function(){
+    try{
+      const dot = document.getElementById('liveDot');
+      const es = new EventSource('/events');
+      if (dot) dot.classList.remove('live');
+      es.onopen = ()=>{ if (dot) dot.classList.add('live'); };
+      es.onerror = ()=>{ if (dot) dot.classList.remove('live'); try{ es.close(); }catch(_){ } };
+      // We ignore incoming messages on history page
+    }catch(e){ /* ignore */ }
+  })();
+
+  // menu: open settings by redirecting to live with query
+  (function(){
+    const settingsBtn = document.getElementById('menuOpenSettings');
+    if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      window.location.href = '/?settings=1';
+    });
+  })();

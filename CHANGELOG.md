@@ -71,3 +71,4 @@
 
 ### 0.3.54 (2025-11-01)
 - History-Seite: identischer Header wie LIVE (Brand, Menü, Tabs). HISTORY aktiv, LIVE führt auf '/'.
+\n### 0.3.55 (2025-11-01)\n- History: Menü 'Einstellungen' öffnet Live-Seite im Einstellungsmodus.\n- History: Statuspunkt (liveDot) via SSE aktiviert.\n- Live: Unterstützt Query '?settings=1' für direkten Einstiegs in Einstellungen.\n
