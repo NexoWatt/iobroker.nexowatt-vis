@@ -11,3 +11,6 @@
 ## 0.3.27 – 2025-11-01
 - Fix: Unerwartete '}' in app.js entfernt.
 - Chore: verborgenes Username-Feld für Passwort-Form (Barrierefreiheit).
+
+## 0.3.28 – 2025-11-01
+- Fix: Donut-Render verwendete chg2/dchg2 außerhalb des Blocks → ReferenceError. Jetzt charge/discharge.

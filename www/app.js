@@ -543,10 +543,10 @@ render = function(){
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
       const remToEmpty_kWh = cap * (socPct);
-      const chg2 = +(d('storageChargePower') ?? 0);
-      const dchg2 = +(d('storageDischargePower') ?? 0);
-      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
-      const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
+      // using outer 'charge'/'discharge'
+      // using outer 'charge'/'discharge'
+      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
+      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
       // SoC ring
@@ -554,13 +554,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const totalFlow = Math.max(1, pv + buy + load + (charge + discharge));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg2 + dchg2));
+    setDonut('storage', pct(charge + discharge));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderOrig();
@@ -645,10 +645,10 @@ render = function(){
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
       const remToEmpty_kWh = cap * (socPct);
-      const chg2 = +(d('storageChargePower') ?? 0);
-      const dchg2 = +(d('storageDischargePower') ?? 0);
-      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
-      const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
+      // using outer 'charge'/'discharge'
+      // using outer 'charge'/'discharge'
+      const tFull_h = charge > 0 ? (remToFull_kWh * 1000) / charge : null;
+      const tEmpty_h = discharge > 0 ? (remToEmpty_kWh * 1000) / discharge : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
       // SoC ring
@@ -656,13 +656,13 @@ render = function(){
     }
 
     // Arcs relative to max flow
-    const totalFlow = Math.max(1, pv + buy + load + (chg2 + dchg2));
+    const totalFlow = Math.max(1, pv + buy + load + (charge + discharge));
     const pct = (v) => Math.min(100, Math.max(0, (v / totalFlow) * 100));
     setDonut('pv', pct(pv));
     setDonut('gridbuy', pct(buy));
     setDonut('gridsell', pct(sell));
     setDonut('load', pct(load));
-    setDonut('storage', pct(chg2 + dchg2));
+    setDonut('storage', pct(charge + discharge));
   } catch(e) { console.warn('donut render error', e); }
 
   _renderEF();
