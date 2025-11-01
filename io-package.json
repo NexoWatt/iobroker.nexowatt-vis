@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.38",
+    "version": "0.3.39",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -238,6 +238,10 @@
       "0.3.38": {
         "en": "Move installer parameters to Admin (jsonConfig). VIS installer panel removed.",
         "de": "Installer-Parameter in Admin (jsonConfig) verschoben. VIS-Installer-Panel entfernt."
+      },
+      "0.3.39": {
+        "en": "Fix app.js: repaired initMenu settings handler and removed stray catch/brace leftovers from removed installer code.",
+        "de": "Fix app.js: initMenu-Settings-Handler ergänzt; übrig gebliebene catch/Schlussklammern (Installer) entfernt."
       }
     },
     "title": "NexoWatt EMS UI",
