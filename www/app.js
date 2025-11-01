@@ -74,29 +74,6 @@ function formatHours(h) {
 }
 
 let state = {};
-
-// === Installer auth helpers (frontend only) ===
-window.INSTALLER_TOKEN = sessionStorage.getItem('nxw_installer_token') || null;
-
-async function verifyInstallerToken(){
-  const t = window.INSTALLER_TOKEN || sessionStorage.getItem('nxw_installer_token');
-  if (!t) return false;
-  try{
-    // optional endpoint; if not available, treat as valid for UI but keep backend auth strict
-    const r = await fetch('/api/installer/verify', { headers: { 'Authorization': 'Bearer ' + t } });
-    if (r.ok){
-      const j = await r.json().catch(()=>({ok:true}));
-      if (j && (j.ok || j.valid !== false)) return true;
-    }
-  }catch(_){}
-  return false;
-}
-function setInstallerToken(tok){
-  window.INSTALLER_TOKEN = tok;
-  if (tok) sessionStorage.setItem('nxw_installer_token', tok);
-  else sessionStorage.removeItem('nxw_installer_token');
-}
-
 let units = { power: 'W', energy: 'kWh' };
 
 function formatPower(v) {
@@ -286,20 +263,24 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  
-if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
-  e.preventDefault();
-  close();
-  hideAllPanels();
-  const content = document.querySelector('.content');
-  if (content) content.style.display = 'none';
-  const sec = document.querySelector('[data-tab-content="installer"]');
-  if (sec) sec.classList.remove('hidden');
-  document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-  // Always load config (optional) then setup UI; locked state is handled inside
-  try { if (typeof loadConfig==='function') await loadConfig(); } catch(_){}
-  if (typeof setupInstaller==='function') setupInstaller();
-});
+  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    close();
+    try {
+      const pw = null /*prompt removed*/;
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
+      const j = await r.json();
+      if (!j || !j.ok) { alert('Passwort falsch'); return; }
+      INSTALLER_TOKEN = j.token || 'ok';
+      // Navigate to installer page only after successful login
+      hideAllPanels();
+      document.querySelector('.content').style.display = 'none';
+      const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
+      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+      loadConfig();
+      setupInstaller();
+    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
+  });
 }
 
 
@@ -357,6 +338,7 @@ async function loadConfig() {
     SERVER_CFG = j || {};
   } catch(e) { console.warn('cfg', e); }
 }
+
 function bindInputValue(el, stateKey) {
   // set initial value from state cache
   const st = (window.latestState || {});
@@ -380,29 +362,6 @@ function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
 }
 
-
-function updateInstallerLockUI(locked){
-  const formBox = document.getElementById('installerForm');
-  const loginBox = document.getElementById('installerLoginBox');
-  if (locked){
-    if (loginBox) loginBox.classList.remove('hidden');
-    if (formBox)  formBox.classList.add('locked');
-    if (formBox){
-      formBox.querySelectorAll('input, select, textarea, button').forEach(el=>{
-        if (!el.closest('#installerLoginBox')) el.setAttribute('disabled','disabled');
-      });
-    }
-  } else {
-    if (loginBox) loginBox.classList.add('hidden');
-    if (formBox)  formBox.classList.remove('locked');
-    if (formBox){
-      formBox.querySelectorAll('input, select, textarea, button').forEach(el=>{
-        el.removeAttribute('disabled');
-      });
-    }
-  }
-}
-
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const formBox  = document.getElementById('installerForm');
@@ -420,15 +379,11 @@ function setupInstaller(){
   const form = document.getElementById('installerLoginForm');
 
   async function doLogin(){
-    const pass = String((pw && pw.value) || '');
-    if (!pass) { alert('Bitte Passwort eingeben'); return; }
     try{
-      const r = await fetch('/api/installer/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pass })
-      });
-      const j = await r.json().catch(()=>({}));
+      const pass = String((pw && pw.value) || '');
+      if (!pass) { alert('Bitte Passwort eingeben'); return; }
+      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+      const j = await r.json();
       if (j && j.ok && j.token){
         INSTALLER_TOKEN = j.token;
         if (loginBox) loginBox.classList.add('hidden');
@@ -436,21 +391,29 @@ function setupInstaller(){
         if (typeof initInstallerPanel === 'function') initInstallerPanel();
       } else {
         alert('Passwort falsch');
-        INSTALLER_TOKEN = null;
         if (loginBox) loginBox.classList.remove('hidden');
         if (formBox)  formBox.classList.add('hidden');
       }
-    } catch(e){
-      console.warn(e);
-      alert('Login fehlgeschlagen');
-      INSTALLER_TOKEN = null;
-      if (loginBox) loginBox.classList.remove('hidden');
-      if (formBox)  formBox.classList.add('hidden');
-    }
+    }catch(e){ alert('Login fehlgeschlagen'); }
   }
 
   if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
   if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
+}
+        const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
+        const j = await r.json();
+        if (j && j.ok && j.token){
+          INSTALLER_TOKEN = j.token;
+          if (loginBox) loginBox.classList.add('hidden');
+          if (formBox)  formBox.classList.remove('hidden');
+        } else {
+          alert('Passwort falsch');
+          if (loginBox) loginBox.classList.remove('hidden');
+          if (formBox)  formBox.classList.add('hidden');
+        }
+      }catch(e){ alert('Login fehlgeschlagen'); }
+    });
+  }
 }
 
 function initInstallerPanel(){
@@ -562,9 +525,7 @@ render = function(){
     const sell = +(d('gridSellPower') ?? 0);
     const charge = +(d('storageChargePower') ?? 0);
     const discharge = +(d('storageDischargePower') ?? 0);
-    const chg2 = charge;
-const dchg2 = discharge;
-const soc = d('storageSoc');
+    const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
     // Values
@@ -581,7 +542,10 @@ const soc = d('storageSoc');
     if (cap && soc !== undefined) {
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
-      const remToEmpty_kWh = cap * (socPct);const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const remToEmpty_kWh = cap * (socPct);
+      const chg2 = +(d('storageChargePower') ?? 0);
+      const dchg2 = +(d('storageDischargePower') ?? 0);
+      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
       const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
@@ -663,9 +627,7 @@ render = function(){
     const sell = +(d('gridSellPower') ?? 0);
     const charge = +(d('storageChargePower') ?? 0);
     const discharge = +(d('storageDischargePower') ?? 0);
-    const chg2 = charge;
-const dchg2 = discharge;
-const soc = d('storageSoc');
+    const soc = d('storageSoc');
     const cap = +(d('storageCapacityKwh') ?? 0);
 
     // Values
@@ -682,7 +644,10 @@ const soc = d('storageSoc');
     if (cap && soc !== undefined) {
       const socPct = Number(soc) / 100;
       const remToFull_kWh = cap * (1 - socPct);
-      const remToEmpty_kWh = cap * (socPct);const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
+      const remToEmpty_kWh = cap * (socPct);
+      const chg2 = +(d('storageChargePower') ?? 0);
+      const dchg2 = +(d('storageDischargePower') ?? 0);
+      const tFull_h = chg2 > 0 ? (remToFull_kWh * 1000) / chg2 : null;
       const tEmpty_h = dchg2 > 0 ? (remToEmpty_kWh * 1000) / dchg2 : null;
       setText('tFull', 'Voll ' + (tFull_h?formatHours(tFull_h):'--'));
       setText('tEmpty', 'Leer ' + (tEmpty_h?formatHours(tEmpty_h):'--'));
@@ -729,9 +694,7 @@ function updateEnergyWeb() {
   const charge = +(d('storageChargePower') ?? 0);
   const discharge = +(d('storageDischargePower') ?? 0);
 
-  const chg2 = charge;
-const dchg2 = discharge;
-// Rest = load - c1 - c2 (>=0)
+  // Rest = load - c1 - c2 (>=0)
   const rest = Math.abs((+(d('storageDischargePower') ?? 0)) - (+(d('storageChargePower') ?? 0))); // Batterie
 
   function T(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
