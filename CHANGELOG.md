@@ -37,3 +37,7 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
+
+## 0.3.39 - 2025-11-01
+- Neu: Eigene Datenpunkte für **Einstellungen** unter `nexowatt-vis.0.settings.*` (notifyEnabled, email, dynamicTariff, storagePower, price, priority, tariffMode)
+- /api/set fällt auf lokale States zurück, wenn keine Fremd-ID konfiguriert ist.
