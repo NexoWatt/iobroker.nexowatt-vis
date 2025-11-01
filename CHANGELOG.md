@@ -43,3 +43,6 @@
 
 ## 0.3.37 – 2025-11-01
 - "Installateur" öffnet fest http://<host>:8081/.
+
+## 0.3.38 – 2025-11-01
+- Installer-Parameter in Admin verschoben (jsonConfig.json), VIS-Installer entfernt.

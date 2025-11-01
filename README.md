@@ -65,3 +65,7 @@ iobroker add nexowatt-vis
 ### Installer password
 - Default: **install2025!** (HttpOnly cookie-based session)
 - You can override it by setting `native.installerPassword` in adapter config.
+
+
+### Installer-Einstellungen
+Die Parameter für Installateure sind jetzt in der ioBroker-Adminoberfläche (Tab **Installateur**). Die VIS zeigt keine Installer-Eingabefelder mehr.

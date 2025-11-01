@@ -1,27 +1,26 @@
 {
   "type": "tabs",
-  "items": {
-    "allgemein": {
+  "items": [
+    {
       "type": "panel",
-      "items": {
-        "port": {
+      "label": "Allgemein",
+      "items": [
+        {
           "type": "number",
+          "attr": "port",
           "label": "HTTP Port",
           "min": 1,
-          "max": 65535,
-          "attr": "port",
-          "xs": 12,
-          "sm": 12
+          "max": 65535
         },
-        "bind": {
+        {
           "type": "text",
-          "label": "Bind-Adresse",
           "attr": "bind",
-          "xs": 12,
-          "sm": 12
+          "label": "Bind-Adresse",
+          "help": "0.0.0.0 = alle Interfaces"
         },
-        "units.power": {
+        {
           "type": "select",
+          "attr": "unitsPower",
           "label": "Leistungseinheit",
           "options": [
             {
@@ -32,482 +31,107 @@
               "label": "kW",
               "value": "kW"
             }
-          ],
-          "attr": "units.power",
-          "xs": 12,
-          "sm": 12
+          ]
         }
-      },
-      "label": "Allgemein",
-      "title": "Allgemein"
+      ]
     },
-    "datenpunkte": {
+    {
       "type": "panel",
-      "items": {
-        "datapoints.autarky": {
-          "type": "objectId",
-          "label": "Autarkie (%)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.autarky",
-          "help": "Autarkie in %",
-          "newLine": true,
-          "attr": "datapoints.autarky",
-          "xs": 12,
-          "sm": 12
+      "label": "Installateur",
+      "items": [
+        {
+          "type": "number",
+          "attr": "gridLimitW",
+          "label": "Leistung Netzanschluss (W)",
+          "min": 0,
+          "step": 100
         },
-        "datapoints.selfConsumption": {
-          "type": "objectId",
-          "label": "Eigenverbrauch (%)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.selfConsumption",
-          "help": "Eigenverbrauch in %",
-          "newLine": true,
-          "attr": "datapoints.selfConsumption",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.pvPower": {
-          "type": "objectId",
-          "label": "PV-Leistung",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. fronius.0.powerflow.P_PV",
-          "help": "PV Leistung in W",
-          "newLine": true,
-          "attr": "datapoints.pvPower",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.productionTotal": {
-          "type": "objectId",
-          "label": "Produktion Gesamt (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. fronius.0.energy.total",
-          "help": "Gesamtproduktion kWh",
-          "newLine": true,
-          "attr": "datapoints.productionTotal",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.consumptionTotal": {
-          "type": "objectId",
-          "label": "Verbrauch Gesamt (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. smartmeter.0.energy.total",
-          "help": "Gesamtverbrauch kWh",
-          "newLine": true,
-          "attr": "datapoints.consumptionTotal",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.gridBuyPower": {
-          "type": "objectId",
-          "label": "Netzbezug (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. smartmeter.0.power.import",
-          "help": "Netzbezug W",
-          "newLine": true,
-          "attr": "datapoints.gridBuyPower",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.gridSellPower": {
-          "type": "objectId",
-          "label": "Einspeisung (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. smartmeter.0.power.export",
-          "help": "Einspeisung W",
-          "newLine": true,
-          "attr": "datapoints.gridSellPower",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.storageChargePower": {
-          "type": "objectId",
-          "label": "Batterie Ladeleistung",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.storageChargePower",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.storageDischargePower": {
-          "type": "objectId",
-          "label": "Batterie Entladeleistung",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.storageDischargePower",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.storageSoc": {
-          "type": "objectId",
-          "label": "Batterie SoC (%)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.storageSoc",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.consumptionEvcs": {
-          "type": "objectId",
-          "label": "Ladestation Verbrauch (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.consumptionEvcs",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.consumptionOther": {
-          "type": "objectId",
-          "label": "Sonstiger Verbrauch (Leistung)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.consumptionOther",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.evcsStatus": {
-          "type": "objectId",
-          "label": "EVCS Status",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. evcc.0.wallbox.status",
-          "help": "Wallbox Status",
-          "newLine": true,
-          "attr": "datapoints.evcsStatus",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.evcsLastChargeKwh": {
-          "type": "objectId",
-          "label": "EVCS letzte Ladung (kWh)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "attr": "datapoints.evcsLastChargeKwh",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.gridFrequency": {
-          "type": "objectId",
-          "label": "Netzfrequenz (Hz)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. smartmeter.0.grid.frequency",
-          "help": "Netzfrequenz Hz",
-          "newLine": true,
-          "attr": "datapoints.gridFrequency",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.gridVoltage": {
-          "type": "objectId",
-          "label": "Netzspannung (V)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. smartmeter.0.grid.voltage",
-          "help": "Netzspannung V",
-          "newLine": true,
-          "attr": "datapoints.gridVoltage",
-          "xs": 12,
-          "sm": 12
-        },
-        "datapoints.storageCapacityKwh": {
-          "type": "objectId",
-          "label": "Speicher Kapazität (kWh)",
-          "attr": "datapoints.storageCapacityKwh",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.storage.capacity_kwh",
-          "help": "Kapazität des Batteriespeichers in kWh (Zahl)."
-        },
-        "datapoints.consumer1Power": {
-          "type": "objectId",
-          "attr": "datapoints.consumer1Power",
-          "label": "Verbraucher 1 Leistung (W)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "placeholder": "optional"
-        },
-        "datapoints.consumer2Power": {
-          "type": "objectId",
-          "attr": "datapoints.consumer2Power",
-          "label": "Verbraucher 2 Leistung (W)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "newLine": true,
-          "placeholder": "optional"
-        }
-      },
-      "label": "Datenpunkte",
-      "title": "Datenpunkte"
-    },
-    "smarthome_vorbereitet": {
-      "type": "panel",
-      "items": {
-        "smartHome.enabled": {
+        {
           "type": "checkbox",
-          "label": "SmartHome-Bereich aktivieren (Beta)",
-          "attr": "smartHome.enabled",
-          "xs": 12,
-          "sm": 12
+          "attr": "section14a",
+          "label": "§14a aktiv"
         },
-        "smartHome.datapoints.heatPumpOn": {
-          "type": "objectId",
-          "label": "Wärmepumpe EIN/AUS (bool)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
-          "help": "SmartHome-Datenpunkt",
-          "newLine": true,
-          "attr": "smartHome.datapoints.heatPumpOn",
-          "xs": 12,
-          "sm": 12
+        {
+          "type": "number",
+          "attr": "chargePoints",
+          "label": "Anzahl Ladepunkte",
+          "min": 0,
+          "step": 1
         },
-        "smartHome.datapoints.roomTemp": {
-          "type": "objectId",
-          "label": "Raumtemperatur (°C)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
-          "help": "SmartHome-Datenpunkt",
-          "newLine": true,
-          "attr": "smartHome.datapoints.roomTemp",
-          "xs": 12,
-          "sm": 12
+        {
+          "type": "number",
+          "attr": "storagePowerW",
+          "label": "Leistung Speicher (W)",
+          "min": 0,
+          "step": 100
         },
-        "smartHome.datapoints.wallboxLock": {
-          "type": "objectId",
-          "label": "Wallbox verriegeln (bool)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
-          "help": "SmartHome-Datenpunkt",
-          "newLine": true,
-          "attr": "smartHome.datapoints.wallboxLock",
-          "xs": 12,
-          "sm": 12
-        },
-        "smartHome.datapoints.gridLimit": {
-          "type": "objectId",
-          "label": "Netzbezugslimit (W)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
-          "help": "SmartHome-Datenpunkt",
-          "newLine": true,
-          "attr": "smartHome.datapoints.gridLimit",
-          "xs": 12,
-          "sm": 12
-        },
-        "smartHome.datapoints.pvCurtailment": {
-          "type": "objectId",
-          "label": "PV-Abregelung (%)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "placeholder": "z.B. 0_userdata.0.nexowatt.smarthome.*",
-          "help": "SmartHome-Datenpunkt",
-          "newLine": true,
-          "attr": "smartHome.datapoints.pvCurtailment",
-          "xs": 12,
-          "sm": 12
-        }
-      },
-      "label": "SmartHome (vorbereitet)",
-      "title": "SmartHome (vorbereitet)"
-    },
-    "erweitert___zukunft": {
-      "type": "panel",
-      "items": {
-        "futureOptions.theme": {
+        {
           "type": "select",
-          "label": "Theme",
+          "attr": "emsMode",
+          "label": "Betriebsmodus EMS",
           "options": [
             {
-              "label": "NexoWatt Dark",
-              "value": "nexowatt-dark"
+              "label": "1 = Normal",
+              "value": 1
             },
             {
-              "label": "NexoWatt Light (später)",
-              "value": "nexowatt-light"
+              "label": "2 = Lastspitze",
+              "value": 2
+            },
+            {
+              "label": "3 = Multi-Use",
+              "value": 3
             }
-          ],
-          "attr": "futureOptions.theme",
-          "xs": 12,
-          "sm": 12
+          ]
         },
-        "futureOptions.enableAnimations": {
-          "type": "checkbox",
-          "label": "Animationen aktivieren",
-          "attr": "futureOptions.enableAnimations",
-          "xs": 12,
-          "sm": 12
+        {
+          "type": "number",
+          "attr": "socMin",
+          "label": "SOC Min (%)",
+          "min": 0,
+          "max": 100
         },
-        "futureOptions.showGridVoltage": {
-          "type": "checkbox",
-          "label": "Netzspannung anzeigen (experimentell)",
-          "attr": "futureOptions.showGridVoltage",
-          "xs": 12,
-          "sm": 12
-        }
-      },
-      "label": "Erweitert / Zukunft",
-      "title": "Erweitert / Zukunft"
-    },
-    "graph": {
-      "type": "panel",
-      "label": "Graph",
-      "title": "Graph",
-      "items": {
-        "graph.nodes": {
-          "type": "table",
-          "label": "Zusätzliche Knoten (max. 7)",
-          "columns": [
+        {
+          "type": "number",
+          "attr": "socPeakBandPct",
+          "label": "SOC Bereich Lastspitze (%)",
+          "min": 0,
+          "max": 100
+        },
+        {
+          "type": "number",
+          "attr": "chargeLimitW",
+          "label": "Beladeleistung max (W)",
+          "min": 0,
+          "step": 100
+        },
+        {
+          "type": "number",
+          "attr": "dischargeLimitW",
+          "label": "Entladeleistung max (W)",
+          "min": 0,
+          "step": 100
+        },
+        {
+          "type": "select",
+          "attr": "storageMode",
+          "label": "Anzahl Speicher (Modus)",
+          "options": [
             {
-              "name": "label",
-              "title": "Label",
-              "type": "text"
+              "label": "1",
+              "value": 1
             },
             {
-              "name": "role",
-              "title": "Rolle",
-              "type": "select",
-              "options": [
-                [
-                  "producer",
-                  "Erzeuger"
-                ],
-                [
-                  "consumer",
-                  "Verbraucher"
-                ]
-              ]
+              "label": "2",
+              "value": 2
             },
             {
-              "name": "icon",
-              "title": "Icon",
-              "type": "select",
-              "options": [
-                [
-                  "gen",
-                  "Generator"
-                ],
-                [
-                  "load",
-                  "Verbrauch"
-                ],
-                [
-                  "pv",
-                  "PV"
-                ],
-                [
-                  "grid",
-                  "Netz"
-                ]
-              ]
-            },
-            {
-              "name": "id",
-              "title": "Datenpunkt-ID (W)",
-              "type": "objectId",
-              "types": [
-                "state"
-              ],
-              "button": true
+              "label": "3",
+              "value": 3
             }
-          ],
-          "attr": "graph.nodes",
-          "xs": 12,
-          "sm": 12
-        },
-        "graph.cascade.enabled": {
-          "type": "checkbox",
-          "label": "Kaskade aktivieren",
-          "attr": "graph.cascade.enabled",
-          "xs": 12,
-          "sm": 12
-        },
-        "graph.cascade.label": {
-          "type": "text",
-          "label": "Kaskade Label",
-          "attr": "graph.cascade.label",
-          "xs": 12,
-          "sm": 12
-        },
-        "graph.cascade.pvPowerId": {
-          "type": "objectId",
-          "label": "PV an Kaskade (W)",
-          "types": [
-            "state"
-          ],
-          "button": true,
-          "attr": "graph.cascade.pvPowerId",
-          "xs": 12,
-          "sm": 12
+          ]
         }
-      }
+      ]
     }
-  }
+  ]
 }

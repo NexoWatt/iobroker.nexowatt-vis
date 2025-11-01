@@ -248,31 +248,7 @@ function initMenu(){
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
-  const installerBtn = document.getElementById('menuOpenInstaller');
-  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    // show settings section
-    hideAllPanels();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="settings"]');
-    if (sec) sec.classList.remove('hidden');
-    // deactivate tab buttons
-    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-    // initialize settings UI
-    initSettingsPanel();
-    setupSettings();
-  });
-  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    close();
-    hideAllPanels();
-    document.querySelector('.content').style.display = 'none';
-    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-    loadConfig();
-    setupInstaller();
-  });
-}
+  const }
 
 
 function initSettingsPanel(){
@@ -366,26 +342,6 @@ function setupSettings(){
 
 }
 
-function setupInstaller(){
-  const loginBox = document.getElementById('installerLoginBox');
-  const formBox  = document.getElementById('installerForm');
-  const form     = document.getElementById('installerLoginForm');
-  const btn      = document.getElementById('inst_login');
-  const cancel   = document.getElementById('inst_cancel');
-  const pw       = document.getElementById('inst_pw');
-
-  async function refreshLock(){
-    try {
-      const r = await fetch('/config', { cache:'no-store', credentials:'same-origin' });
-      const j = await r.json();
-      const locked = !!j.installerLocked;
-      if (loginBox) loginBox.classList.toggle('hidden', !locked);
-      if (formBox)  formBox.classList.toggle('hidden',  locked);
-      if (formBox) {
-        formBox.querySelectorAll('input,select,button,textarea').forEach(el => {
-          if (el.id !== 'inst_cancel') el.disabled = locked;
-        });
-      }
     } catch(_) {}
   }
 
