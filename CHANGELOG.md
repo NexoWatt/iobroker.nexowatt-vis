@@ -37,3 +37,6 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
+
+## 0.3.36 – 2025-11-01
+- Button „Installateur“ in Einstellungen: öffnet ioBroker Admin in neuem Tab.

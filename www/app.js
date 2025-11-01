@@ -349,6 +349,24 @@ function bindInputValue(el, stateKey) {
 
 function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
+  // Settings: open ioBroker Admin via "Installateur" button
+  const adminBtn = document.getElementById('openAdminBtn');
+  if (adminBtn && !adminBtn.dataset.bound) {
+    adminBtn.dataset.bound = '1';
+    adminBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      let target = null;
+      if (window.SERVER_CFG && window.SERVER_CFG.adminUrl) {
+        target = window.SERVER_CFG.adminUrl;
+      } else if (location && location.origin) {
+        target = location.origin + '/admin/'; // reverse-proxy default
+      } else {
+        target = '/admin/';
+      }
+      try { window.open(target, '_blank', 'noopener'); } catch(_){ location.href = target; }
+    });
+  }
+
 }
 
 function setupInstaller(){

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.35",
+    "version": "0.3.36",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -226,6 +226,10 @@
       "0.3.35": {
         "en": "Fix: add missing closing brace to end of initMenu() in app.js; resolves 'Unexpected end of input'.",
         "de": "Fix: fehlende schließende Klammer am Ende von initMenu() in app.js ergänzt; behebt 'Unexpected end of input'."
+      },
+      "0.3.36": {
+        "en": "Settings: add 'Installateur' button that opens ioBroker Admin (uses SERVER_CFG.adminUrl or /admin/).",
+        "de": "Einstellungen: Button „Installateur“ öffnet ioBroker Admin (nutzt SERVER_CFG.adminUrl oder /admin/)."
       }
     },
     "title": "NexoWatt EMS UI",
