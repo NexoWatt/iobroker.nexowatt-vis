@@ -381,3 +381,5 @@ body {
 .web .ring.center{stroke:#3498db}
 
 .web .ring.charger{stroke:#3498db}
+
+.web g.node.clickable{cursor:pointer}

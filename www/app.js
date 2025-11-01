@@ -825,3 +825,15 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
     if (slider != null) slider.value = String(Math.max(1, Math.min(3, Math.round(Number(mode)||1))));
   };
 })();
+
+
+// open EVCS on node click as well
+(function(){
+  const n = document.getElementById('nodeEvcs');
+  const modal = document.getElementById('evcsModal');
+  if (n && modal){
+    // mark clickable
+    n.classList.add('clickable');
+    n.addEventListener('click', ()=> modal.classList.remove('hidden'));
+  }
+})();

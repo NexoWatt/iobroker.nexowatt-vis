@@ -85,3 +85,8 @@
 ### 0.3.60 (2025-11-01)
 - Fix: Ring-Farben korrekt zugeordnet (Batterie grün, Ladestation blau, Gebäude blau, PV gelb, Netz rot).
 - DOM: Knoten erhalten explizite Klassen (charger/battery) für stabile Farbgebung.
+
+### 0.3.61 (2025-11-01)
+- Gebäude-Icon wirklich weiß (stärkerer Filter).
+- Ladestation-Modul: Modal öffnet jetzt auch beim Klick auf den **Knoten** im Energiefluss (ID `nodeEvcs`).
+- Klickbarer Cursor für Nodes.
