@@ -68,3 +68,6 @@
 ### 0.3.53 (2025-11-01)
 - Responsives Layout: Energiefluss proportioniert (kleiner), SVG-Ring reduziert, Breakpoints angepasst.
 - Admin: alle Reiter als 2-Spalten-Layout ab md, mobil 1-Spalte; `newLine` entfernt wo sinnvoll.
+
+### 0.3.54 (2025-11-01)
+- History-Seite: identischer Header wie LIVE (Brand, Menü, Tabs). HISTORY aktiv, LIVE führt auf '/'.

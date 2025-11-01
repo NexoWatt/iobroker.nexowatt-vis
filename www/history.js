@@ -111,3 +111,28 @@
 
   resize(); load();
 })();
+
+  // --- header interactions (same as index) ---
+  (function(){
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menuDropdown');
+    if (menuBtn && menu) {
+      menuBtn.addEventListener('click', ()=> menu.classList.toggle('hidden'));
+      document.addEventListener('click', (e)=>{
+        if (!menu.contains(e.target) && e.target !== menuBtn) menu.classList.add('hidden');
+      });
+    }
+    const liveBtn = document.getElementById('liveTabBtn');
+    if (liveBtn) liveBtn.addEventListener('click', ()=>{ window.location.href = '/'; });
+    const histBtn = document.getElementById('historyTabBtn');
+    if (histBtn) histBtn.addEventListener('click', ()=>{ /* already here */ });
+    const openInstallerAdmin = document.getElementById('openInstallerAdmin');
+    if (openInstallerAdmin) {
+      openInstallerAdmin.addEventListener('click', ()=>{
+        // same behavior: forward to ioBroker Admin (host:8081) – try to derive host dynamically
+        const host = window.location.hostname;
+        const proto = window.location.protocol;
+        window.top.location.href = proto + '//' + host + ':8081/';
+      });
+    }
+  })();

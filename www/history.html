@@ -26,10 +26,15 @@
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a href="/"><span>←</span> zurück</a>
-    <h2 style="margin:0">Historie</h2>
-  </header>
+  <header class="topbar"><div class="brand"><img alt="NexoWatt" src="/static/nexowatt-logo.png"/></div>
+<button aria-label="Menu" id="menuBtn">☰</button>
+<h1>NexoWatt EMS</h1>
+<nav class="tabs">
+<button class="tab" id="liveTabBtn" data-tab="live">LIVE</button>
+<button class="tab active" id="historyTabBtn" data-tab="history">HISTORY</button>
+</nav>
+<div class="status-dot" id="liveDot" title="Live Verbindung"></div>
+<div class="menu hidden" id="menuDropdown"><button class="menu-item" id="menuOpenSettings">Einstellungen</button></div></header>
   <div class="hist-wrap">
     <div class="toolbar">
       <label>Von: <input type="datetime-local" id="from"></label>
