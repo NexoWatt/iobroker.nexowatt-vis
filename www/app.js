@@ -840,12 +840,35 @@ render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.wa
 
 
 // --- chargepoints visibility ---
+
 function getChargepointsFromState(state){
-  // prefer exact key
-  if (state && state['installer.chargepoints'] && state['installer.chargepoints'].value != null){
-    const v = Number(state['installer.chargepoints'].value);
-    return isNaN(v) ? 0 : (v|0);
+  // try several likely keys + fuzzy fallback
+  const keys = Object.keys(state||{});
+  const candidates = [
+    'installer.chargepoints','installer.chargePoints','installer.charge_points',
+    'installer.evcs.count','installer.evcsCount'
+  ];
+  for (const k of candidates){
+    if (k in state){
+      const entry = state[k];
+      const v = (entry && typeof entry === 'object') ? (('value' in entry)? entry.value : (('val' in entry)? entry.val : entry.v)) : entry;
+      const n = Number(v);
+      if (!isNaN(n)) return n|0;
+    }
   }
+  // fuzzy: any installer.* key containing "charge" and "point"
+  for (const k of keys){
+    const lk = k.toLowerCase();
+    if (lk.startsWith('installer') && lk.includes('charge') && lk.includes('point')){
+      const entry = state[k];
+      const v = (entry && typeof entry === 'object') ? (('value' in entry)? entry.value : (('val' in entry)? entry.val : entry.v)) : entry;
+      const n = Number(v);
+      if (!isNaN(n)) return n|0;
+    }
+  }
+  return 0;
+}
+
   let n = 0;
   try{
     for (const k in state){
@@ -888,3 +911,10 @@ async function pollChargepoints(){
 }
 setInterval(pollChargepoints, 5000);
 pollChargepoints();
+
+let __cpPollTick = 0;
+const __cpInterval = setInterval(async ()=>{
+  __cpPollTick++;
+  try{ await pollChargepoints(); }catch(_){}
+  if (__cpPollTick > 12){ clearInterval(__cpInterval); } // ~1 min at 5s
+}, 5000);
