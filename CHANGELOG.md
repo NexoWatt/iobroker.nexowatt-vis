@@ -19,3 +19,6 @@
 - Installer-Schutz auf HttpOnly-Cookie umgestellt (Server prüft Session).
 - Frontend vereinfacht: kein Token-Handling mehr, Login-Form triggert nur /api/installer/login.
 - /config liefert `installerLocked` abhängig von Session.
+
+## 0.3.30 – 2025-11-01
+- Default-Passwort für Installer: **install2025!** (falls kein Wert gesetzt).

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.29",
+    "version": "0.3.30",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -202,6 +202,10 @@
       "0.3.29": {
         "en": "Feature: Cookie-based installer session (HttpOnly); client no longer handles tokens; /config reflects lock state; guard /api/set by cookie session.",
         "de": "Feature: Cookie-basierte Installer-Session (HttpOnly); kein Token mehr im Client; /config meldet Lock-Status; /api/set durch Session geschützt."
+      },
+      "0.3.30": {
+        "en": "Default installer password = 'install2025!' if none configured; lock active by default.",
+        "de": "Standard-Installer-Passwort = 'install2025!' falls nicht konfiguriert; Bereich standardmäßig gesperrt."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -297,7 +301,8 @@
       "theme": "nexowatt-dark",
       "enableAnimations": true,
       "showGridVoltage": false
-    }
+    },
+    "installerPassword": ""
   },
   "instanceObjects": []
 }

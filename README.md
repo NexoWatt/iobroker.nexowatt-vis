@@ -60,3 +60,8 @@ cd /opt/iobroker
 iobroker url "https://github.com/USER/iobroker.nexowatt-vis" --debug
 iobroker add nexowatt-vis
 ```
+
+
+### Installer password
+- Default: **install2025!** (HttpOnly cookie-based session)
+- You can override it by setting `native.installerPassword` in adapter config.

@@ -24,6 +24,14 @@ function parseCookies(req) {
 function createToken() {
   return crypto.randomBytes(24).toString('base64url');
 }
+function getInstallerPassword(ctx) {
+  try {
+    const cfg = ctx && ctx.config;
+    const pw = (cfg && cfg.installerPassword) || 'install2025!'; // default
+    return pw;
+  } catch (_) { return 'install2025!'; }
+}
+
 
 
 class NexoWattVis extends utils.Adapter {
@@ -74,7 +82,7 @@ class NexoWattVis extends utils.Adapter {
     this._installerTokenExp = this._installerTokenExp || 0;
 
     const isInstallerAuthed = (req) => {
-      const pw = this.config && this.config.installerPassword;
+      const pw = getInstallerPassword(this);
       if (!pw) return true;
       const c = parseCookies(req);
       const ok = !!(c.installer_session &&
@@ -101,7 +109,7 @@ app.get('/config', (_req, res) => {
     // login for installer
     
     app.post('/api/installer/login', (req, res) => {
-      const pw = (this.config && this.config.installerPassword) || '';
+      const pw = getInstallerPassword(this);
       const provided = (req.body && req.body.password) || '';
       if (!pw || provided === pw) {
         this._installerToken = createToken();
