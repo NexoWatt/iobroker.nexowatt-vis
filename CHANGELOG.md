@@ -41,3 +41,6 @@
 ## 0.3.39 - 2025-11-01
 - Neu: Eigene Datenpunkte für **Einstellungen** unter `nexowatt-vis.0.settings.*` (notifyEnabled, email, dynamicTariff, storagePower, price, priority, tariffMode)
 - /api/set fällt auf lokale States zurück, wenn keine Fremd-ID konfiguriert ist.
+
+### 0.3.40 (2025-11-01)
+- Energy Flow Monitor: labels moved under icons, centered battery icon, battery SOC above icon, building power shown above icon inside the circle.
