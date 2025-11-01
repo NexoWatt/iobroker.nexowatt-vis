@@ -742,3 +742,7 @@ if (soc !== undefined && !isNaN(Number(soc))) T('batterySocIn', Number(soc).toFi
 // Patch render to also update energy web
 const _renderOld = render;
 render = function(){ _renderOld(); try{ updateEnergyWeb(); }catch(e){ console.warn('energy web', e); } }
+
+  // open history page via header tab
+  const hbtn = document.getElementById('historyTabBtn');
+  if (hbtn) hbtn.addEventListener('click', ()=>{ window.location.href = '/history.html'; });

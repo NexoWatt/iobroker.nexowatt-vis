@@ -57,3 +57,7 @@
 ### 0.3.44 (2025-11-01)
 - Fix: ID-Mismatches im UI behoben (`gridBuyPowerCard/gridSellPowerCard`, `evcsLastChargeKwh`, `consumptionOther`).
 - Default `gridFrequency` → `fenecon.0._sum.GridFrequency`.
+
+### 0.3.51 (2025-11-01)
+- Fix: /history.html Route hinzugefügt (404 behoben).
+- UI: Bestehenden HISTORY-Tab genutzt (kein zusätzlicher Button), Click öffnet /history.html.
