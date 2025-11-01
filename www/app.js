@@ -353,8 +353,10 @@ let SERVER_CFG = { adminUrl: null, installerLocked: false };
 async function loadConfig() {
   try {
     const r = await fetch('/config');
+    const j = await r.json();
+    SERVER_CFG = j || {};
+  } catch(e) { console.warn('cfg', e); }
 }
-
 function bindInputValue(el, stateKey) {
   // set initial value from state cache
   const st = (window.latestState || {});
