@@ -31,3 +31,6 @@
 
 ## 0.3.33 – 2025-11-01
 - Fix: Stray top-level await in app.js entfernt.
+
+## 0.3.34 – 2025-11-01
+- Fix: Reste der alten Token-Logik entfernt (SyntaxError in Zeile ~276 beseitigt).

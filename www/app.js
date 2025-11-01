@@ -272,18 +272,6 @@ function initMenu(){
     loadConfig();
     setupInstaller();
   });
-      if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      /* no-token */ null = j.token || 'ok';
-      // Navigate to installer page only after successful login
-      hideAllPanels();
-      document.querySelector('.content').style.display = 'none';
-      const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
-      document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
-      loadConfig();
-      setupInstaller();
-    } catch(err){ console.warn(err); alert('Login fehlgeschlagen'); }
-  });
-}
 
 
 function initSettingsPanel(){
@@ -330,7 +318,6 @@ hideAllPanels();
 
 // --- Settings & Installer logic ---
 function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
-let /* no-token */ null = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
 async function loadConfig() {
@@ -353,7 +340,6 @@ function bindInputValue(el, stateKey) {
     const scope = el.dataset.scope;
     const key = el.dataset.key;
     const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
-    if (scope === 'installer' && SERVER_CFG.installerLocked && /* no-token */ null) payload.token = /* no-token */ null;
     try {
       await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
     } catch(e) { console.warn('set', e); }
@@ -426,7 +412,7 @@ function setupInstaller(){
 }
 
 function initInstallerPanel(){
-  if (SERVER_CFG && SERVER_CFG.installerLocked && !/* no-token */ null) return;
+  if (SERVER_CFG && SERVER_CFG.installerLocked && !null) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
     const key = el.dataset.key; bindInputValue(el, 'installer.' + key);
   });
