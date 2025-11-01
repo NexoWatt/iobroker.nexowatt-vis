@@ -370,3 +370,27 @@ body {
 
 .mode-labels{display:flex;justify-content:space-between;font-size:12px;opacity:.8}
 #evcsModeSlider{width:100%}
+
+
+/* --- Settings: mobile optimizations --- */
+.form input[type="range"]{
+  -webkit-appearance:none; appearance:none; height:8px; background:#2b2f34; border-radius:6px; outline:none;
+}
+.form input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; background:#a7c400; border:2px solid #15171a;
+}
+.form input[type="range"]::-moz-range-thumb{
+  width:22px; height:22px; border-radius:50%; background:#a7c400; border:2px solid #15171a;
+}
+.form input[type="range"]::-moz-range-track{ height:8px; background:#2b2f34; border-radius:6px; }
+.form input[type="range"]::-ms-track{ height:8px; background:transparent; border-color:transparent; color:transparent; }
+
+@media (max-width: 680px){
+  .form .row{ flex-direction:column; align-items:stretch; gap:6px; }
+  .form .row > span{ flex:none; width:100%; min-width:0; margin:0 0 2px 0; font-size:16px; }
+  .form input[type="number"], .form input[type="email"], .form input[type="password"]{ width:100%; min-width:0; }
+  .form input[type="checkbox"]{ transform: scale(1.3); align-self:flex-start; }
+  .form input[type="range"]{ width:100%; }
+  .form .row .btn, .form .row button{ width:100%; }
+  .dialog{ min-width: 0; width: 92vw; }
+}
