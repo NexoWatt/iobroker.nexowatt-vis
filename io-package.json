@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.39",
+    "version": "0.3.35",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -226,22 +226,6 @@
       "0.3.35": {
         "en": "Fix: add missing closing brace to end of initMenu() in app.js; resolves 'Unexpected end of input'.",
         "de": "Fix: fehlende schließende Klammer am Ende von initMenu() in app.js ergänzt; behebt 'Unexpected end of input'."
-      },
-      "0.3.36": {
-        "en": "Settings: add 'Installateur' button that opens ioBroker Admin (uses SERVER_CFG.adminUrl or /admin/).",
-        "de": "Einstellungen: Button „Installateur“ öffnet ioBroker Admin (nutzt SERVER_CFG.adminUrl oder /admin/)."
-      },
-      "0.3.37": {
-        "en": "Installateur button now always opens Admin at http://<host>:8081/ (auto-detect host, supports IPv6 brackets).",
-        "de": "Installateur-Button öffnet nun immer Admin unter http://<host>:8081/ (Host automatisch, IPv6 in Klammern)."
-      },
-      "0.3.38": {
-        "en": "Move installer parameters to Admin (jsonConfig). VIS installer panel removed.",
-        "de": "Installer-Parameter in Admin (jsonConfig) verschoben. VIS-Installer-Panel entfernt."
-      },
-      "0.3.39": {
-        "en": "Fix app.js: repaired initMenu settings handler and removed stray catch/brace leftovers from removed installer code.",
-        "de": "Fix app.js: initMenu-Settings-Handler ergänzt; übrig gebliebene catch/Schlussklammern (Installer) entfernt."
       }
     },
     "title": "NexoWatt EMS UI",
@@ -338,17 +322,7 @@
       "enableAnimations": true,
       "showGridVoltage": false
     },
-    "installerPassword": "",
-    "gridLimitW": 0,
-    "section14a": false,
-    "chargePoints": 1,
-    "storageMode": 1,
-    "storagePowerW": 0,
-    "emsMode": 1,
-    "socMin": 20,
-    "socPeakBandPct": 10,
-    "chargeLimitW": 0,
-    "dischargeLimitW": 0
+    "installerPassword": ""
   },
   "instanceObjects": []
 }

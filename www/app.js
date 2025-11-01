@@ -248,7 +248,31 @@ function initMenu(){
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
-  const }
+  const installerBtn = document.getElementById('menuOpenInstaller');
+  if (settingsBtn) settingsBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    close();
+    // show settings section
+    hideAllPanels();
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="settings"]');
+    if (sec) sec.classList.remove('hidden');
+    // deactivate tab buttons
+    document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+    // initialize settings UI
+    initSettingsPanel();
+    setupSettings();
+  });
+  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    close();
+    hideAllPanels();
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
+    loadConfig();
+    setupInstaller();
+  });
+}
 
 
 function initSettingsPanel(){
@@ -325,25 +349,30 @@ function bindInputValue(el, stateKey) {
 
 function setupSettings(){
   document.querySelectorAll('[data-scope="settings"]').forEach(el=> bindInputValue(el, 'settings.'+el.dataset.key));
-  // Settings: open ioBroker Admin via "Installateur" button
-  const adminBtn = document.getElementById('openAdminBtn');
-  if (adminBtn && !adminBtn.dataset.bound) {
-    adminBtn.dataset.bound = '1';
-    adminBtn.addEventListener('click', (e)=>{
-      e.preventDefault();
-      let target = (function(){
-        const host = (location && location.hostname) ? location.hostname : 'localhost';
-        const h = host.includes(':') ? `[${host}]` : host; // IPv6 brackets
-        return `http://${h}:8081/`;
-      })();
-      try { window.open(target, '_blank', 'noopener'); } catch(_) { location.href = target; }
-    });
-  }
-
 }
 
+function setupInstaller(){
+  const loginBox = document.getElementById('installerLoginBox');
+  const formBox  = document.getElementById('installerForm');
+  const form     = document.getElementById('installerLoginForm');
+  const btn      = document.getElementById('inst_login');
+  const cancel   = document.getElementById('inst_cancel');
+  const pw       = document.getElementById('inst_pw');
+
+  async function refreshLock(){
+    try {
+      const r = await fetch('/config', { cache:'no-store', credentials:'same-origin' });
+      const j = await r.json();
+      const locked = !!j.installerLocked;
+      if (loginBox) loginBox.classList.toggle('hidden', !locked);
+      if (formBox)  formBox.classList.toggle('hidden',  locked);
+      if (formBox) {
+        formBox.querySelectorAll('input,select,button,textarea').forEach(el => {
+          if (el.id !== 'inst_cancel') el.disabled = locked;
+        });
+      }
     } catch(_) {}
-  
+  }
 
   async function doLogin(){
     try{

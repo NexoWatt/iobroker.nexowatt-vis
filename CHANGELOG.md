@@ -37,12 +37,3 @@
 
 ## 0.3.35 – 2025-11-01
 - Fix: Fehlende '}' nach initMenu() ergänzt (SyntaxError am Dateiende).
-
-## 0.3.36 – 2025-11-01
-- Button „Installateur“ in Einstellungen: öffnet ioBroker Admin in neuem Tab.
-
-## 0.3.37 – 2025-11-01
-- "Installateur" öffnet fest http://<host>:8081/.
-
-## 0.3.38 – 2025-11-01
-- Installer-Parameter in Admin verschoben (jsonConfig.json), VIS-Installer entfernt.
