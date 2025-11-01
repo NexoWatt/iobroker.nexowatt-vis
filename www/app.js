@@ -263,15 +263,18 @@ function initMenu(){
     initSettingsPanel();
     setupSettings();
   });
-  if (installerBtn) installerBtn.addEventListener('click', async (e)=>{
+  if (installerBtn) installerBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     close();
-    try {
-      const pw = null /*prompt removed*/;
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw || '' })});
-      const j = await r.json();
+    hideAllPanels();
+    document.querySelector('.content').style.display = 'none';
+    const sec = document.querySelector('[data-tab-content="installer"]'); if (sec) { sec.classList.remove('hidden'); }
+    loadConfig();
+    setupInstaller();
+  });
+const j = await r.json();
       if (!j || !j.ok) { alert('Passwort falsch'); return; }
-      INSTALLER_TOKEN = j.token || 'ok';
+      /* no-token */ null = j.token || 'ok';
       // Navigate to installer page only after successful login
       hideAllPanels();
       document.querySelector('.content').style.display = 'none';
@@ -328,7 +331,7 @@ hideAllPanels();
 
 // --- Settings & Installer logic ---
 function hideAllPanels(){ document.querySelectorAll('[data-tab-content]').forEach(el=> el.classList.add('hidden')); document.querySelector('.content').style.display='block'; }
-let INSTALLER_TOKEN = null;
+let /* no-token */ null = null;
 let SERVER_CFG = { adminUrl: null, installerLocked: false };
 
 async function loadConfig() {
@@ -351,7 +354,7 @@ function bindInputValue(el, stateKey) {
     const scope = el.dataset.scope;
     const key = el.dataset.key;
     const payload = { scope, key, value: (el.type === 'checkbox') ? el.checked : (el.type === 'number' ? Number(el.value) : el.value) };
-    if (scope === 'installer' && SERVER_CFG.installerLocked && INSTALLER_TOKEN) payload.token = INSTALLER_TOKEN;
+    if (scope === 'installer' && SERVER_CFG.installerLocked && /* no-token */ null) payload.token = /* no-token */ null;
     try {
       await fetch('/api/set', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
     } catch(e) { console.warn('set', e); }
@@ -365,45 +368,51 @@ function setupSettings(){
 function setupInstaller(){
   const loginBox = document.getElementById('installerLoginBox');
   const formBox  = document.getElementById('installerForm');
-  const locked   = !!(SERVER_CFG && SERVER_CFG.installerLocked);
-  if (locked && !INSTALLER_TOKEN) {
-    if (loginBox) loginBox.classList.remove('hidden');
-    if (formBox)  formBox.classList.add('hidden');
-  } else {
-    if (loginBox) loginBox.classList.add('hidden');
-    if (formBox)  formBox.classList.remove('hidden');
-  }
+  const form     = document.getElementById('installerLoginForm');
+  const btn      = document.getElementById('inst_login');
+  const cancel   = document.getElementById('inst_cancel');
+  const pw       = document.getElementById('inst_pw');
 
-  const pw   = document.getElementById('inst_pw');
-  const btn  = document.getElementById('inst_login');
-  const form = document.getElementById('installerLoginForm');
+  async function refreshLock(){
+    try {
+      const r = await fetch('/config', { cache:'no-store', credentials:'same-origin' });
+      const j = await r.json();
+      const locked = !!j.installerLocked;
+      if (loginBox) loginBox.classList.toggle('hidden', !locked);
+      if (formBox)  formBox.classList.toggle('hidden',  locked);
+      if (formBox) {
+        formBox.querySelectorAll('input,select,button,textarea').forEach(el => {
+          if (el.id !== 'inst_cancel') el.disabled = locked;
+        });
+      }
+    } catch(_) {}
+  }
 
   async function doLogin(){
     try{
       const pass = String((pw && pw.value) || '');
-      if (!pass) { alert('Bitte Passwort eingeben'); return; }
-      const r = await fetch('/api/installer/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) });
-      const j = await r.json();
-      if (j && j.ok && j.token){
-        INSTALLER_TOKEN = j.token;
-        if (loginBox) loginBox.classList.add('hidden');
-        if (formBox)  formBox.classList.remove('hidden');
-        if (typeof initInstallerPanel === 'function') initInstallerPanel();
+      if (!pass){ alert('Bitte Passwort eingeben'); return; }
+      const r = await fetch('/api/installer/login', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        credentials:'same-origin',
+        body: JSON.stringify({ password: pass })
+      });
+      if (r.ok){
+        if (pw) pw.value='';
+        await refreshLock();
       } else {
         alert('Passwort falsch');
-        if (loginBox) loginBox.classList.remove('hidden');
-        if (formBox)  formBox.classList.add('hidden');
       }
-    }catch(e){ alert('Login fehlgeschlagen'); }
+    }catch(_){ alert('Login fehlgeschlagen'); }
   }
 
   if (btn && !btn.dataset.bound){ btn.dataset.bound='1'; btn.addEventListener('click', (e)=>{ e.preventDefault(); doLogin(); }); }
-  const cancel = document.getElementById('inst_cancel');
+  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
   if (cancel && !cancel.dataset.bound){
     cancel.dataset.bound = '1';
     cancel.addEventListener('click', (e)=>{
       e.preventDefault();
-      // Close installer panel and go back to live view
       const installerSec = document.querySelector('[data-tab-content="installer"]');
       if (installerSec) installerSec.classList.add('hidden');
       const live = document.querySelector('.content');
@@ -413,11 +422,12 @@ function setupInstaller(){
       });
     });
   }
-  if (form && !form.dataset.bound){ form.dataset.bound='1'; form.addEventListener('submit', (e)=>{ e.preventDefault(); doLogin(); }); }
+
+  refreshLock();
 }
 
 function initInstallerPanel(){
-  if (SERVER_CFG && SERVER_CFG.installerLocked && !INSTALLER_TOKEN) return;
+  if (SERVER_CFG && SERVER_CFG.installerLocked && !/* no-token */ null) return;
   document.querySelectorAll('#installerForm [data-scope="installer"]').forEach(el=>{
     const key = el.dataset.key; bindInputValue(el, 'installer.' + key);
   });

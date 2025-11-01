@@ -14,3 +14,8 @@
 
 ## 0.3.28 – 2025-11-01
 - Fix: Donut-Render verwendete chg2/dchg2 außerhalb des Blocks → ReferenceError. Jetzt charge/discharge.
+
+## 0.3.29 – 2025-11-01
+- Installer-Schutz auf HttpOnly-Cookie umgestellt (Server prüft Session).
+- Frontend vereinfacht: kein Token-Handling mehr, Login-Form triggert nur /api/installer/login.
+- /config liefert `installerLocked` abhängig von Session.

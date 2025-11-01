@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.28",
+    "version": "0.3.29",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -198,6 +198,10 @@
       "0.3.28": {
         "en": "Fix: donut render used undefined chg2/dchg2; replaced with charge/discharge and removed duplicate vars.",
         "de": "Fix: Donut-Render nutzte undefinierte chg2/dchg2; auf charge/discharge umgestellt und Dubletten entfernt."
+      },
+      "0.3.29": {
+        "en": "Feature: Cookie-based installer session (HttpOnly); client no longer handles tokens; /config reflects lock state; guard /api/set by cookie session.",
+        "de": "Feature: Cookie-basierte Installer-Session (HttpOnly); kein Token mehr im Client; /config meldet Lock-Status; /api/set durch Session geschützt."
       }
     },
     "title": "NexoWatt EMS UI",

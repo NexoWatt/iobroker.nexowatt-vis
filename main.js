@@ -5,6 +5,26 @@ const utils = require('@iobroker/adapter-core');
 const express = require('express');
 const path = require('path');
 const bodyParser = express.json();
+const crypto = require('crypto');
+
+function parseCookies(req) {
+  const raw = req.headers.cookie || '';
+  const out = {};
+  raw.split(';').forEach(p => {
+    const idx = p.indexOf('=');
+    if (idx > -1) {
+      const k = p.slice(0, idx).trim();
+      const v = p.slice(idx+1);
+      if (k) out[k] = decodeURIComponent(v || '');
+    }
+  });
+  return out;
+}
+
+function createToken() {
+  return crypto.randomBytes(24).toString('base64url');
+}
+
 
 class NexoWattVis extends utils.Adapter {
   constructor(options) {
@@ -48,7 +68,22 @@ class NexoWattVis extends utils.Adapter {
     app.use(bodyParser);
 
     // config for client
-    app.get('/config', (_req, res) => {
+    
+    // installer session data
+    this._installerToken = this._installerToken || null;
+    this._installerTokenExp = this._installerTokenExp || 0;
+
+    const isInstallerAuthed = (req) => {
+      const pw = this.config && this.config.installerPassword;
+      if (!pw) return true;
+      const c = parseCookies(req);
+      const ok = !!(c.installer_session &&
+                    this._installerToken &&
+                    c.installer_session === this._installerToken &&
+                    Date.now() < this._installerTokenExp);
+      return ok;
+    };
+app.get('/config', (_req, res) => {
       res.json({
         units: this.config.units || { power: 'W', energy: 'kWh' },
         settings: this.config.settings || {},
@@ -64,13 +99,28 @@ class NexoWattVis extends utils.Adapter {
     });
 
     // login for installer
+    
     app.post('/api/installer/login', (req, res) => {
       const pw = (this.config && this.config.installerPassword) || '';
       const provided = (req.body && req.body.password) || '';
       if (!pw || provided === pw) {
-        // generate volatile token
-        this._installerToken = Math.random().toString(36).slice(2);
-        res.json({ ok: true, token: this._installerToken });
+        this._installerToken = createToken();
+        this._installerTokenExp = Date.now() + 2*60*60*1000; // 2h
+        res.setHeader('Set-Cookie',
+          `installer_session=${encodeURIComponent(this._installerToken)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200`);
+        return res.json({ ok: true });
+    // logout for installer
+    app.post('/api/installer/logout', (_req, res) => {
+      this._installerToken = null;
+      this._installerTokenExp = 0;
+      res.setHeader('Set-Cookie', 'installer_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0');
+      res.json({ ok: true });
+    });
+
+      } else {
+        return res.status(401).json({ ok: false, error: 'Unauthorized' });
+      }
+    });
       } else {
         res.status(401).json({ ok: false, error: 'Unauthorized' });
       }
