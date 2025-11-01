@@ -255,10 +255,7 @@ body {
 .card.energy-web .web-wrap{width:100%;display:flex;justify-content:center;align-items:center;min-height:clamp(360px, 40vw, 600px)}
 .web{width:min(640px,86vw);height:auto}
 .web .ring{fill:#0e1216;stroke-width:3}
-.web .ring.pv{stroke:#f1c40f}
-.web .ring.grid{stroke:#e74c3c}
-.web .ring.consumer{stroke:#9b59b6}
-.web .node .ico{fill:#e6e6e6;filter:url(#soft)}
+.web .ring.pv{stroke: #f1c40f;filter:url(#soft)}
 .web text{fill:#e6e6e6;font-size:14px}
 .web text.big{font-size:18px;font-weight:700}
 .web text.lbl{opacity:.8}
@@ -336,23 +333,7 @@ body {
   width: 260px;
 }
 
-.web .ring.battery{stroke:#27ae60}
-
-.web .ring.center{stroke:#3498db}
-
-
-/* stronger icon colors */
-.web .node.pv .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #f1c40f)}
-.web .node.grid .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #e74c3c)}
-.web .node.consumer.charger .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #9b59b6)}
-.web .node.consumer.battery .ico image{filter:saturate(1.8) brightness(1.2) drop-shadow(0 0 2px #27ae60)}
-.web .node.center .ico image{filter:invert(1) brightness(1.8) drop-shadow(0 0 2px rgba(255,255,255,.8))}
-/* a bit more gap under icons is already added via label y=28 */
-
-
-
-/* --- EVCS modal --- */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000}
+.web .ring.battery{stroke: #27ae60;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000}
 .modal.hidden{display:none}
 .dialog{background:#121416;border:1px solid rgba(255,255,255,.08);border-radius:12px;min-width:420px;max-width:92vw;padding:16px}
 .dialog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -394,3 +375,9 @@ body {
   .form .row .btn, .form .row button{ width:100%; }
   .dialog{ min-width: 0; width: 92vw; }
 }
+
+.web .ring.grid{stroke:#e74c3c}
+
+.web .ring.center{stroke:#3498db}
+
+.web .ring.charger{stroke:#3498db}

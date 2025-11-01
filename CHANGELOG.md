@@ -82,3 +82,6 @@
 - Icons kräftiger (Sättigung/Glühen); Gebäude-Icon weiß.
 - Mehr Luft unter den Icon-Beschriftungen (Label y=28).
 \n### 0.3.58 (2025-11-01)\n- EVCS: Klickbare Karte öffnet Steuer-Modal (Status, Aktiv-Schalter, Modus-Slider 1–3, Leistung).\n- Admin: Neuer Reiter 'EVCS' zum Zuordnen von IDs (Leistung, Status, Aktiv, Modus).\n\n### 0.3.59 (2025-11-01)\n- Mobile: Settings-Form responsiv (Labels oben, volle Breite, größere Slider/Toggle, Installer-Button 100%).\n
+### 0.3.60 (2025-11-01)
+- Fix: Ring-Farben korrekt zugeordnet (Batterie grün, Ladestation blau, Gebäude blau, PV gelb, Netz rot).
+- DOM: Knoten erhalten explizite Klassen (charger/battery) für stabile Farbgebung.
