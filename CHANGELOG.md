@@ -47,3 +47,6 @@
 
 ### 0.3.41 (2025-11-01)
 - Admin: Übersichtskachel + Admin-Tab mit Auto-Weiterleitung auf `http://<ioBroker-IP>:<VIS-Port>/`.
+
+### 0.3.42 (2025-11-01)
+- Admin: welcomeScreen (legacy) + welcomeScreenPro mit RELATIVEM Link `/adapter/nexowatt-vis/tab.html` – Kachel wird klickbar.

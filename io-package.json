@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.41",
+    "version": "0.3.42",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -271,25 +271,21 @@
     },
     "welcomeScreenPro": [
       {
-        "link": "adapter/nexowatt-vis/tab.html",
+        "link": "/adapter/nexowatt-vis/tab.html",
         "name": "Energiefluss",
         "desc": {
-          "de": "Direkt zur NexoWatt VIS (öffnet die aktuelle ioBroker-IP mit VIS-Port).",
-          "en": "Go to NexoWatt VIS (uses current ioBroker IP + VIS port)."
-        },
-        "buttonLink": "adapter/nexowatt-vis/tab.html",
-        "buttonText": {
-          "de": "Öffnen",
-          "en": "Open"
+          "de": "Direkt zur NexoWatt VIS (aktuelle ioBroker-IP + VIS-Port).",
+          "en": "Go to NexoWatt VIS (current ioBroker IP + VIS port)."
         },
         "img": "admin.png",
         "color": "#00c853",
         "order": 10,
         "localLinks": {
-          "_default": "adapter/nexowatt-vis/tab.html"
+          "_default": "/adapter/nexowatt-vis/tab.html"
         }
       }
-    ]
+    ],
+    "welcomeScreen": "adapter/nexowatt-vis/tab.html"
   },
   "native": {
     "port": 8188,
