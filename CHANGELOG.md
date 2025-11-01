@@ -61,3 +61,6 @@
 ### 0.3.51 (2025-11-01)
 - Fix: /history.html Route hinzugefügt (404 behoben).
 - UI: Bestehenden HISTORY-Tab genutzt (kein zusätzlicher Button), Click öffnet /history.html.
+
+### 0.3.52 (2025-11-01)
+- Fix: History-Route und API in startServer(app) korrekt registriert (404 beseitigt).

@@ -143,6 +143,48 @@ async syncInstallerConfigToStates() {
     // JSON body parser
     app.use(bodyParser);
 
+    // --- History page & API ---
+    app.get(['/history.html','/history'], (req, res) => {
+      res.sendFile(path.join(__dirname, 'www', 'history.html'));
+    });
+
+    app.get('/api/history', async (req, res) => {
+      try {
+        const inst = (this.config.history && this.config.history.instance) || 'influxdb.0';
+        const start = Number(req.query.from || (Date.now() - 24*3600*1000));
+        const end   = Number(req.query.to   || Date.now());
+        const stepS = Number(req.query.step || 60); // seconds
+        const dp = (this.config.history && this.config.history.datapoints) || {};
+        const ids = {
+          pv: dp.pvPower, load: dp.consumptionTotal, buy: dp.gridBuyPower, sell: dp.gridSellPower,
+          chg: dp.storageChargePower, dchg: dp.storageDischargePower, soc: dp.storageSoc
+        };
+        const ask = (id) => new Promise(resolve => {
+          if (!id) return resolve({id, values:[]});
+          const options = { start, end, step: stepS*1000, aggregate: 'avg', addId: false, ignoreNull: true };
+          try {
+            this.sendTo(inst, 'getHistory', { id, options }, (resu) => {
+              const arr = (resu && resu.result) ? resu.result : (Array.isArray(resu) ? resu : []);
+              resolve({ id, values: arr.map(p => [p.ts || p[0], Number(p.val ?? p[1])]) });
+            });
+          } catch (e) {
+            resolve({ id, values: [] });
+          }
+        });
+        const out = {};
+        out.pv   = await ask(ids.pv);
+        out.load = await ask(ids.load);
+        out.buy  = await ask(ids.buy);
+        out.sell = await ask(ids.sell);
+        out.chg  = await ask(ids.chg);
+        out.dchg = await ask(ids.dchg);
+        out.soc  = await ask(ids.soc);
+        res.json({ ok:true, start, end, step: stepS, series: out });
+      } catch (e) {
+        res.json({ ok:false, error: String(e) });
+      }
+    });
+
     // config for client
     
     // installer session data
