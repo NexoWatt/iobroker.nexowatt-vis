@@ -248,20 +248,7 @@ function initMenu(){
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
   document.addEventListener('click', ()=> close());
   const settingsBtn = document.getElementById('menuOpenSettings');
-  if (settingsBtn && !settingsBtn.dataset.bound) {
-    settingsBtn.dataset.bound = '1';
-    settingsBtn.addEventListener('click', (e)=>{
-      e.preventDefault();
-      close();
-      // show settings panel
-      try { hideAllPanels(); } catch(_) {}
-      const sec = document.querySelector('[data-tab-content="settings"]');
-      if (sec) sec.classList.remove('hidden');
-      const live = document.querySelector('.content');
-      if (live) live.style.display = 'none';
-      try { initSettingsPanel(); } catch(_) {}
-    });
-  }
+  const }
 
 
 function initSettingsPanel(){
@@ -353,6 +340,10 @@ function setupSettings(){
     });
   }
 
+}
+
+    } catch(_) {}
+  
 
   async function doLogin(){
     try{
