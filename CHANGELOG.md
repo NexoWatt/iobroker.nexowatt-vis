@@ -53,3 +53,7 @@
 
 ### 0.3.43 (2025-11-01)
 - Admin: Datapoint-Beschriftungen nach UI-Kategorien + Default-IDs für FENECON/OpenEMS ergänzt.
+
+### 0.3.44 (2025-11-01)
+- Fix: ID-Mismatches im UI behoben (`gridBuyPowerCard/gridSellPowerCard`, `evcsLastChargeKwh`, `consumptionOther`).
+- Default `gridFrequency` → `fenecon.0._sum.GridFrequency`.

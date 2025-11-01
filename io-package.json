@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "nexowatt-vis",
-    "version": "0.3.43",
+    "version": "0.3.44",
     "news": {
       "0.0.1": {
         "en": "Initial release: Responsive NexoWatt EMS dashboard",
@@ -310,7 +310,7 @@
       "consumptionOther": "0_userdata.0.nexowatt.house.other.power",
       "evcsStatus": "",
       "evcsLastChargeKwh": "",
-      "gridFrequency": "",
+      "gridFrequency": "fenecon.0._sum.GridFrequency",
       "gridVoltage": "0_userdata.0.nexowatt.grid.voltage",
       "gridBuyEnergy": "0_userdata.0.nexowatt.grid.buy.energy_total",
       "gridSellEnergy": "0_userdata.0.nexowatt.grid.sell.energy_total",

@@ -192,6 +192,7 @@ function render() {
   setText('gridBuyPowerCard', formatPower(buy ?? 0));
   setText('gridSellPowerCard', formatPower(sell ?? 0));
 
+
   setText('productionTotal', formatPower(d('productionTotal') ?? pv ?? 0));
   setText('gridFrequency', d('gridFrequency') != null ? d('gridFrequency').toFixed(2) + ' Hz' : '--');
 
